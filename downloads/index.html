@@ -13,12 +13,12 @@
             text-align: center;
             padding: 40px;
         }
-        h1 {
-            color: #38bdf8;
-        }
         .container {
             max-width: 900px;
             margin: auto;
+        }
+        h1 {
+            color: #38bdf8;
         }
         .card {
             background: #1e293b;
@@ -26,35 +26,45 @@
             margin: 25px 0;
             border-radius: 12px;
         }
-        a.button {
+        .button {
             display: inline-block;
-            padding: 12px 20px;
             margin-top: 15px;
+            padding: 12px 20px;
             background: #38bdf8;
             color: #000;
             text-decoration: none;
             border-radius: 8px;
             font-weight: bold;
         }
-        a.button:hover {
+        .button:hover {
             background: #0ea5e9;
         }
         .note {
             font-size: 14px;
             color: #94a3b8;
-            margin-top: 30px;
+            margin-top: 20px;
         }
         .trust {
-            margin-top: 20px;
+            margin-top: 10px;
             font-size: 14px;
             color: #a3e635;
         }
+        a.back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #38bdf8;
+            text-decoration: none;
+        }
     </style>
 </head>
+
 <body>
 
 <div class="container">
-    <h1>🔐 VaultMorph Downloads</h1>
+
+    <a href="/" class="back">← Back to Home</a>
+
+    <h1>📥 VaultMorph Downloads</h1>
     <p><b>100% Offline. No Cloud. No Telemetry.</b></p>
 
     <div class="card">
@@ -63,12 +73,12 @@
         <a class="button" href="https://github.com/NitinChauhan22/VaultMorph_Android/releases/tag/v1.0.0-android" target="_blank">
             Download APK
         </a>
-        <div class="trust">✔ SHA256 checksum available on GitHub</div>
+        <div class="trust">✔ SHA256 checksum available on GitHube</div>
     </div>
 
     <div class="card">
         <h2>💻 Windows</h2>
-        <p>Download Windows executable</p>
+        <p>Download Windows application</p>
         <a class="button" href="https://github.com/NitinChauhan22/VaultMorph_Windows/releases/tag/v1.0.0" target="_blank">
             Download EXE
         </a>
@@ -76,13 +86,14 @@
     </div>
 
     <div class="note">
-        ⚠️ Windows Defender may warn for unsigned apps.<br>
-        Always verify downloads via official GitHub releases.
+        ⚠️ Windows may show a warning for unsigned apps.<br>
+        Always download from official GitHub links.
     </div>
 
     <div class="note">
         📧 contact@vaultmorph.org
     </div>
+
 </div>
 
 </body>
