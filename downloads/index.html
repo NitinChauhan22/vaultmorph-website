@@ -25,6 +25,7 @@
             padding: 25px;
             margin: 25px 0;
             border-radius: 12px;
+            text-align: left;
         }
         .button {
             display: inline-block;
@@ -55,6 +56,49 @@
             color: #38bdf8;
             text-decoration: none;
         }
+        button.copy-btn {
+            margin-left: 10px;
+            padding: 2px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            background-color: #38bdf8;
+            color: #000;
+        }
+        button.copy-btn:hover {
+            background-color: #0ea5e9;
+        }
+        code {
+            display: block;
+            background-color: #334155;
+            padding: 10px;
+            border-radius: 6px;
+            word-break: break-all;
+            margin-top: 5px;
+        }
+
+        /* SHA256 container */
+        .sha-container {
+            background-color: #1e293b;
+            border: 1px solid #38bdf8;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-top: 10px;
+            font-size: 13px;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 20px;
+            }
+            .button, button.copy-btn {
+                width: 100%;
+                box-sizing: border-box;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 
@@ -67,15 +111,31 @@
     <h1>📥 VaultMorph Downloads</h1>
     <p><b>100% Offline. No Cloud. No Telemetry.</b></p>
 
+    <!-- Android Card Updated -->
     <div class="card">
         <h2>📱 Android</h2>
         <p>Download latest APK</p>
+
+        <!-- Version + File Size -->
+        <p>Version: <b>1.0.0-Community</b> | Size: <b>50.6 MB</b></p>
+
+        <!-- Download Button -->
         <a class="button" href="https://github.com/NitinChauhan22/VaultMorph_Android/releases/download/v1.0.0-android/VaultMorph-v1.0.0-Community.apk" target="_blank">
             Download APK
         </a>
-        <div class="trust">✔ Verify via GitHub release</div>
+
+        <!-- SHA256 Checksum + Copy Button -->
+        <div class="sha-container">
+            SHA256:
+            <code id="apk-sha">e11041652260c877b74d2ba1f243aa2bdfced96d66419a4e8eb2e4501933e355</code>
+            <button class="copy-btn" onclick="copySHA()">Copy</button>
+        </div>
+
+        <!-- Verified Build -->
+        <div class="trust">✔ Official VaultMorph APK | Signed & Verified</div>
     </div>
 
+    <!-- Windows Card (unchanged) -->
     <div class="card">
         <h2>💻 Windows</h2>
         <p>Download Windows application</p>
@@ -95,6 +155,15 @@
     </div>
 
 </div>
+
+<script>
+function copySHA() {
+    const shaText = document.getElementById('apk-sha').innerText;
+    navigator.clipboard.writeText(shaText).then(() => {
+        alert('SHA256 copied to clipboard!');
+    });
+}
+</script>
 
 </body>
 </html>
