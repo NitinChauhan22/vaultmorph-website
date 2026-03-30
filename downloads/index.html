@@ -77,8 +77,6 @@
             word-break: break-all;
             margin-top: 5px;
         }
-
-        /* SHA256 container */
         .sha-container {
             background-color: #1e293b;
             border: 1px solid #38bdf8;
@@ -88,7 +86,6 @@
             font-size: 13px;
             overflow-x: auto;
         }
-
         @media (max-width: 600px) {
             .card {
                 padding: 20px;
@@ -111,43 +108,43 @@
     <h1>📥 VaultMorph Downloads</h1>
     <p><b>100% Offline. No Cloud. No Telemetry.</b></p>
 
-    <!-- Android Card Updated -->
+    <!-- Android Card -->
     <div class="card">
         <h2>📱 Android</h2>
         <p>Download latest APK</p>
-
-        <!-- Version + File Size -->
         <p>Version: <b>1.0.0-Community</b> | Size: <b>50.6 MB</b></p>
-
-        <!-- Download Button -->
         <a class="button" href="https://github.com/NitinChauhan22/VaultMorph_Android/releases/download/v1.0.0-android/VaultMorph-v1.0.0-Community.apk" target="_blank">
             Download APK
         </a>
-
-        <!-- SHA256 Checksum + Copy Button -->
         <div class="sha-container">
             SHA256:
             <code id="apk-sha">e11041652260c877b74d2ba1f243aa2bdfced96d66419a4e8eb2e4501933e355</code>
-            <button class="copy-btn" onclick="copySHA()">Copy</button>
+            <button class="copy-btn" onclick="copySHA('apk-sha')">Copy</button>
         </div>
-
-        <!-- Verified Build -->
         <div class="trust">✔ Official VaultMorph APK | Signed & Verified</div>
     </div>
 
-    <!-- Windows Card (unchanged) -->
+    <!-- Windows Card with SHA256 -->
     <div class="card">
         <h2>💻 Windows</h2>
         <p>Download Windows application</p>
         <a class="button" href="https://github.com/NitinChauhan22/VaultMorph_Windows/releases/download/v1.0.0/VaultMorph_Setup_v1.0.0.exe" target="_blank">
             Download EXE
         </a>
-        <div class="trust">✔ SHA256 checksum available on GitHub</div>
+
+        <!-- SHA256 Checksum + Copy Button -->
+        <div class="sha-container">
+            SHA256:
+            <code id="exe-sha">B3FAAD0F14273862075CA0856C28F452A655E828DD7FFBFA98381F7DDA3E6400</code>
+            <button class="copy-btn" onclick="copySHA('exe-sha')">Copy</button>
+        </div>
+
+        <div class="trust">✔ Official VaultMorph EXE | SHA256 Verified</div>
     </div>
 
     <div class="note">
-        ⚠️ Windows may show a warning for unsigned apps.<br>
-        Always download from official GitHub links.
+        ⚠️ Windows may show a warning for unknown publisher.<br>
+        Always download from official website.
     </div>
 
     <div class="note">
@@ -157,8 +154,8 @@
 </div>
 
 <script>
-function copySHA() {
-    const shaText = document.getElementById('apk-sha').innerText;
+function copySHA(id) {
+    const shaText = document.getElementById(id).innerText;
     navigator.clipboard.writeText(shaText).then(() => {
         alert('SHA256 copied to clipboard!');
     });
