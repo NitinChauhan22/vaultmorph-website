@@ -1,80 +1,760 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VaultMorph</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VaultMorph — Offline Security Suite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Figtree:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #0f172a;
-            color: #e2e8f0;
-            text-align: center;
-            padding: 40px;
-        }
-        .container {
-            max-width: 900px;
-            margin: auto;
-        }
-        h1 {
-            color: #38bdf8;
-            font-size: 40px;
-        }
-        .button {
-            display: inline-block;
-            margin-top: 25px;
-            padding: 14px 24px;
-            background: #38bdf8;
-            color: #000;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-        .button:hover {
-            background: #0ea5e9;
-        }
-        .features {
-            margin-top: 40px;
-            text-align: left;
-        }
-        .features li {
-            margin: 10px 0;
-        }
-        .footer {
-            margin-top: 50px;
-            font-size: 14px;
-            color: #94a3b8;
-        }
-    </style>
+  :root {
+    --bg:       #07090d;
+    --surface:  #0d1117;
+    --card:     #111820;
+    --border:   #1d2635;
+    --border2:  #253040;
+    --teal:     #00e2b8;
+    --teal-dim: #00b892;
+    --blue:     #3a8eff;
+    --text:     #dde5f0;
+    --muted:    #6b7d90;
+    --faint:    #2a3545;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px;
+    height: 64px;
+    background: rgba(7,9,13,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px; font-weight: 700; letter-spacing: 0.5px;
+    color: var(--text); text-decoration: none;
+  }
+  .nav-logo .lock-icon {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--teal), var(--blue));
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .nav-links { display: flex; align-items: center; gap: 32px; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--teal) !important;
+    color: #000 !important;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    transition: background .2s, transform .15s !important;
+  }
+  .nav-cta:hover { background: #00f0c8 !important; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 48px 80px;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse 70% 60% at 65% 50%, rgba(0,226,184,0.055) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 80% at 85% 20%, rgba(58,142,255,0.04) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    opacity: 0.35;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 640px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,226,184,0.1);
+    border: 1px solid rgba(0,226,184,0.25);
+    color: var(--teal);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 500;
+    margin-bottom: 28px;
+    letter-spacing: 0.5px;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--teal);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(52px, 7vw, 88px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -1px;
+    color: #fff;
+    margin-bottom: 24px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--teal), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 18px; color: var(--muted); line-height: 1.7;
+    max-width: 520px; margin-bottom: 40px;
+  }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--teal);
+    color: #000;
+    font-weight: 700; font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 8px; text-decoration: none;
+    transition: background .2s, transform .15s, box-shadow .2s;
+  }
+  .btn-primary:hover {
+    background: #00f0c8;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,226,184,0.25);
+  }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--text);
+    font-weight: 500; font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 8px; text-decoration: none;
+    transition: border-color .2s, background .2s, transform .15s;
+  }
+  .btn-secondary:hover {
+    border-color: var(--teal);
+    background: rgba(0,226,184,0.06);
+    transform: translateY(-2px);
+  }
+  .hero-visual {
+    position: absolute; right: 48px; top: 50%; transform: translateY(-50%);
+    z-index: 1; display: flex; flex-direction: column; gap: 12px;
+    opacity: 0.85;
+  }
+  .terminal-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    width: 340px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .terminal-title {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 12px;
+    color: var(--muted); font-size: 11px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+  .t-label { color: var(--muted); }
+  .t-key { color: #ff6b6b; }
+  .t-token { color: var(--teal); }
+  .t-ok { color: #4ade80; }
+  .t-dim { color: var(--faint); }
+  .stat-row {
+    display: flex; gap: 10px;
+  }
+  .stat-box {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 32px; font-weight: 700;
+    color: #fff; line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-num span { color: var(--teal); }
+  .stat-lbl { font-size: 11px; color: var(--muted); font-weight: 500; }
+
+  /* ── SECTION COMMON ── */
+  section { padding: 96px 48px; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--teal);
+    letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700; color: #fff; line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 17px; color: var(--muted); max-width: 560px; line-height: 1.7;
+  }
+
+  /* ── PRODUCTS ── */
+  .products { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .products-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    margin-top: 56px;
+  }
+  .product-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 36px;
+    position: relative; overflow: hidden;
+    transition: border-color .2s, transform .2s;
+  }
+  .product-card:hover { border-color: var(--border2); transform: translateY(-3px); }
+  .product-card.featured { border-color: rgba(0,226,184,0.3); }
+  .product-card.featured::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--teal), var(--blue));
+  }
+  .product-badge {
+    display: inline-block;
+    background: rgba(0,226,184,0.12);
+    border: 1px solid rgba(0,226,184,0.25);
+    color: var(--teal);
+    font-size: 11px; font-weight: 600; letter-spacing: 1px;
+    padding: 4px 12px; border-radius: 100px;
+    text-transform: uppercase; margin-bottom: 20px;
+  }
+  .product-badge.ai { background: rgba(58,142,255,0.12); border-color: rgba(58,142,255,0.3); color: var(--blue); }
+  .product-icon {
+    width: 52px; height: 52px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; margin-bottom: 20px;
+  }
+  .product-icon.vault { background: rgba(0,226,184,0.12); }
+  .product-icon.shield { background: rgba(58,142,255,0.12); }
+  .product-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px; font-weight: 700; color: #fff;
+    margin-bottom: 10px; letter-spacing: 0.2px;
+  }
+  .product-card p { font-size: 15px; color: var(--muted); line-height: 1.65; margin-bottom: 24px; }
+  .product-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .tag {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px; font-weight: 500;
+    padding: 4px 10px; border-radius: 4px;
+  }
+  .product-links { display: flex; gap: 12px; align-items: center; }
+  .link-primary {
+    background: var(--teal); color: #000;
+    font-weight: 700; font-size: 13px;
+    padding: 10px 20px; border-radius: 6px; text-decoration: none;
+    transition: background .2s;
+  }
+  .link-primary:hover { background: #00f0c8; }
+  .link-primary.ai-btn { background: var(--blue); color: #fff; }
+  .link-primary.ai-btn:hover { background: #5aa8ff; }
+  .link-ghost {
+    color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500;
+    transition: color .2s;
+  }
+  .link-ghost:hover { color: var(--text); }
+
+  /* ── SECURITY FEATURES ── */
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    margin-top: 56px;
+  }
+  .feat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    transition: border-color .2s;
+  }
+  .feat-card:hover { border-color: var(--border2); }
+  .feat-icon {
+    font-size: 24px; margin-bottom: 14px; display: block;
+  }
+  .feat-card h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px; font-weight: 600; color: #fff;
+    margin-bottom: 8px;
+  }
+  .feat-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* ── ENCRYPTION SHOWCASE ── */
+  .enc-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .enc-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+    align-items: center; margin-top: 56px;
+  }
+  .enc-table {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .enc-table table { width: 100%; border-collapse: collapse; }
+  .enc-table th {
+    text-align: left; padding: 14px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 1px;
+    color: var(--muted); text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .enc-table td {
+    padding: 14px 20px; font-size: 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .enc-table tr:last-child td { border-bottom: none; }
+  .enc-table td:first-child { color: var(--muted); width: 40%; }
+  .enc-table td:last-child { color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+  .enc-copy { padding: 32px; }
+  .enc-copy h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 16px;
+  }
+  .enc-copy p { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
+  .enc-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .enc-pill {
+    background: rgba(0,226,184,0.08);
+    border: 1px solid rgba(0,226,184,0.2);
+    color: var(--teal);
+    font-size: 13px; font-weight: 500;
+    padding: 6px 14px; border-radius: 100px;
+  }
+
+  /* ── AI SHIELD BANNER ── */
+  .shield-banner {
+    margin: 0 48px;
+    background: linear-gradient(135deg, rgba(58,142,255,0.08) 0%, rgba(0,226,184,0.06) 100%);
+    border: 1px solid rgba(58,142,255,0.2);
+    border-radius: 16px;
+    padding: 48px 56px;
+    display: flex; align-items: center; justify-content: space-between; gap: 32px;
+    position: relative; overflow: hidden;
+  }
+  .shield-banner::before {
+    content: '🛡';
+    position: absolute; right: 200px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 180px; opacity: 0.04;
+    pointer-events: none;
+  }
+  .shield-banner-text h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 40px; font-weight: 800; color: #fff;
+    margin-bottom: 10px; letter-spacing: 0.2px;
+  }
+  .shield-banner-text p { font-size: 16px; color: var(--muted); max-width: 520px; }
+  .shield-banner-actions { display: flex; gap: 12px; flex-shrink: 0; }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: flex; gap: 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item {
+    flex: 1; padding: 36px 40px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-big {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 56px; font-weight: 800;
+    line-height: 1; margin-bottom: 6px;
+    background: linear-gradient(135deg, var(--teal), var(--blue));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-desc { font-size: 14px; color: var(--muted); font-weight: 500; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 56px 48px 36px;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+    margin-bottom: 48px;
+  }
+  .footer-brand p { font-size: 14px; color: var(--muted); margin-top: 12px; line-height: 1.6; max-width: 280px; }
+  .footer-col h5 {
+    font-size: 13px; font-weight: 600; color: var(--text);
+    margin-bottom: 16px; letter-spacing: 0.5px;
+  }
+  .footer-col a {
+    display: block; color: var(--muted); text-decoration: none;
+    font-size: 14px; margin-bottom: 10px; transition: color .2s;
+  }
+  .footer-col a:hover { color: var(--teal); }
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px; color: var(--muted);
+  }
+  .footer-bottom a { color: var(--muted); text-decoration: none; }
+  .footer-bottom a:hover { color: var(--teal); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-badge { animation: fadeUp .5s ease both; }
+  .hero h1    { animation: fadeUp .5s .1s ease both; }
+  .hero p     { animation: fadeUp .5s .2s ease both; }
+  .hero-actions { animation: fadeUp .5s .3s ease both; }
+  .hero-visual  { animation: fadeUp .6s .2s ease both; }
+
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  .cursor { animation: blink 1s step-end infinite; }
+
+  @media (max-width: 1100px) {
+    .hero-visual { display: none; }
+    .products-grid { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .enc-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 700px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    section, .hero { padding-left: 20px; padding-right: 20px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .stats-bar { flex-direction: column; }
+    .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .shield-banner { margin: 0 20px; flex-direction: column; padding: 32px 28px; }
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
-
 <body>
 
-<div class="container">
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <span class="lock-icon">🔐</span>
+    VaultMorph
+  </a>
+  <div class="nav-links">
+    <a href="#products">Products</a>
+    <a href="#security">Security</a>
+    <a href="/ai_shield/">AI Shield</a>
+    <a href="/downloads/" class="nav-cta">Download</a>
+  </div>
+</nav>
 
-    <h1>🔐 VaultMorph</h1>
-    <p><b>Offline Password Manager for Maximum Security</b></p>
-    <p>No cloud. No tracking. Your data stays with you.</p>
-
-    <!-- ✅ DOWNLOAD BUTTON -->
-    <a href="/downloads" class="button">Download VaultMorph</a>
-
-    <div class="features">
-        <h2>Why VaultMorph?</h2>
-        <ul>
-            <li>✔ 100% Offline Storage</li>
-            <li>✔ No telemetry or tracking</li>
-            <li>✔ Built with cybersecurity principles</li>
-            <li>✔ Simple and secure design</li>
-        </ul>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">v1.0.0 — Community Release</div>
+    <h1>Privacy-first.<br><em>Zero cloud.</em><br>Always yours.</h1>
+    <p>AES-256-GCM encrypted password manager and AI privacy tools — built for developers and security-conscious users who refuse to compromise their secrets.</p>
+    <div class="hero-actions">
+      <a href="/downloads/" class="btn-primary">⬇ &nbsp;Download Free</a>
+      <a href="#products" class="btn-secondary">Explore Products →</a>
     </div>
-
-    <div class="footer">
-        📧 contact@vaultmorph.org
+  </div>
+  <div class="hero-visual">
+    <div class="terminal-card">
+      <div class="terminal-title">
+        <span class="dot dot-r"></span>
+        <span class="dot dot-y"></span>
+        <span class="dot dot-g"></span>
+        <span>vault_encrypt.log</span>
+      </div>
+      <div><span class="t-label">algorithm  </span><span class="t-ok">AES-256-GCM</span></div>
+      <div><span class="t-label">kdf        </span><span class="t-ok">Argon2id</span></div>
+      <div><span class="t-label">memory     </span><span class="t-token">128 MB</span></div>
+      <div><span class="t-label">iterations </span><span class="t-token">4</span></div>
+      <div><span class="t-label">nonce      </span><span class="t-key">96-bit random / write</span></div>
+      <div><span class="t-label">telemetry  </span><span class="t-ok">none ✓</span></div>
+      <div><span class="t-label">network    </span><span class="t-ok">blocked ✓</span></div>
+      <div style="margin-top:8px;color:#4a5a6a;">status<span class="cursor">_</span></div>
     </div>
-
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-num"><span>256</span></div>
+        <div class="stat-lbl">bit encryption</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num"><span>0</span></div>
+        <div class="stat-lbl">bytes to cloud</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num"><span>94</span><span style="font-size:18px;color:var(--blue)">+</span></div>
+        <div class="stat-lbl">secret patterns</div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-big">AES-256</div>
+    <div class="stat-desc">GCM encryption, per-field unique nonce</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-big">100%</div>
+    <div class="stat-desc">offline — no internet required ever</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-big">0</div>
+    <div class="stat-desc">telemetry, tracking or cloud sync</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-big">2</div>
+    <div class="stat-desc">platforms: Android & Windows</div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="section-label">// products</div>
+  <div class="section-title">One suite.<br>Two weapons.</div>
+  <div class="section-sub">VaultMorph gives you an offline password vault and an AI privacy firewall — a complete security toolkit that never touches the cloud.</div>
+  <div class="products-grid">
+
+    <div class="product-card featured">
+      <div class="product-badge">Password Manager</div>
+      <div class="product-icon vault">🔐</div>
+      <h3>VaultMorph Vault</h3>
+      <p>A fully offline password manager with military-grade encryption. Stores every credential, note, and TOTP secret locally — encrypted at rest, never leaving your device.</p>
+      <div class="product-tags">
+        <span class="tag">AES-256-GCM</span>
+        <span class="tag">Argon2id KDF</span>
+        <span class="tag">TOTP 2FA</span>
+        <span class="tag">Biometric</span>
+        <span class="tag">Android + Windows</span>
+        <span class="tag">CSV import</span>
+      </div>
+      <div class="product-links">
+        <a href="/downloads/" class="link-primary">⬇ Download</a>
+        <a href="#security" class="link-ghost">Security details →</a>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-badge ai">AI Privacy Tool</div>
+      <div class="product-icon shield">🛡</div>
+      <h3>VaultMorph AI Shield</h3>
+      <p>Sanitize API keys, credentials and PII before pasting into ChatGPT, Claude, or Copilot. Restore the originals from the AI's response. Your secrets stay on your machine.</p>
+      <div class="product-tags">
+        <span class="tag">94+ patterns</span>
+        <span class="tag">Air-gapped detection</span>
+        <span class="tag">Risk scoring</span>
+        <span class="tag">Multi-session</span>
+        <span class="tag">Windows</span>
+        <span class="tag">Free community</span>
+      </div>
+      <div class="product-links">
+        <a href="/ai_shield/" class="link-primary ai-btn">🛡 Learn More</a>
+        <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield/releases/download/v1.0.0-windows/VaultMorphAIShield_Setup_v1.0.0.exe" class="link-ghost">Download →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECURITY FEATURES -->
+<section id="security">
+  <div class="section-label">// vault features</div>
+  <div class="section-title">Every detail<br>hardened.</div>
+  <div class="section-sub">No shortcuts. No "good enough." Every feature in VaultMorph is built around the assumption that your secrets are worth protecting.</div>
+  <div class="features-grid">
+    <div class="feat-card">
+      <span class="feat-icon">🔒</span>
+      <h4>Per-field AES-256-GCM</h4>
+      <p>Every field — username, URL, notes, TOTP secret — encrypted independently with a unique 96-bit random nonce on every write.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🧠</span>
+      <h4>Argon2id Key Derivation</h4>
+      <p>128 MB memory, 4 iterations, 4 threads. GPU and ASIC resistant. Your master password is never stored in plain text — anywhere.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🔑</span>
+      <h4>TOTP Authenticator</h4>
+      <p>Built-in RFC 6238 TOTP with QR scanning and manual entry. Compatible with Google Authenticator and Microsoft Authenticator.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">👆</span>
+      <h4>Biometric Unlock</h4>
+      <p>Fingerprint and face unlock via Android BiometricPrompt API. Quick access without ever typing your master password in public.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">📊</span>
+      <h4>Password Health Engine</h4>
+      <p>Live entropy meter on all password fields. Weakness detection, reuse checking. 50-bit minimum entropy enforced on registration.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">📦</span>
+      <h4>Encrypted .vmb Backups</h4>
+      <p>Portable encrypted backup format with magic header verification, KDF version tagging, and independent AES-256-GCM encryption.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🚫</span>
+      <h4>Network Blocked by Default</h4>
+      <p>Android's <code>network_security_config.xml</code> blocks all outbound traffic. The app cannot phone home — not by accident, not by design.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">⏱</span>
+      <h4>Auto-Lock & Rate Limiting</h4>
+      <p>30-minute idle timeout, progressive lockout after 5/10/20 failures. Clipboard auto-clears 30 seconds after any copy.</p>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">📁</span>
+      <h4>Universal CSV Import</h4>
+      <p>Import from Chrome, LastPass, Bitwarden, 1Password, and KeePass. Automatic column detection, no manual field mapping required.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ENCRYPTION SHOWCASE -->
+<section class="enc-section">
+  <div class="enc-grid">
+    <div class="enc-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Vault encryption</td><td>AES-256-GCM, per-field, unique nonce/write</td></tr>
+          <tr><td>Key derivation</td><td>Argon2id — 128 MB, 4 iters, 4 threads</td></tr>
+          <tr><td>Login hash</td><td>Argon2id (same params, GPU/ASIC resistant)</td></tr>
+          <tr><td>2FA</td><td>TOTP RFC 6238 + replay attack protection</td></tr>
+          <tr><td>Biometric</td><td>Android BiometricPrompt API</td></tr>
+          <tr><td>Backup format</td><td>.vmb — AES-256-GCM + magic header</td></tr>
+          <tr><td>Screenshot block</td><td>FLAG_SECURE on all screens</td></tr>
+          <tr><td>Network</td><td>Blocked — network_security_config.xml</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="enc-copy">
+      <div class="section-label">// zero-trust design</div>
+      <h3>The full security stack, documented.</h3>
+      <p>VaultMorph was designed to pass a security audit from day one. Every vulnerability found during development was patched before v1.0.0 shipped — tracked and verified.</p>
+      <p>14 security findings were identified and fixed during internal review. From raw password storage to TOTP replay attacks — nothing shipped broken.</p>
+      <div class="enc-pills">
+        <span class="enc-pill">✅ No raw passwords stored</span>
+        <span class="enc-pill">✅ TOTP replay protection</span>
+        <span class="enc-pill">✅ Rate limiting enforced</span>
+        <span class="enc-pill">✅ Idle expiry 30 min</span>
+        <span class="enc-pill">✅ Clipboard auto-clear</span>
+        <span class="enc-pill">✅ FLAG_SECURE active</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI SHIELD BANNER -->
+<section style="padding: 64px 0; background: var(--bg);">
+  <div class="shield-banner">
+    <div class="shield-banner-text">
+      <div class="section-label" style="margin-bottom: 8px;">// ai privacy</div>
+      <h2>Stop leaking secrets to AI.</h2>
+      <p>VaultMorph AI Shield detects 94+ sensitive patterns — AWS keys, API tokens, SSNs, database URIs — and replaces them with reversible tokens before they reach ChatGPT, Claude, or Copilot. Fully offline detection. No telemetry.</p>
+    </div>
+    <div class="shield-banner-actions">
+      <a href="/ai_shield/" class="btn-secondary">Learn More →</a>
+      <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield/releases/download/v1.0.0-windows/VaultMorphAIShield_Setup_v1.0.0.exe" class="btn-primary" style="background: var(--blue); white-space: nowrap;">⬇ Download AI Shield</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="nav-logo" style="text-decoration:none;">
+        <span class="lock-icon">🔐</span>
+        VaultMorph
+      </a>
+      <p>Privacy tooling for developers and security-conscious users who refuse to hand their secrets to the cloud.</p>
+      <p style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--faint);">contact@vaultmorph.org</p>
+    </div>
+    <div class="footer-col">
+      <h5>Products</h5>
+      <a href="/downloads/#android">Android App</a>
+      <a href="/downloads/#windows">Windows App</a>
+      <a href="/ai_shield/">AI Shield</a>
+    </div>
+    <div class="footer-col">
+      <h5>Downloads</h5>
+      <a href="/downloads/">All Downloads</a>
+      <a href="https://github.com/NitinChauhan22/VaultMorph_Android/releases">Android Releases</a>
+      <a href="https://github.com/NitinChauhan22/VaultMorph_Windows/releases">Windows Releases</a>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <a href="https://github.com/NitinChauhan22">GitHub</a>
+      <a href="mailto:contact@vaultmorph.org">Support</a>
+      <a href="mailto:contact@vaultmorph.org?subject=Security Report">Security Report</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 VaultMorph. All rights reserved. Proprietary software — not for redistribution.</span>
+    <span>Built with Flutter · AES-256-GCM · Argon2id</span>
+  </div>
+</footer>
 
 </body>
 </html>
