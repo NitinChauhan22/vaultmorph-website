@@ -361,7 +361,7 @@
   <div class="nav-links">
     <a href="/">Home</a>
     <a href="/#products">Products</a>
-    <a href="/ai_shield/">AI Shield</a>
+    <a href="/ai_shield_chat/">AI Shield</a>
     <a href="mailto:contact@vaultmorph.org">Support</a>
   </div>
 </nav>
@@ -468,73 +468,85 @@
 
   <hr class="section-divider">
 
-  <!-- AI SHIELD -->
+  <!-- AI SHIELD (CHATBOT) -->
   <div class="dl-block" id="ai-shield">
     <div class="dl-section-header">
-      <div class="dl-section-icon shield">🛡</div>
+      <div class="dl-section-icon shield">&#128172;</div>
       <div>
         <div class="dl-section-title">AI Shield</div>
-        <div class="dl-section-sub">Privacy firewall for AI tools — Windows only</div>
+        <div class="dl-section-sub">AI chat client with built-in DLP &mdash; Windows &middot; macOS &amp; Linux soon</div>
       </div>
     </div>
 
     <div class="dl-card" style="border-color: rgba(251,191,36,0.2);">
       <div class="dl-card-header">
         <div class="dl-card-meta">
-          <div class="version-badge" style="background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.3);color:var(--amber);">v1.0.0 · Windows · Latest</div>
+          <div class="version-badge" style="background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.3);color:var(--amber);">v1.0.0 &middot; Windows &middot; Latest</div>
           <h3>VaultMorph AI Shield</h3>
-          <p>Detect and tokenize 94+ secret patterns before they reach ChatGPT, Claude, or Copilot. Paste sanitized text, get the AI's answer, restore originals. Your credentials never leave your machine.</p>
+          <p>A full native AI chat client with a built-in 127-rule DLP engine, Security Workspace (Gitleaks + Semgrep + AI code review), MCP server support, browser extension, Knowledge Base (RAG), and voice input. Every message is sanitized before it reaches any AI provider &mdash; secrets never leave your device.</p>
           <div class="dl-meta-pills">
-            <span class="dl-pill">📦 62.85 MB</span>
             <span class="dl-pill">Windows 10 / 11</span>
-            <span class="dl-pill">94+ patterns</span>
-            <span class="dl-pill">Fully offline detection</span>
+            <span class="dl-pill">127 detection rules</span>
+            <span class="dl-pill">Security Workspace</span>
+            <span class="dl-pill">MCP servers</span>
             <span class="dl-pill">No admin required</span>
           </div>
         </div>
-        <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield/releases/download/v1.0.0-windows/VaultMorphAIShield_Setup_v1.0.0.exe" class="dl-btn shield">⬇ &nbsp;Download AI Shield</a>
+        <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases/download/v1.0.0/VaultMorph.AI.Shield_0.1.0_x64-setup.exe" class="dl-btn shield">&#8681; &nbsp;Download EXE</a>
       </div>
       <div class="sha-block">
-        <div class="sha-label">SHA-256</div>
-        <div class="sha-value" id="sha-shield">730F37CE53813081C237E50FCE2423F5C3EC088030977EC25E81EEFBA120CC63</div>
+        <div class="sha-label">SHA-256 (.exe)</div>
+        <div class="sha-value" id="sha-shield">00d85a2f61a8674ad73ed46439f03be001c5981e7cb575cd76a0eb4630c3708d</div>
         <button class="sha-copy" onclick="copyHash('sha-shield', this)">Copy</button>
       </div>
+      <div class="sha-block">
+        <div class="sha-label">MSI build</div>
+        <div class="sha-value" style="color:var(--text);">
+          <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases/download/v1.0.0/VaultMorph.AI.Shield_0.1.0_x64_en-US.msi" style="color:var(--blue);">VaultMorph.AI.Shield_0.1.0_x64_en-US.msi</a> &mdash; SHA-256: <span id="sha-shield-msi" style="color:var(--green);">8655159637b02f546e773d7e62d6a507bb967b8b4650db35a627fcbed881a8ac</span>
+        </div>
+        <button class="sha-copy" onclick="copyHash('sha-shield-msi', this)">Copy</button>
+      </div>
+    </div>
+
+    <div class="notice">
+      <span>&#127757;</span>
+      <div>macOS and Linux builds are coming soon. Windows is the only platform available today. See <a href="/verify/" style="color:inherit;text-decoration:underline;">how to verify your download</a> before installing.</div>
     </div>
 
     <!-- TIERS -->
     <div style="margin-top: 24px;">
-      <div style="font-size: 14px; color: var(--muted); margin-bottom: 16px; font-weight: 500;">Community vs Pro Trial — both are free to download:</div>
+      <div style="font-size: 14px; color: var(--muted); margin-bottom: 16px; font-weight: 500;">Community vs Pro Trial &mdash; both are free to download:</div>
       <div class="tier-grid">
         <div class="tier-card">
           <div class="tier-name">Community</div>
           <div class="tier-price">Free <sub>/ forever</sub></div>
           <ul class="tier-feat">
-            <li class="yes">16 detection rules</li>
-            <li class="yes">3 concurrent sessions</li>
-            <li class="yes">Basic PDF risk report</li>
-            <li class="yes">Side-by-side diff view</li>
-            <li class="no">Session export / import</li>
-            <li class="no">Enterprise PDF report</li>
+            <li class="yes">110 detection rules</li>
+            <li class="yes">Up to 3 concurrent sessions</li>
+            <li class="yes">Core AI chat, all providers</li>
+            <li class="yes">Security Workspace (folder scan)</li>
+            <li class="no">MCP servers</li>
+            <li class="no">Knowledge Base (RAG)</li>
           </ul>
         </div>
         <div class="tier-card recommended">
-          <div class="rec-badge">⭐ Recommended</div>
+          <div class="rec-badge">&#11088; Recommended</div>
           <div class="tier-name">Pro Trial</div>
           <div class="tier-price">Free <sub>/ 6 months</sub></div>
           <ul class="tier-feat">
-            <li class="yes">All 21 detection rules</li>
+            <li class="yes">All 127 detection rules</li>
             <li class="yes">Unlimited sessions</li>
-            <li class="yes">Full PDF risk reports</li>
-            <li class="yes">Session export / import</li>
-            <li class="yes">Enterprise PDF report</li>
-            <li class="yes">Future rule packs</li>
+            <li class="yes">MCP servers (HTTP + stdio)</li>
+            <li class="yes">Knowledge Base (RAG)</li>
+            <li class="yes">Compliance reports (HTML/CSV)</li>
+            <li class="yes">Remote repository scan</li>
           </ul>
         </div>
         <div class="tier-card">
           <div class="tier-name">Enterprise</div>
           <div class="tier-price" style="color: var(--muted); font-size: 22px;">Contact Us</div>
           <ul class="tier-feat">
-            <li class="yes">All Pro features</li>
+            <li class="yes">All Pro Trial features</li>
             <li class="yes">.vml offline license</li>
             <li class="yes">Device fingerprint lock</li>
             <li class="yes">Custom seat count</li>
@@ -546,12 +558,48 @@
     </div>
 
     <div style="margin-top: 14px; text-align: right;">
-      <a href="/ai_shield/" style="color: var(--muted); font-size: 14px; text-decoration: none; transition: color .2s;" onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--muted)'">Full AI Shield feature overview →</a>
+      <a href="/ai_shield_chat/" style="color: var(--muted); font-size: 14px; text-decoration: none; transition: color .2s;" onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--muted)'">Full AI Shield feature overview &rarr;</a>
+      &nbsp;&middot;&nbsp;
+      <a href="/verify/" style="color: var(--muted); font-size: 14px; text-decoration: none;" onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--muted)'">How to verify your download &rarr;</a>
     </div>
   </div>
 
   <hr class="section-divider">
 
+  <!-- LEGACY / ARCHIVED -->
+  <div class="dl-block" id="legacy" style="opacity:0.7;">
+    <div class="dl-section-header">
+      <div class="dl-section-icon shield" style="filter:grayscale(1);">&#128451;</div>
+      <div>
+        <div class="dl-section-title" style="font-size:22px;color:var(--muted);">Legacy &mdash; archived, no further updates</div>
+        <div class="dl-section-sub">AI Shield Standalone (clipboard sanitizer) &middot; Windows only &middot; <a href="/ai_shield/" style="color:var(--muted);">Why this was retired &rarr;</a></div>
+      </div>
+    </div>
+
+    <div class="dl-card">
+      <div class="dl-card-header">
+        <div class="dl-card-meta">
+          <div class="version-badge" style="background:rgba(148,163,184,0.1);border-color:rgba(148,163,184,0.25);color:var(--muted);">v1.0.0 &middot; Final release &middot; Archived</div>
+          <h3>VaultMorph AI Shield (Standalone)</h3>
+          <p>The original clipboard sanitizer. Superseded by the AI Shield Chatbot above &mdash; no further rule updates or security patches.</p>
+          <div class="dl-meta-pills">
+            <span class="dl-pill">&#128230; 62.85 MB</span>
+            <span class="dl-pill">Windows 10 / 11</span>
+            <span class="dl-pill">94 detection rules</span>
+            <span class="dl-pill">Archived</span>
+          </div>
+        </div>
+        <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield/releases/download/v1.0.0-windows/VaultMorphAIShield_Setup_v1.0.0.exe" class="dl-btn shield" style="opacity:0.6;background:var(--muted);">&#8681; &nbsp;Legacy download</a>
+      </div>
+      <div class="sha-block">
+        <div class="sha-label">SHA-256</div>
+        <div class="sha-value" id="sha-shield-legacy">730F37CE53813081C237E50FCE2423F5C3EC088030977EC25E81EEFBA120CC63</div>
+        <button class="sha-copy" onclick="copyHash('sha-shield-legacy', this)">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
   <!-- SYSTEM REQUIREMENTS -->
   <div style="margin-bottom: 32px;">
     <div class="page-label" style="margin-bottom: 14px;">// system requirements</div>
@@ -574,6 +622,14 @@
         <div class="req-row"><span>Internet</span><span>Optional (Pro trial only)</span></div>
         <div class="req-row"><span>Data location</span><span>%LOCALAPPDATA%\vaultmorph_windows</span></div>
       </div>
+      <div class="req-card">
+        <h4>&#128172; AI Shield (Chatbot)</h4>
+        <div class="req-row"><span>OS</span><span>Win 10/11 &middot; macOS 12+ &middot; Linux soon</span></div>
+        <div class="req-row"><span>RAM</span><span>4 GB min &middot; 8 GB recommended</span></div>
+        <div class="req-row"><span>Disk</span><span>~200 MB</span></div>
+        <div class="req-row"><span>Admin rights</span><span>Not required</span></div>
+        <div class="req-row"><span>Internet</span><span>Optional (Pro Trial + AI providers)</span></div>
+      </div>
     </div>
   </div>
 
@@ -588,9 +644,12 @@
   </div>
   <div class="footer-links">
     <a href="/">Home</a>
-    <a href="/ai_shield/">AI Shield</a>
+    <a href="/ai_shield_chat/">AI Shield</a>
+    <a href="/privacy/">Privacy</a>
+    <a href="/terms/">Terms</a>
+    <a href="/security/">Security</a>
+    <a href="/verify/">Verify</a>
     <a href="https://github.com/NitinChauhan22">GitHub</a>
-    <a href="mailto:contact@vaultmorph.org?subject=Security Report">Security</a>
   </div>
 </footer>
 
