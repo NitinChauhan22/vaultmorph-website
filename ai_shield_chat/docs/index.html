@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentation — VaultMorph AI Shield</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+  <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico" />
+  <link rel="apple-touch-icon" href="../../assets/icon-128.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1117; --surface: #181c24; --border: #2a2f3d;
+      --accent: #4f8ef7; --accent-dim: #2d4a80;
+      --text: #e2e8f0; --text-muted: #94a3b8;
+      --green: #22c55e; --yellow: #f59e0b; --red: #ef4444; --orange: #f97316;
+      --sidebar-w: 240px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+    header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; }
+    header .logo { display: inline-flex; align-items: center; gap: 0.6rem; font-family: "Space Grotesk", "Inter", sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--accent); text-decoration: none; letter-spacing: -0.01em; }
+    header .logo img { width: 26px; height: 26px; display: block; }
+    header .logo span { color: var(--text); font-weight: 500; }
+    header nav { margin-left: auto; display: flex; gap: 1.5rem; align-items: center; }
+    header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
+    header nav a:hover { color: var(--text); }
+    .layout { display: flex; min-height: calc(100vh - 57px); }
+    .sidebar {
+      width: var(--sidebar-w); background: var(--surface); border-right: 1px solid var(--border);
+      padding: 2rem 0; flex-shrink: 0; position: sticky; top: 57px;
+      height: calc(100vh - 57px); overflow-y: auto;
+    }
+    .sidebar-section { margin-bottom: 2rem; }
+    .sidebar-heading { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 0 1.5rem; margin-bottom: 0.5rem; }
+    .sidebar a { display: block; padding: 0.35rem 1.5rem; color: var(--text-muted); text-decoration: none; font-size: 0.875rem; border-left: 2px solid transparent; transition: all 0.15s; }
+    .sidebar a:hover { color: var(--text); background: rgba(79,142,247,0.06); border-left-color: var(--accent-dim); }
+    .sidebar a.active { color: var(--accent); border-left-color: var(--accent); }
+    .main { flex: 1; padding: 3rem 3rem 4rem; max-width: 860px; }
+    .badge { display: inline-block; background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-dim); border-radius: 4px; font-size: 0.75rem; font-weight: 600; padding: 0.2em 0.6em; margin-bottom: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    h1 { font-family: "Space Grotesk", "Inter", sans-serif; font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+    .meta { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 2.5rem; }
+    section { margin-bottom: 3.5rem; scroll-margin-top: 80px; }
+    h2 { font-size: 1.3rem; font-weight: 600; color: var(--text); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--text); }
+    h4 { font-size: 0.9rem; font-weight: 600; margin: 1rem 0 0.4rem; color: var(--text-muted); }
+    p { margin-bottom: 0.9rem; color: var(--text-muted); }
+    p strong { color: var(--text); }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.9rem; }
+    li { color: var(--text-muted); margin-bottom: 0.35rem; }
+    li strong { color: var(--text); }
+    code { font-family: "Cascadia Code","Fira Code","Consolas",monospace; font-size: 0.85em; background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 0.1em 0.35em; color: #a5d6ff; }
+    pre { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; overflow-x: auto; margin-bottom: 1rem; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.85rem; color: #c9d1d9; }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; text-decoration: none; color: inherit; transition: border-color 0.15s; display: block; }
+    .card:hover { border-color: var(--accent-dim); }
+    .card-icon { font-size: 1.5rem; margin-bottom: 0.6rem; }
+    .card-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.3rem; color: var(--text); }
+    .card-desc { font-size: 0.82rem; color: var(--text-muted); }
+    .highlight-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+    .highlight-box p { margin: 0; }
+    .info-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+    .info-box p { margin: 0; }
+    .warning-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--yellow); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+    .warning-box p { margin: 0; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.875rem; }
+    th { background: var(--surface); border: 1px solid var(--border); padding: 0.6rem 0.9rem; text-align: left; font-weight: 600; color: var(--text); }
+    td { border: 1px solid var(--border); padding: 0.6rem 0.9rem; color: var(--text-muted); vertical-align: top; }
+    td strong { color: var(--text); }
+    .tag { display: inline-block; border-radius: 3px; font-size: 0.72rem; font-weight: 600; padding: 0.1em 0.45em; margin-left: 4px; }
+    .tag-free { background: #0d2b14; color: var(--green); border: 1px solid #1a4d28; }
+    .tag-paid { background: #1a1a2e; color: #8888cc; border: 1px solid #2a2a4d; }
+    .tag-gateway { background: #2b1a00; color: var(--orange); border: 1px solid #4d3000; }
+    .tag-new { background: #2d1a00; color: var(--yellow); border: 1px solid #4d3300; }
+    .sev { display: inline-block; border-radius: 3px; font-size: 0.72rem; font-weight: 700; padding: 0.1em 0.4em; }
+    .sev-c { background: #3d1010; color: var(--red); }
+    .sev-h { background: #3d2010; color: var(--orange); }
+    .sev-m { background: #3d3010; color: var(--yellow); }
+    .sev-l { background: #1a2a1a; color: var(--green); }
+    .score-bar { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.6rem; }
+    .score-pill { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 0.3rem 0.9rem; font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem; }
+    a { color: var(--accent); }
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+    .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    @media (max-width: 768px) { .sidebar { display: none; } .main { padding: 2rem 1.25rem; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="https://vaultmorph.org"><img src="../../assets/icon-128.png" alt="VaultMorph AI Shield logo" width="26" height="26" />VaultMorph <span>AI Shield</span></a>
+  <nav>
+    <a href="https://vaultmorph.org">Home</a>
+    <a href="https://vaultmorph.org/security">Security</a>
+    <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/issues" target="_blank">Support</a>
+  </nav>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Getting Started</div>
+      <a href="#overview" class="active">Overview</a>
+      <a href="#installation">Installation</a>
+      <a href="#quickstart">Quick start</a>
+      <a href="#verify">Verify your download</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Core Concepts</div>
+      <a href="#how-it-works">How it works</a>
+      <a href="#detection-rules">Detection rules</a>
+      <a href="#risk-scoring">Risk scoring</a>
+      <a href="#token-format">Token format</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Providers</div>
+      <a href="#native-providers">Native providers</a>
+      <a href="#extended-providers">Extended providers</a>
+      <a href="#subscription-providers">Subscription providers</a>
+      <a href="#azure-openai">Azure OpenAI</a>
+      <a href="#ai-gateways">AI Gateways</a>
+      <a href="#local-models">Local / self-hosted</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Editions</div>
+      <a href="#community">Community Edition</a>
+      <a href="#pro-trial">Pro Trial</a>
+      <a href="#enterprise">Enterprise</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Features</div>
+      <a href="#findings-panel">Findings panel</a>
+      <a href="#clipboard">Clipboard protection</a>
+      <a href="#attachments">File attachments</a>
+      <a href="#interchat">Interchat context</a>
+      <a href="#projects">Projects</a>
+      <a href="#conversations">Conversation history</a>
+      <a href="#export">Export conversations</a>
+      <a href="#system-prompt">System prompt</a>
+      <a href="#advanced-params">Advanced parameters</a>
+      <a href="#rule-updates">Rule updates</a>
+      <a href="#custom-rules">Custom rules</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Security Workspace</div>
+      <a href="#security-workspace">Overview</a>
+      <a href="#gitleaks">Gitleaks scan</a>
+      <a href="#semgrep">Semgrep SAST</a>
+      <a href="#ai-verdicts">AI verdicts</a>
+      <a href="#folder-scan">Folder scan</a>
+      <a href="#remote-repo-scan">Remote repo scan</a>
+      <a href="#review-report">Security report</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Integrations</div>
+      <a href="#mcp-servers">MCP Servers</a>
+      <a href="#mcp-stdio">MCP stdio transport</a>
+      <a href="#browser-extension">Browser Extension</a>
+      <a href="#doc-generation">Document generation</a>
+      <a href="#artifacts">Artifacts</a>
+      <a href="#knowledge-base">Knowledge Base (RAG)</a>
+      <a href="#voice-input">Voice input</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Data Management</div>
+      <a href="#compliance-reports">Compliance reports</a>
+      <a href="#backup-restore">Backup &amp; restore</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Reference</div>
+      <a href="#security-model">Security model</a>
+      <a href="#faq">FAQ</a>
+      <a href="#changelog">Changelog</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="badge">Documentation</div>
+    <h1>VaultMorph AI Shield</h1>
+    <p class="meta">Version 1.0.0-beta &nbsp;·&nbsp; Rules v2.1.0 · 127 patterns &nbsp;·&nbsp; Last updated: July 2026</p>
+
+    <div class="card-grid">
+      <a class="card" href="#quickstart">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Quick Start</div>
+        <div class="card-desc">Sanitize your first prompt in 2 minutes</div>
+      </a>
+      <a class="card" href="#how-it-works">
+        <div class="card-icon">🔐</div>
+        <div class="card-title">How it works</div>
+        <div class="card-desc">The sanitize → AI → restore pipeline</div>
+      </a>
+      <a class="card" href="#extended-providers">
+        <div class="card-icon">🤖</div>
+        <div class="card-title">10+ Providers</div>
+        <div class="card-desc">Including free-tier NVIDIA NIM & OpenRouter</div>
+      </a>
+      <a class="card" href="#detection-rules">
+        <div class="card-icon">🛡️</div>
+        <div class="card-title">127 Detection Rules</div>
+        <div class="card-desc">API keys, PII, India data, financial &amp; more</div>
+      </a>
+      <a class="card" href="#projects">
+        <div class="card-icon">📁</div>
+        <div class="card-title">Projects</div>
+        <div class="card-desc">Organise conversations into colour-coded groups</div>
+      </a>
+      <a class="card" href="#ai-gateways">
+        <div class="card-icon">🌐</div>
+        <div class="card-title">AI Gateways</div>
+        <div class="card-desc">Portkey &amp; Bifrost with semantic caching</div>
+      </a>
+      <a class="card" href="#security-workspace">
+        <div class="card-icon">🔬</div>
+        <div class="card-title">Security Workspace</div>
+        <div class="card-desc">Gitleaks + Semgrep SAST + AI verdicts</div>
+      </a>
+      <a class="card" href="#mcp-servers">
+        <div class="card-icon">🔌</div>
+        <div class="card-title">MCP Servers</div>
+        <div class="card-desc">Connect local tools to the AI (Pro)</div>
+      </a>
+      <a class="card" href="#browser-extension">
+        <div class="card-icon">🧩</div>
+        <div class="card-title">Browser Extension</div>
+        <div class="card-desc">ChatGPT, Claude, Gemini, Copilot</div>
+      </a>
+      <a class="card" href="#knowledge-base">
+        <div class="card-icon">📚</div>
+        <div class="card-title">Knowledge Base</div>
+        <div class="card-desc">On-device RAG over your documents</div>
+      </a>
+    </div>
+
+    <!-- Overview -->
+    <section id="overview">
+      <h2>Overview</h2>
+      <p>VaultMorph AI Shield is a desktop application that protects sensitive data when you use AI assistants. It intercepts your prompts, replaces secrets with anonymised tokens, sends the sanitized version to the AI, then restores the original values in the response — all locally, all in real time.</p>
+      <div class="highlight-box">
+        <p><strong>Core security guarantee:</strong> Raw secrets — API keys, passwords, PII, financial data, India-specific identifiers — never leave your device. The AI provider receives only sanitized tokens.</p>
+      </div>
+      <h3>What gets detected and protected</h3>
+      <table>
+        <thead><tr><th>Category</th><th>Examples</th><th>Rules</th></tr></thead>
+        <tbody>
+          <tr><td><strong>API Keys</strong></td><td>OpenAI, Anthropic, AWS, GitHub, Stripe, Groq, xAI, Perplexity, Razorpay, 70+ more</td><td>79</td></tr>
+          <tr><td><strong>Tokens</strong></td><td>JWTs, bearer tokens, Supabase service roles, HashiCorp Vault</td><td>6</td></tr>
+          <tr><td><strong>Private Keys</strong></td><td>RSA, EC, DSA, OpenSSH, PGP, GCP service accounts</td><td>4</td></tr>
+          <tr><td><strong>Credentials</strong></td><td>Passwords, .env secrets, admin credentials</td><td>5</td></tr>
+          <tr><td><strong>Connection Strings</strong></td><td>MongoDB, PostgreSQL, MySQL, Redis, MSSQL, Elasticsearch, Cassandra</td><td>8</td></tr>
+          <tr><td><strong>PII</strong></td><td>Email addresses, phone numbers, US SSN</td><td>6</td></tr>
+          <tr><td><strong>Financial</strong></td><td>Credit/debit card numbers (Visa, MC, Amex, Discover), IBAN</td><td>2</td></tr>
+          <tr><td><strong>India PII</strong></td><td>PAN card, Aadhaar, UPI IDs, OTP / verification codes</td><td>8</td></tr>
+          <tr><td><strong>Infrastructure</strong></td><td>Private IPs (RFC 1918), MAC addresses, internal hostnames</td><td>8</td></tr>
+          <tr><td><strong>Network</strong></td><td>Public IP addresses</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Installation -->
+    <section id="installation">
+      <h2>Installation</h2>
+      <h3>System requirements</h3>
+      <table>
+        <thead><tr><th>Platform</th><th>Minimum</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Windows</td><td>Windows 10 (64-bit)</td><td>Windows 11 recommended</td></tr>
+          <tr><td>macOS</td><td>macOS 12 Monterey</td><td>Apple Silicon and Intel both supported</td></tr>
+          <tr><td>Linux</td><td>Ubuntu 22.04 / Debian 11</td><td>WebKitGTK required</td></tr>
+        </tbody>
+      </table>
+      <h3>Download</h3>
+      <p>Download from <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases" target="_blank">GitHub Releases</a>. After downloading, verify the file: <a href="https://vaultmorph.org/verify">vaultmorph.org/verify →</a></p>
+      <ul>
+        <li><strong>Windows:</strong> <code>ai-shield-setup-x64.msi</code></li>
+        <li><strong>macOS (Apple Silicon):</strong> <code>ai-shield-aarch64.dmg</code></li>
+        <li><strong>macOS (Intel):</strong> <code>ai-shield-x64.dmg</code></li>
+        <li><strong>Linux (Debian/Ubuntu):</strong> <code>ai-shield-amd64.deb</code></li>
+        <li><strong>Linux (RHEL/Fedora):</strong> <code>ai-shield-x86_64.rpm</code></li>
+      </ul>
+    </section>
+
+    <!-- Quick start -->
+    <section id="quickstart">
+      <h2>Quick start</h2>
+      <ol>
+        <li><strong>Install</strong> using the platform installer above.</li>
+        <li><strong>Launch</strong> the app. Community Edition is ready immediately — no account or internet connection required.</li>
+        <li><strong>Add a provider</strong> in Settings → Providers. Choose from 10+ providers; enter your API key. The key is encrypted with AES-256-GCM and stored in your OS keychain.</li>
+        <li><strong>Type or paste a message</strong> that contains sensitive data. The Findings panel shows what was detected, grouped by category and severity.</li>
+        <li><strong>Press Send.</strong> The sanitized version goes to the AI. The AI's response is automatically restored so you see original values — the provider never did.</li>
+      </ol>
+      <div class="info-box">
+        <p><strong>Keyboard shortcuts:</strong> Enter = send &nbsp;·&nbsp; Ctrl+Enter (Cmd+Enter on Mac) = new line &nbsp;·&nbsp; @ = open interchat picker</p>
+      </div>
+    </section>
+
+    <!-- Verify -->
+    <section id="verify">
+      <h2>Verify your download</h2>
+      <p>Every release ships with SHA-256 checksums and Ed25519 signatures. Visit <a href="https://vaultmorph.org/verify">vaultmorph.org/verify</a> to check your download online, or use the CLI instructions there.</p>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works">
+      <h2>How it works</h2>
+      <p>The full pipeline runs in-memory on your device:</p>
+      <pre><code>Your text (prompt + any attached document content)
+    ↓
+[Detection engine] — 127 patterns across 10 categories
+    ↓
+[Tokeniser] — replaces each secret with a unique token
+    e.g. "sk-abc123"          → "<<VM_TOKEN_KEY_1_A3>"
+         "user@company.com"   → "<<VM_TOKEN_EMAIL_1_B7>"
+         "4111111111111111"   → "<<VM_TOKEN_CARD_1_C2>"
+         "ABCDE1234F"         → "<<VM_TOKEN_PAN_1_D9>"
+    ↓
+Sanitized prompt → AI provider (secrets replaced by tokens)
+    ↓
+AI response (contains tokens, not secrets)
+    ↓
+[Restore engine] — replaces tokens with original values
+    ↓
+You see the fully restored response</code></pre>
+      <p>Attached document text is prepended to the prompt and passes through the same sanitization pipeline, so secrets inside uploaded files are also protected before reaching the AI.</p>
+      <p>The token map lives entirely in memory for the session's lifetime. Tokens are <strong>never written to disk as plaintext</strong>. Conversation history stores sanitized tokens, not raw secrets.</p>
+    </section>
+
+    <!-- Detection rules -->
+    <section id="detection-rules">
+      <h2>Detection rules</h2>
+      <table>
+        <thead><tr><th>Edition</th><th>Total rules</th><th>Categories</th><th>Bundled version</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Community</strong></td><td>110</td><td>All 10 categories</td><td>v2.1.0</td></tr>
+          <tr><td><strong>Pro / Enterprise</strong></td><td>127 (+17 pro-only)</td><td>All 10 categories + extended API keys</td><td>v2.1.0</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Rule severity breakdown (127 total)</h3>
+      <div class="score-bar">
+        <div class="score-pill"><span class="sev sev-c">Critical</span> 77 rules</div>
+        <div class="score-pill"><span class="sev sev-h">High</span> 32 rules</div>
+        <div class="score-pill"><span class="sev sev-m">Medium</span> 10 rules</div>
+        <div class="score-pill"><span class="sev sev-l">Low</span> 8 rules</div>
+      </div>
+
+      <h3>Detection categories</h3>
+      <table>
+        <thead><tr><th>Category</th><th>What's detected</th><th>Severities</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>API Keys</strong> <span style="color:var(--text-muted);font-size:0.8rem">(79 rules)</span></td>
+            <td>OpenAI (sk-*, sk-proj-*), Anthropic (sk-ant-*), Google (AIza*), GitHub (ghp_/gho_/ghs_/github_pat_), GitLab (glpat-*), AWS (AKIA*), Slack (xox*), Stripe (sk_live_/sk_test_), SendGrid (SG.*), npm, HashiCorp Vault (hvs.*), DigitalOcean (dop_v1_*), Shopify (shpat_*), Hugging Face (hf_*), NVIDIA (nvapi-*), Groq (gsk_*), xAI (xai-*), Perplexity (pplx-*), Replicate (r8_*), Resend (re_*), Razorpay (rzp_*), Fly.io (fo1_*), PlanetScale (pscale_tkn_*), Sentry (sntrys_*), Slack/Discord Webhook URLs, and 50+ more</td>
+            <td><span class="sev sev-c">Critical</span> <span class="sev sev-h">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>Tokens</strong> <span style="color:var(--text-muted);font-size:0.8rem">(6 rules)</span></td>
+            <td>JWT tokens (eyJ*), Supabase service role keys, bearer tokens in labeled context, HashiCorp Vault tokens</td>
+            <td><span class="sev sev-c">Critical</span> <span class="sev sev-h">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>Private Keys</strong> <span style="color:var(--text-muted);font-size:0.8rem">(4 rules)</span></td>
+            <td>RSA, EC, DSA, OpenSSH private key PEM blocks; PGP private key blocks; GCP service account JSON</td>
+            <td><span class="sev sev-c">Critical</span></td>
+          </tr>
+          <tr>
+            <td><strong>Credentials</strong> <span style="color:var(--text-muted);font-size:0.8rem">(5 rules)</span></td>
+            <td>Passwords in .env / config files (quoted and unquoted), environment variable blocks, admin credentials</td>
+            <td><span class="sev sev-h">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>Connection Strings</strong> <span style="color:var(--text-muted);font-size:0.8rem">(8 rules)</span></td>
+            <td>MongoDB (mongodb://*, mongodb+srv://*), PostgreSQL, MySQL, Redis, MSSQL, Elasticsearch, Cassandra DSNs</td>
+            <td><span class="sev sev-c">Critical</span></td>
+          </tr>
+          <tr>
+            <td><strong>PII</strong> <span style="color:var(--text-muted);font-size:0.8rem">(6 rules)</span></td>
+            <td>Email addresses, international phone numbers, US-format phone numbers, US Social Security Numbers (SSN)</td>
+            <td><span class="sev sev-c">Critical</span> <span class="sev sev-m">Medium</span> <span class="sev sev-l">Low</span></td>
+          </tr>
+          <tr>
+            <td><strong>Financial</strong> <span style="color:var(--text-muted);font-size:0.8rem">(2 rules)</span></td>
+            <td>Credit and debit card numbers (Visa 4*, Mastercard 5*, Amex 3*, Discover 6*); IBAN account numbers</td>
+            <td><span class="sev sev-c">Critical</span> <span class="sev sev-h">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>India PII</strong> <span style="color:var(--text-muted);font-size:0.8rem">(8 rules)</span></td>
+            <td>PAN card numbers (ABCDE1234F format), Aadhaar numbers (spaced 12-digit), UPI IDs (40+ bank handles: okaxis, paytm, ybl, upi, and more), OTP / verification codes labeled in context</td>
+            <td><span class="sev sev-h">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>Infrastructure</strong> <span style="color:var(--text-muted);font-size:0.8rem">(8 rules)</span></td>
+            <td>Private IPv4 (RFC 1918: 10.x, 172.16–31.x, 192.168.x), MAC addresses (colon and hyphen notation), internal hostnames and FQDNs</td>
+            <td><span class="sev sev-m">Medium</span></td>
+          </tr>
+          <tr>
+            <td><strong>Network</strong> <span style="color:var(--text-muted);font-size:0.8rem">(1 rule)</span></td>
+            <td>Public IPv4 addresses</td>
+            <td><span class="sev sev-l">Low</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Risk scoring -->
+    <section id="risk-scoring">
+      <h2>Risk scoring</h2>
+      <p>Every prompt is assigned a numeric risk score (0–100) based on the severity and number of findings detected. This score drives the colour-coded risk badge in the Findings panel.</p>
+      <table>
+        <thead><tr><th>Risk level</th><th>Score range</th><th>Badge colour</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><span class="sev sev-c">Critical</span></td><td>75–100</td><td>Red</td><td>Extremely sensitive data present — review carefully before sending</td></tr>
+          <tr><td><span class="sev sev-h">High</span></td><td>50–74</td><td>Orange</td><td>Significant secrets detected</td></tr>
+          <tr><td><span class="sev sev-m">Medium</span></td><td>25–49</td><td>Yellow</td><td>Moderate sensitivity (PII, internal IPs)</td></tr>
+          <tr><td><span class="sev sev-l">Low</span></td><td>0–24</td><td>Green</td><td>Low-sensitivity data or no findings</td></tr>
+        </tbody>
+      </table>
+      <h3>Score calculation</h3>
+      <p>Base scores per finding: <span class="sev sev-c">Critical</span> = 60 pts &nbsp;·&nbsp; <span class="sev sev-h">High</span> = 35 pts &nbsp;·&nbsp; <span class="sev sev-m">Medium</span> = 15 pts &nbsp;·&nbsp; <span class="sev sev-l">Low</span> = 5 pts.</p>
+      <p>Diminishing returns apply when multiple findings share the same severity (×1.0, ×0.5, ×0.25 for 3rd+), preventing artificially inflated scores when the same type of secret appears many times. The final score is capped at 100.</p>
+    </section>
+
+    <!-- Token format -->
+    <section id="token-format">
+      <h2>Token format</h2>
+      <p>Each sanitized value is replaced with a structured placeholder:</p>
+      <pre><code>&lt;&lt;VM_TOKEN_[TYPE]_[INDEX]_[HASH2]&gt;&gt;</code></pre>
+      <table>
+        <thead><tr><th>Type code</th><th>Meaning</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><code>KEY</code></td><td>API key (generic)</td><td><code>&lt;&lt;VM_TOKEN_KEY_1_A3&gt;&gt;</code></td></tr>
+          <tr><td><code>TOKEN</code></td><td>JWT / bearer token</td><td><code>&lt;&lt;VM_TOKEN_TOKEN_1_B9&gt;&gt;</code></td></tr>
+          <tr><td><code>PRIV</code></td><td>PEM private key</td><td><code>&lt;&lt;VM_TOKEN_PRIV_1_C1&gt;&gt;</code></td></tr>
+          <tr><td><code>CRED</code></td><td>Password / credential</td><td><code>&lt;&lt;VM_TOKEN_CRED_1_D4&gt;&gt;</code></td></tr>
+          <tr><td><code>CONN</code></td><td>Connection string / DSN</td><td><code>&lt;&lt;VM_TOKEN_CONN_1_E7&gt;&gt;</code></td></tr>
+          <tr><td><code>EMAIL</code></td><td>Email address</td><td><code>&lt;&lt;VM_TOKEN_EMAIL_1_F2&gt;&gt;</code></td></tr>
+          <tr><td><code>PHONE</code></td><td>Phone number</td><td><code>&lt;&lt;VM_TOKEN_PHONE_1_G5&gt;&gt;</code></td></tr>
+          <tr><td><code>SSN</code></td><td>Social Security Number</td><td><code>&lt;&lt;VM_TOKEN_SSN_1_H8&gt;&gt;</code></td></tr>
+          <tr><td><code>CARD</code></td><td>Credit/debit card</td><td><code>&lt;&lt;VM_TOKEN_CARD_1_I3&gt;&gt;</code></td></tr>
+          <tr><td><code>IBAN</code></td><td>Bank account (IBAN)</td><td><code>&lt;&lt;VM_TOKEN_IBAN_1_J6&gt;&gt;</code></td></tr>
+          <tr><td><code>PAN</code></td><td>India PAN card</td><td><code>&lt;&lt;VM_TOKEN_PAN_1_K9&gt;&gt;</code></td></tr>
+          <tr><td><code>OTP</code></td><td>OTP / verification code</td><td><code>&lt;&lt;VM_TOKEN_OTP_1_L1&gt;&gt;</code></td></tr>
+          <tr><td><code>IP</code></td><td>IP address / hostname</td><td><code>&lt;&lt;VM_TOKEN_IP_1_M4&gt;&gt;</code></td></tr>
+        </tbody>
+      </table>
+      <p>You can copy any token placeholder from the Findings panel using the ⎘ copy button next to each finding — useful when you want to paste the placeholder into another tool.</p>
+    </section>
+
+    <!-- Native providers -->
+    <section id="native-providers">
+      <h2>Native providers</h2>
+      <p>Native providers have dedicated integration and model-list fetching.</p>
+      <table>
+        <thead><tr><th>Provider</th><th>Notable models</th><th>Streaming</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>OpenAI</strong></td>
+            <td>GPT-4o, GPT-4o Mini, o1, o3-mini</td>
+            <td>✓</td>
+            <td>Model list fetched live</td>
+          </tr>
+          <tr>
+            <td><strong>Anthropic</strong></td>
+            <td>Claude Sonnet 4.6, Claude Haiku 4.5, Claude Opus 4.8</td>
+            <td>✓</td>
+            <td>Model list fetched live</td>
+          </tr>
+          <tr>
+            <td><strong>Google</strong></td>
+            <td>Gemini 2.0 Flash, Gemini 1.5 Pro, Gemini 1.5 Flash</td>
+            <td>✓</td>
+            <td>Model list fetched live</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Extended providers -->
+    <section id="extended-providers">
+      <h2>Extended providers (OpenAI-compatible)</h2>
+      <p>All extended providers use the OpenAI chat-completions wire format. Select <strong>Custom Provider</strong> in the provider selector to access them.</p>
+      <table>
+        <thead><tr><th>Provider</th><th>Free models?</th><th>Highlight models</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>NVIDIA NIM</strong> <span class="tag tag-free">free tier</span></td>
+            <td>Yes — 9 free models</td>
+            <td>Nemotron 70B, Llama 3.3 70B, DeepSeek R1, Qwen 2.5 72B, Mistral NeMo 12B, Phi-3 Medium 128k, Gemma 2 27B, Mixtral 8×7B</td>
+          </tr>
+          <tr>
+            <td><strong>Groq</strong> <span class="tag tag-free">free tier</span></td>
+            <td>Yes — all models free (rate-limited)</td>
+            <td>Llama 3.3 70B Versatile, Llama 3.1 8B Instant, DeepSeek R1 Distill Llama 70B, Llama 3.2 11B Vision, Gemma 2 9B</td>
+          </tr>
+          <tr>
+            <td><strong>OpenRouter</strong> <span class="tag tag-free">free tier</span></td>
+            <td>Yes — 4+ free models</td>
+            <td>Llama 3.3 70B (free), DeepSeek R1 (free), Mistral 7B (free), Gemma 2 9B (free); plus GPT-4o, Claude Sonnet 4.6, Gemini 2.0 Flash (paid)</td>
+          </tr>
+          <tr>
+            <td><strong>Mistral AI</strong> <span class="tag tag-free">free tier</span></td>
+            <td>Yes — open-weight models</td>
+            <td>Mistral 7B (free), Mixtral 8×7B (free), Mistral Large, Mistral Small, Codestral</td>
+          </tr>
+          <tr>
+            <td><strong>Together AI</strong></td>
+            <td>Free credits on signup</td>
+            <td>Llama 3.1 8B Turbo, Llama 3.3 70B Turbo, Qwen 2.5 72B Turbo, DeepSeek R1, Qwen 2.5 Coder 32B</td>
+          </tr>
+          <tr>
+            <td><strong>DeepSeek</strong></td>
+            <td>No — very cheap per-token</td>
+            <td>DeepSeek Chat V3, DeepSeek Reasoner (R1)</td>
+          </tr>
+          <tr>
+            <td><strong>Perplexity</strong></td>
+            <td>No</td>
+            <td>Sonar Large Online (real-time web search), Sonar Small Online, Sonar Large Chat</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Subscription providers -->
+    <section id="subscription-providers">
+      <h2>Subscription providers <span class="tag tag-new">New</span></h2>
+      <p>Subscription providers route traffic through a locally installed CLI backed by your own AI subscription — no API key required. Enable them in <strong>Settings → Subscription Models</strong>, then select them in Provider &amp; Models.</p>
+
+      <h3>Claude Code (Claude Pro / Max subscription)</h3>
+      <p>Routes chat and Security Workspace code review through the local <code>claude</code> CLI using your Claude Pro or Max subscription. Requires the <a href="https://docs.anthropic.com/en/docs/claude-code/getting-started" target="_blank">Claude Code CLI</a> installed and signed in.</p>
+      <table>
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Setup</td><td><code>npm install -g @anthropic-ai/claude-code</code>, then run <code>claude</code> once to sign in with your Anthropic account</td></tr>
+          <tr><td>Models</td><td>Claude Code default (CLI chooses), Sonnet, Opus, Haiku</td></tr>
+          <tr><td>API key</td><td>Not required — uses your subscription</td></tr>
+          <tr><td>Network</td><td>Traffic goes through the Claude Code CLI to Anthropic — same as using Claude Code directly</td></tr>
+          <tr><td>Usage</td><td>Counts against your Claude subscription limits</td></tr>
+        </tbody>
+      </table>
+      <p>To enable: Settings → Subscription Models → toggle <strong>Claude (subscription — Claude Code)</strong> to ON → then go to Provider &amp; Models and select it. The status panel shows whether the CLI was detected and its path/version.</p>
+
+      <h3>ChatGPT (Codex CLI) <span class="tag tag-new">Coming soon</span></h3>
+      <p>A future adapter for routing through a Codex CLI backed by a ChatGPT subscription. Reserved — not yet available.</p>
+    </section>
+
+    <!-- Azure OpenAI -->
+    <section id="azure-openai">
+      <h2>Azure OpenAI</h2>
+      <p>Use your Azure OpenAI Service deployments as a provider. Azure OpenAI uses deployment names (not model names) and a resource-scoped base URL.</p>
+      <table>
+        <thead><tr><th>Field</th><th>What to enter</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Base URL</strong></td><td><code>https://&lt;resource-name&gt;.openai.azure.com</code></td></tr>
+          <tr><td><strong>Deployment name</strong></td><td>Your Azure deployment name (e.g. <code>gpt-4o-prod</code>) — entered as the model field</td></tr>
+          <tr><td><strong>API key</strong></td><td>Your Azure OpenAI resource API key (stored AES-256-GCM encrypted in OS keychain)</td></tr>
+          <tr><td><strong>API version</strong></td><td>Defaults to <code>2024-10-01-preview</code> — override via the advanced config if needed</td></tr>
+        </tbody>
+      </table>
+      <p>Streaming and tool calling are fully supported (same SSE wire format as OpenAI). Select <strong>Custom Provider → Azure OpenAI</strong> in the Provider &amp; Models settings.</p>
+      <div class="info-box">
+        <p>Azure uses an <code>api-key</code> request header rather than a Bearer token. AI Shield handles this automatically for Azure deployments.</p>
+      </div>
+    </section>
+
+    <!-- AI Gateways -->
+    <section id="ai-gateways">
+      <h2>AI Gateways</h2>
+      <p>AI gateways act as a unified routing layer in front of multiple AI providers. VaultMorph AI Shield supports two gateways out of the box, enabling features like semantic caching, load balancing, virtual keys, and observability — while still sanitizing secrets before any request leaves your device.</p>
+
+      <h3>Portkey <span class="tag tag-gateway">Gateway</span></h3>
+      <p><a href="https://portkey.ai" target="_blank">Portkey</a> is a managed AI gateway that routes to OpenAI, Anthropic, Google, and 100+ providers through a single API key. In Settings → Custom Provider, select <strong>Portkey</strong> and enter:</p>
+      <ul>
+        <li><strong>Portkey API key</strong> — from your Portkey dashboard</li>
+        <li><strong>Config ID</strong> (optional) — a saved routing config (virtual key, fallbacks, load balancing)</li>
+        <li><strong>Cache mode</strong> (optional) — <code>simple</code> (exact match) or <code>semantic</code> (AI-powered similarity)</li>
+      </ul>
+      <p>Portkey adds <code>x-portkey-api-key</code> and <code>x-portkey-config</code> headers automatically based on your inputs.</p>
+
+      <h3>Bifrost <span class="tag tag-gateway">Gateway</span> <span class="tag tag-new">Self-hosted</span></h3>
+      <p><a href="https://docs.bifrost.cx" target="_blank">Bifrost</a> is a self-hosted, open-source AI gateway you deploy in your own infrastructure. Enter your Bifrost base URL and a virtual key to route requests. Supports semantic caching via <code>x-cache-mode</code> and cost controls via virtual key budgets.</p>
+
+      <h3>Manual (fully custom)</h3>
+      <p>Select <strong>Manual</strong> to point AI Shield at any OpenAI-compatible endpoint — local models (Ollama, LM Studio), internal proxies, or any server that speaks the OpenAI chat-completions format.</p>
+    </section>
+
+    <!-- Local models -->
+    <section id="local-models">
+      <h2>Local / self-hosted models</h2>
+      <p>Use the Manual provider option (Settings → Custom Provider → Manual) to connect to any locally-running model server that implements the OpenAI API:</p>
+      <ul>
+        <li><strong>Ollama</strong> — <code>http://localhost:11434/v1</code></li>
+        <li><strong>LM Studio</strong> — <code>http://localhost:1234/v1</code></li>
+        <li><strong>vLLM</strong> — any address you configure</li>
+        <li><strong>LocalAI</strong> — <code>http://localhost:8080/v1</code></li>
+      </ul>
+      <p>No API key is required for local models — leave the key field blank.</p>
+    </section>
+
+    <!-- Community Edition -->
+    <section id="community">
+      <h2>Community Edition</h2>
+      <div class="highlight-box">
+        <p><strong>Free forever. No account. No internet required. No data collected.</strong></p>
+      </div>
+      <table>
+        <thead><tr><th>Feature</th><th>Community</th></tr></thead>
+        <tbody>
+          <tr><td>Detection rules</td><td>110 (all 10 categories)</td></tr>
+          <tr><td>Concurrent sessions</td><td>3</td></tr>
+          <tr><td>AI providers</td><td>All providers</td></tr>
+          <tr><td>Conversation history</td><td>Unlimited</td></tr>
+          <tr><td>File attachments</td><td>✓</td></tr>
+          <tr><td>Projects</td><td>✓</td></tr>
+          <tr><td>Interchat context</td><td>✓</td></tr>
+          <tr><td>Export (Markdown / plain text)</td><td>✓</td></tr>
+          <tr><td>Export PDF / JSON</td><td>✗</td></tr>
+          <tr><td>Personal data collected</td><td>None</td></tr>
+        </tbody>
+      </table>
+      <p>The license is auto-generated offline on first launch. No registration required.</p>
+    </section>
+
+    <!-- Pro Trial -->
+    <section id="pro-trial">
+      <h2>Pro Trial</h2>
+      <p>The Pro Trial unlocks the full 127-rule pack for <strong>6 months, free</strong>. No credit card required.</p>
+      <table>
+        <thead><tr><th>Feature</th><th>Pro Trial</th></tr></thead>
+        <tbody>
+          <tr><td>Detection rules</td><td>127 (all categories + 17 extended API key rules)</td></tr>
+          <tr><td>Concurrent sessions</td><td>Unlimited</td></tr>
+          <tr><td>AI providers</td><td>All providers</td></tr>
+          <tr><td>Export PDF / JSON</td><td>✓</td></tr>
+          <tr><td>Enterprise security report</td><td>✓</td></tr>
+          <tr><td>Personal data collected</td><td>Email + device hash (one-way)</td></tr>
+        </tbody>
+      </table>
+      <h3>Activating your trial</h3>
+      <ol>
+        <li>Open Settings → License</li>
+        <li>Click <strong>"Start Free Pro Trial"</strong></li>
+        <li>Enter your email address</li>
+        <li>A license JWT is issued immediately. Requires one internet connection at activation.</li>
+      </ol>
+      <p>After activation the app works fully offline. The license revalidates every 7 days in the background when online. At trial end, the app gracefully downgrades to Community Edition — no data loss.</p>
+      <div class="info-box">
+        <p>During the adoption phase, Pro Trial renewals are extended automatically and indefinitely. We will give at least 30 days' notice before any paid plan affects existing trial users.</p>
+      </div>
+    </section>
+
+    <!-- Enterprise -->
+    <section id="enterprise">
+      <h2>Enterprise License</h2>
+      <p>Enterprise licenses are offline <code>.vml</code> files signed with Ed25519. They work with no internet connection, cover multiple seats, and can include custom expiry terms. Contact <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a>.</p>
+      <h3>Activating</h3>
+      <ol>
+        <li>Settings → License → <strong>Import License File</strong></li>
+        <li>Select your <code>.vml</code> file</li>
+        <li>The app verifies the Ed25519 signature and activates immediately</li>
+      </ol>
+    </section>
+
+    <!-- Findings panel -->
+    <section id="findings-panel">
+      <h2>Findings panel</h2>
+      <p>The Findings panel appears below the message input and shows all secrets detected in your current prompt, grouped by category and sorted by severity within each group.</p>
+      <ul>
+        <li><strong>Risk badge</strong> — colour-coded overall risk level (Critical / High / Medium / Low) with numeric score</li>
+        <li><strong>Severity counts</strong> — mini counters per severity level (e.g. "3C 2H" = 3 Critical, 2 High)</li>
+        <li><strong>Category groups</strong> — API Key, PII, Token, Credential, Connection String, Financial, India PII, Infrastructure, Network, Private Key</li>
+        <li><strong>Token placeholder</strong> — the safe token that will replace the secret in the prompt (e.g. <code>&lt;&lt;VM_TOKEN_KEY_1_A3&gt;&gt;</code>)</li>
+        <li><strong>Copy button ⎘</strong> — copies the token placeholder to clipboard for use elsewhere</li>
+        <li><strong>Toggle</strong> — the panel is collapsible; it auto-expands when findings are present</li>
+      </ul>
+      <p>When no secrets are detected, the panel shows a green <strong>✓ No secrets detected</strong> badge instead.</p>
+    </section>
+
+    <!-- Clipboard -->
+    <section id="clipboard">
+      <h2>Clipboard protection</h2>
+      <p>When enabled, AI Shield monitors your clipboard and alerts you when sensitive data is copied — before you accidentally paste it into an AI chat window outside the application.</p>
+      <p>Enable in Settings → Advanced → Clipboard monitoring. When a secret is detected a native OS notification appears with options to sanitize, ignore, or dismiss.</p>
+      <div class="info-box">
+        <p>Clipboard monitoring is a Pro/Enterprise feature in the current build. Community Edition does not include background clipboard monitoring.</p>
+      </div>
+    </section>
+
+    <!-- Attachments -->
+    <section id="attachments">
+      <h2>File attachments</h2>
+      <p>Click the 📎 button to attach files. AI Shield scans all attached content through the detection pipeline before sending.</p>
+      <h3>Supported image formats</h3>
+      <p>PNG, JPEG, GIF, WebP — up to 5 MB per file. Images are sent as base64 to multimodal-capable models.</p>
+      <h3>Supported document formats</h3>
+      <p>Text files, Markdown, CSV/TSV, JSON/JSONL, Python, JavaScript/TypeScript, HTML/CSS, XML, YAML/TOML, Shell scripts, .env, .conf, .log, Rust, Go, Java, C/C++, SQL, INI — up to 512 KB, truncated at 12,000 characters.</p>
+      <p>Document text is prepended to your message and goes through the same sanitization as your typed prompt. Any secrets inside the document are masked before leaving your device.</p>
+      <p>Remove individual attachments from the preview strip before sending, or remove them from existing messages in the message history.</p>
+    </section>
+
+    <!-- Interchat -->
+    <section id="interchat">
+      <h2>Interchat context injection</h2>
+      <p>Type <code>@</code> in the message input to open a picker that lets you inject context from a previous conversation into your current prompt.</p>
+      <ul>
+        <li>Start typing after <code>@</code> to filter conversations by title</li>
+        <li>Use <strong>↑ ↓</strong> to navigate, <strong>Enter</strong> to select, <strong>Escape</strong> to close</li>
+        <li>The selected conversation's sanitized content is inserted at the cursor position as a labeled context block</li>
+        <li>The injected context passes through the detection pipeline like any other text</li>
+      </ul>
+      <p>This is useful for chaining conversations — asking a new AI to build on analysis from a previous session — without copy-pasting large amounts of text manually.</p>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+      <h2>Projects</h2>
+      <p>Projects let you organise conversations into named, colour-coded groups in the History sidebar.</p>
+      <h3>Creating a project</h3>
+      <ol>
+        <li>Click <strong>"+ New project"</strong> in the History panel</li>
+        <li>Enter a project name and pick a colour</li>
+        <li>Press Enter or click Create</li>
+      </ol>
+      <h3>Adding conversations to a project</h3>
+      <p>Click the <strong>⋮</strong> menu on any conversation item and choose <strong>"Move to [project name]"</strong>. Conversations can only belong to one project at a time.</p>
+      <h3>Managing projects</h3>
+      <ul>
+        <li>Click the ▶ toggle to collapse / expand a project's conversations</li>
+        <li>Double-click the project name or click ✎ to rename</li>
+        <li>Click × to delete a project (conversations are not deleted — they move to Ungrouped)</li>
+        <li>Conversations not in any project appear under an <em>Ungrouped</em> label when projects exist</li>
+      </ul>
+    </section>
+
+    <!-- Conversations -->
+    <section id="conversations">
+      <h2>Conversation history</h2>
+      <p>Conversations are stored locally in a SQLite database. Stored messages contain <strong>sanitized tokens, not raw secrets</strong> — your history is safe even if the database file is accessed directly.</p>
+      <ul>
+        <li><strong>Auto-save</strong> — conversations auto-save 500ms after each message change</li>
+        <li><strong>Rename</strong> — double-click a conversation title or click ✎ to rename. User renames are preserved across auto-saves.</li>
+        <li><strong>Delete</strong> — click × on a conversation item to delete it</li>
+        <li><strong>Delete message</strong> — individual messages can be deleted from the chat (click × on a message bubble)</li>
+        <li><strong>Retry</strong> — if the last AI response was unsatisfactory, click the retry button to re-send the last user message</li>
+        <li><strong>Restore</strong> — restore original secret values in a saved conversation using the restore button in the message header</li>
+      </ul>
+    </section>
+
+    <!-- Export -->
+    <section id="export">
+      <h2>Export conversations</h2>
+      <p>Export saved conversations from the conversation menu. Exported files contain <strong>the restored, readable text</strong> — not raw tokens. Secrets are always restored before export.</p>
+      <table>
+        <thead><tr><th>Format</th><th>Extension</th><th>Edition</th></tr></thead>
+        <tbody>
+          <tr><td>Markdown</td><td><code>.md</code></td><td>All</td></tr>
+          <tr><td>Plain text</td><td><code>.txt</code></td><td>All</td></tr>
+          <tr><td>PDF</td><td><code>.pdf</code></td><td>Pro Trial / Enterprise</td></tr>
+          <tr><td>JSON</td><td><code>.json</code></td><td>Pro Trial / Enterprise</td></tr>
+        </tbody>
+      </table>
+      <p>Export files never contain <code>finding.match</code> (raw secret values) or <code>sanitizedText</code> (token-substituted text). Only the restored display text is exported.</p>
+    </section>
+
+    <!-- System prompt -->
+    <section id="system-prompt">
+      <h2>System prompt</h2>
+      <p>Set a custom system prompt that is prepended to every conversation. Go to Settings → Advanced → System Prompt.</p>
+      <ul>
+        <li>The prompt is applied globally — it affects all providers and all new conversations</li>
+        <li>Changes are saved automatically when you click away (on blur)</li>
+        <li>Click Reset to clear the system prompt and revert to the provider's default behaviour</li>
+        <li>If left blank, the default <em>"You are a helpful assistant. Respond concisely."</em> placeholder is used</li>
+      </ul>
+    </section>
+
+    <!-- Advanced parameters -->
+    <section id="advanced-params">
+      <h2>Advanced parameters (Custom Provider)</h2>
+      <p>When using a Custom Provider, the Advanced settings section exposes fine-grained generation controls:</p>
+      <table>
+        <thead><tr><th>Parameter</th><th>Range</th><th>Default</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Temperature</strong></td><td>0 – 2</td><td>0.2 (chat), 0.6 (reasoning), 0.1 (code)</td><td>Higher = more creative / random. Lower = more focused / deterministic.</td></tr>
+          <tr><td><strong>Top P</strong></td><td>0 – 1</td><td>0.7 (chat), 0.95 (reasoning), 0.9 (code)</td><td>Nucleus sampling threshold. Lower = more conservative token selection.</td></tr>
+          <tr><td><strong>Max Tokens</strong></td><td>64 – 32,000</td><td>1024 (chat), 4096 (reasoning), 2048 (code)</td><td>Maximum response length.</td></tr>
+        </tbody>
+      </table>
+      <p>Defaults are tuned per model category (chat, reasoning, code). Adjusting from defaults for native providers (OpenAI, Anthropic, Google) is not supported — use Custom Provider for that level of control.</p>
+    </section>
+
+    <!-- Rule updates -->
+    <section id="rule-updates">
+      <h2>Rule updates</h2>
+      <p>New detection rules are published periodically. Rule pack updates are signed with Ed25519 and verified by the app before applying — a tampered or unsigned update is rejected and the existing rules stay active.</p>
+      <p>Pro/Enterprise: updates check <code>api.vaultmorph.org/rules/latest</code> automatically in the background. Trigger a manual check in Settings → Advanced → Check for rule updates.</p>
+      <p>Community: bundled rules (v2.1.0, 110 patterns) are always available offline. Rule update checks require Pro or Enterprise.</p>
+    </section>
+
+    <!-- Security model -->
+    <section id="security-model">
+      <h2>Security model</h2>
+      <table>
+        <thead><tr><th>Data</th><th>Leaves device?</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Your raw prompts / secrets</td><td>❌ Never</td><td>Sanitized in-memory before any network call</td></tr>
+          <tr><td>Attached document content</td><td>❌ Never raw</td><td>Sanitized before sending to AI provider</td></tr>
+          <tr><td>Sanitized prompts (tokens only)</td><td>✓ To AI provider</td><td>Contains no sensitive values — tokens only</td></tr>
+          <tr><td>AI API keys</td><td>✓ To AI provider only</td><td>Never sent to VaultMorph; AES-256-GCM encrypted in OS keychain</td></tr>
+          <tr><td>Email address (Pro Trial)</td><td>✓ To api.vaultmorph.org</td><td>One-time license activation; stored in India (OCI Mumbai)</td></tr>
+          <tr><td>Device hash (Pro Trial)</td><td>✓ To api.vaultmorph.org</td><td>One-way SHA-256 hash; not reversible</td></tr>
+          <tr><td>Conversation history</td><td>❌ Never</td><td>SQLite on your device; stored as tokens, not secrets</td></tr>
+          <tr><td>Export files</td><td>Your choice</td><td>Written locally; content is restored (readable) text</td></tr>
+          <tr><td>Telemetry / analytics</td><td>❌ Never</td><td>Zero telemetry in all editions</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <h2>FAQ</h2>
+
+      <h3>Can I use Community Edition commercially?</h3>
+      <p>Yes. Community Edition is licensed for any lawful personal or commercial use at no cost, with no restrictions.</p>
+
+      <h3>How many conversations can I have open at once?</h3>
+      <p>Community Edition supports up to 3 concurrent active sessions. Pro Trial and Enterprise support unlimited concurrent sessions.</p>
+
+      <h3>Does the Pro Trial auto-charge me?</h3>
+      <p>No. The Pro Trial is completely free and requires no credit card. At the end of 6 months the app downgrades to Community Edition. You will never be charged without explicit consent through a separate billing agreement.</p>
+
+      <h3>Can I use free AI models?</h3>
+      <p>Yes. Several providers offer genuinely free access: NVIDIA NIM (9 free models), Groq (all models free with rate limits), OpenRouter (4+ free models), and Mistral AI (open-weight models free). Select Custom Provider to access these.</p>
+
+      <h3>Does AI Shield detect India-specific sensitive data?</h3>
+      <p>Yes. Version v2.1.0 added 8 India PII rules covering PAN cards (format ABCDE1234F), Aadhaar numbers (spaced 12-digit format), UPI IDs (40+ bank handles including okaxis, paytm, ybl, upi, and more), and labeled OTP/verification codes. All are <span class="sev sev-h">High</span> severity.</p>
+
+      <h3>Can I use AI Shield with local models (Ollama, LM Studio)?</h3>
+      <p>Yes. Select Custom Provider → Manual, set the base URL to your local server (e.g. <code>http://localhost:11434/v1</code> for Ollama), enter the model name, and leave the API key blank.</p>
+
+      <h3>What happens if the AI returns modified token placeholders?</h3>
+      <p>The restore engine uses exact token matching and a fuzzy fallback that handles common AI transformations (formatting changes, line breaks, whitespace). If a token cannot be restored it is left as-is in the displayed response.</p>
+
+      <h3>Is the source code available?</h3>
+      <p>No. VaultMorph AI Shield is proprietary software. "Free" refers to price, not source access. A full list of open-source components is at <a href="https://vaultmorph.org/attributions">vaultmorph.org/attributions</a>.</p>
+
+      <h3>Can I export conversations with the original secrets visible?</h3>
+      <p>Yes — exported Markdown and plain text files contain the restored, readable text (not tokens). The application restores values before writing the export file.</p>
+    </section>
+
+    <!-- Custom rules -->
+    <section id="custom-rules">
+      <h2>Custom detection rules</h2>
+      <p>Beyond the 127 built-in patterns, you can add your own regex-based detection rules in Settings → Detection Rules → Custom Rules.</p>
+      <h3>Creating a rule</h3>
+      <ol>
+        <li>Click <strong>+ New rule</strong></li>
+        <li>Enter a name, regex pattern (JavaScript syntax), severity (Critical / High / Medium / Low), and an optional description</li>
+        <li>Save — the rule activates immediately for all new messages</li>
+      </ol>
+      <p>Custom rules use the same token format and sanitization pipeline as built-in rules. A custom-rule match produces a <code>&lt;&lt;VM_TOKEN_KEY_N_XX&gt;&gt;</code>-style placeholder that is restored in the response exactly like a built-in detection.</p>
+      <div class="info-box">
+        <p>Custom rules run on your device only and are never uploaded to VaultMorph servers.</p>
+      </div>
+    </section>
+
+    <!-- Security Workspace -->
+    <section id="security-workspace">
+      <h2>Security Workspace</h2>
+      <p>The Security Workspace is a dedicated panel (separate from the chat view) for scanning code files and git diffs for secrets and vulnerabilities — without sending raw secrets to any AI provider. Open it from the toolbar icon or via Settings.</p>
+      <div class="highlight-box">
+        <p><strong>DLP-safe pipeline:</strong> file contents, diff hunks, finding snippets, and even file paths all pass through the same detect → tokenize → sanitize gate before the AI ever sees them. The AI provider receives only tokens.</p>
+      </div>
+
+      <h3>Input modes</h3>
+      <table>
+        <thead><tr><th>Mode</th><th>How to use</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Files</strong></td><td>Paste file content or click Browse to open files from disk (up to 5 MB per file). Add multiple files; each is scanned independently and then reviewed together.</td></tr>
+          <tr><td><strong>Diff</strong></td><td>Paste a git diff (e.g. output of <code>git diff HEAD~1</code>). Gitleaks secret scan runs on the diff; Semgrep is not available for diff input.</td></tr>
+          <tr><td><strong>Folder</strong></td><td>Choose a folder — the workspace walks it locally (skipping node_modules/.git/dist/build/lockfiles/binaries), shows a file checklist for you to confirm, then scans selected files. See <a href="#folder-scan">Folder scan</a>.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Gitleaks -->
+    <section id="gitleaks">
+      <h2>Gitleaks secret scan</h2>
+      <p>Gitleaks is an offline secret-scanning binary bundled with the app (<code>resources/sidecars/gitleaks.exe</code>). It scans files and diffs for committed secrets — API keys, tokens, passwords — using its rule set.</p>
+      <ul>
+        <li>No network calls — runs entirely offline via a local sidecar process</li>
+        <li>Supports file content, git diffs, and folder walk modes</li>
+        <li>Findings include: rule ID, matched line/snippet, file path, and start/end line</li>
+        <li>All finding output (snippet, file path, description) is sanitized through the DLP gate before reaching the AI reviewer</li>
+        <li>Bundled binary — no installation required; the Settings → Static Analysis Tools page lets you pin an alternate binary if needed</li>
+      </ul>
+    </section>
+
+    <!-- Semgrep -->
+    <section id="semgrep">
+      <h2>Semgrep SAST scan</h2>
+      <p>Semgrep is a Static Application Security Testing (SAST) tool that finds vulnerability patterns — injection flaws, insecure crypto, path traversal, XSS, deserialisation, and more — using a curated rule set.</p>
+      <h3>Installation</h3>
+      <p>Semgrep has no standalone Windows binary, so it is not bundled. Install it once from Settings → Static Analysis Tools:</p>
+      <ul>
+        <li><strong>Install for me</strong> — runs <code>pip install --user semgrep</code> and pins the path automatically (requires Python 3.10+)</li>
+        <li><strong>Auto-detect</strong> — finds an existing Semgrep install via the current Python's scripts directory</li>
+        <li><strong>Browse / manual path</strong> — pin any Semgrep executable yourself</li>
+      </ul>
+      <h3>Rule set</h3>
+      <p>The app ships a bundled custom rule pack covering Go, Java, C#, PHP, Ruby, Rust, Docker/Kubernetes/Terraform, GitHub Actions, and AI/LLM-specific patterns (~150 rules). It additionally vendors a dev-reviewed, pinned-commit snapshot of the Semgrep Community Edition rule set — fetched, checksum-verified, and <code>semgrep --validate</code>d before activation. Rule updates never come from a live moving branch.</p>
+      <h3>Vulnerability categories detected</h3>
+      <table>
+        <thead><tr><th>Category</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td><strong>INJECTION</strong></td><td>SQL injection, command injection, SSRF, XXE, code injection</td></tr>
+          <tr><td><strong>XSS</strong></td><td>Cross-site scripting, DOM-based XSS</td></tr>
+          <tr><td><strong>AUTH</strong></td><td>JWT issues, session/cookie weaknesses, CSRF, missing auth checks</td></tr>
+          <tr><td><strong>CRYPTO</strong></td><td>Weak hashes (MD5/SHA-1), insecure random, ECB mode, deprecated ciphers</td></tr>
+          <tr><td><strong>DESERIALIZATION</strong></td><td>Unsafe pickle, yaml.load, Java/PHP deserialisation</td></tr>
+          <tr><td><strong>PATH_TRAVERSAL</strong></td><td>Directory traversal, zip slip, local file inclusion</td></tr>
+          <tr><td><strong>MISCONFIG</strong></td><td>Debug flags, insecure CORS, missing TLS verification, exposed admin</td></tr>
+          <tr><td><strong>OTHER</strong></td><td>Anything not matching the above categories</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- AI verdicts -->
+    <section id="ai-verdicts">
+      <h2>AI verdicts</h2>
+      <p>After static analysis, the workspace sends the sanitized findings and (optionally) file content to your selected AI provider for a deep security review. The AI produces two outputs:</p>
+      <h3>Narrative review</h3>
+      <p>A structured security review with: severity, root cause, attack path (source → sink for taint-style issues), why the issue is exploitable in <em>this specific code</em> (not generic advice), and a concrete corrected snippet or diff. For Semgrep scans the AI maps full source-to-sink exploit paths naming actual variables and functions.</p>
+      <h3>Structured verdicts</h3>
+      <p>For each static-analysis finding the AI outputs a machine-readable verdict line:</p>
+      <pre><code>VERDICT | &lt;rule-id&gt; | &lt;file&gt;:&lt;line&gt; | &lt;STATUS&gt; | ACTION: &lt;one-line fix&gt; | REASON: &lt;justification&gt;</code></pre>
+      <table>
+        <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><span class="sev sev-c">confirmed</span></td><td>Issue is real and reachable — fix immediately</td></tr>
+          <tr><td><span class="sev sev-l">false_positive</span></td><td>Not a real issue in this code — AI explains why</td></tr>
+          <tr><td><span class="sev sev-m">needs_review</span></td><td>Insufficient code visible to decide — manual review needed</td></tr>
+        </tbody>
+      </table>
+      <p>Verdicts are parsed and matched back to findings in the UI so you can see the AI's triage decision alongside each static finding. The AI's narrative is locally restored (tokens replaced with real values) before display — the provider never saw the real values.</p>
+      <h3>Send to chat</h3>
+      <p>Any finding — secret or static — has a <strong>Send to chat</strong> action. This injects a pre-built prompt into the main chat so you can ask follow-up questions about a specific finding without manually copy-pasting context. The injected text is sanitized exactly like any typed message.</p>
+    </section>
+
+    <!-- Folder scan -->
+    <section id="folder-scan">
+      <h2>Folder scan</h2>
+      <p>The Folder tab lets you scan an entire project directory. The workflow:</p>
+      <ol>
+        <li><strong>Choose folder</strong> — opens a native folder picker</li>
+        <li><strong>File checklist</strong> — the workspace lists all scannable files (node_modules/.git/dist/build/lockfiles/binaries excluded). Select which files to include before anything runs.</li>
+        <li><strong>Gitleaks scan</strong> — click Scan selected files. Secrets are found and displayed per-file with risk scores.</li>
+        <li><strong>Semgrep scan</strong> (optional) — click Run Semgrep SAST. Vulnerability patterns are found across all selected files.</li>
+        <li><strong>AI review queue</strong> — run AI review for all files automatically. The queue processes files sequentially so large projects aren't blocked by per-request size limits. A progress indicator shows current file and queue position.</li>
+        <li><strong>Semgrep AI review</strong> (optional) — focused exploit-path analysis on Semgrep findings across the entire folder (one AI call with all findings batched).</li>
+        <li><strong>Export HTML report</strong> — generates a self-contained security report (see <a href="#review-report">Security report</a>).</li>
+      </ol>
+      <p>Scan state is persistent — switching to the chat view and back does not lose scan results or abort a running queue.</p>
+    </section>
+
+    <!-- Remote repo scan -->
+    <section id="remote-repo-scan">
+      <h2>Remote repository scan <span class="tag tag-new">New</span></h2>
+      <p>The <strong>Remote Repo</strong> tab in the Security Workspace lets you scan a Git repository hosted on GitHub, GitLab, or any git server — without cloning it manually. The workflow is identical to the Folder scan once the repo is on disk.</p>
+      <h3>Workflow</h3>
+      <ol>
+        <li><strong>Enter the repo URL</strong> — e.g. <code>https://github.com/org/repo</code></li>
+        <li><strong>Authenticate</strong> — provide a Personal Access Token (PAT). You can save named tokens to a local encrypted vault for reuse; the vault only ever returns masked tokens — full PAT values are never read back out.</li>
+        <li><strong>Select branch or tag</strong> — the app fetches the list of refs from the remote and lets you choose one</li>
+        <li><strong>Clone &amp; scan</strong> — the repo is cloned locally into a temporary directory. The file checklist appears, matching the Folder scan experience exactly.</li>
+        <li><strong>Run Gitleaks and/or Semgrep</strong>, then <strong>AI review queue</strong> — identical to the Folder scan workflow</li>
+        <li><strong>Cleanup prompt</strong> — after the scan you choose whether to keep or delete the local clone. The clone is never kept silently.</li>
+      </ol>
+      <h3>Supported hosts</h3>
+      <p>Any git server that accepts HTTPS clone with token auth: GitHub, GitLab, Bitbucket, Azure DevOps, Gitea, Forgejo, and self-hosted instances.</p>
+      <h3>PAT security</h3>
+      <ul>
+        <li>PATs are stored in the local encrypted PAT vault (AES-256-GCM). They are only used at clone time and never transmitted to VaultMorph servers.</li>
+        <li>The vault only returns a masked token (e.g. <code>ghp_***abc</code>) for display — the full value is never readable back through the UI after saving.</li>
+        <li>The PAT itself is detected by the secret scanning rules if it appears in any scanned file, and is tokenized before reaching the AI reviewer.</li>
+      </ul>
+      <div class="info-box">
+        <p>File size cap: 10 MB per file. Files above this limit are skipped during scanning.</p>
+      </div>
+    </section>
+
+    <!-- Security report -->
+    <section id="review-report">
+      <h2>Security report export</h2>
+      <p>After any scan, click <strong>Export report</strong> to generate a self-contained HTML security report saved to your Documents folder. The report opens in any browser and can be printed to PDF.</p>
+      <p>Report contents:</p>
+      <ul>
+        <li>Cover page with report ID and timestamp</li>
+        <li>Table of contents</li>
+        <li>Executive summary — total findings by severity and category</li>
+        <li>Scope and methodology (tools used, files scanned)</li>
+        <li>Per-file findings table with file:line locations</li>
+        <li>Detailed findings section per issue — location, problem, evidence snippet, AI-generated remediation</li>
+        <li>AI verdict per finding (confirmed / false positive / needs review)</li>
+        <li>AI narrative review as a closing appendix</li>
+      </ul>
+      <div class="info-box">
+        <p><strong>Security:</strong> <code>SecurityFinding.match</code> (raw matched secret text) is never included in the report. Only token placeholders, types, severities, and line numbers appear. Sanitized static findings (already passed through the DLP gate) are used as-is.</p>
+      </div>
+    </section>
+
+    <!-- MCP Servers -->
+    <section id="mcp-servers">
+      <h2>MCP Servers <span class="tag tag-paid">Pro / Enterprise</span></h2>
+      <p>Model Context Protocol (MCP) servers let the AI call tools you expose locally — file access, local search, database queries, code execution, or any custom tool. Two transports are supported: <strong>HTTP</strong> (loopback URL) and <strong>stdio</strong> (local process).</p>
+      <div class="warning-box">
+        <p><strong>Security:</strong> All MCP tool output is treated as untrusted and passes through the same detect → tokenize → sanitize pipeline as anything you type. A compromised MCP server cannot exfiltrate secrets by embedding them in tool output — they are tokenized before reaching the AI.</p>
+      </div>
+      <h3>HTTP transport</h3>
+      <ol>
+        <li>Settings → Integrations → MCP Servers → select transport <strong>HTTP (localhost)</strong></li>
+        <li>Enter Server ID, Display name, and loopback URL (e.g. <code>http://127.0.0.1:8931/mcp</code>)</li>
+        <li>Click <strong>+ Add</strong> — registers immediately. Non-loopback URLs are rejected.</li>
+      </ol>
+      <h3>Stdio transport</h3>
+      <p>The stdio transport spawns an arbitrary local process and communicates via newline-delimited JSON-RPC over its stdin/stdout — the same convention used by Claude Desktop's <code>mcpServers</code> config.</p>
+      <div class="warning-box">
+        <p><strong>Explicit consent required:</strong> Before any stdio server is launched, you are shown the exact resolved command line (including env vars and Windows <code>.cmd</code> shim resolution) and must click <strong>Approve &amp; Connect</strong>. The app never spawns a stdio server automatically. If the stored command ever changes (command, args, or env modified), consent is stale and re-approval is required.</p>
+      </div>
+      <ol>
+        <li>Settings → Integrations → MCP Servers → select transport <strong>stdio (local process)</strong></li>
+        <li>Enter Server ID, Display name, Command (e.g. <code>npx</code>), Arguments (e.g. <code>-y @modelcontextprotocol/server-everything</code>), and optional environment variables (one per line: <code>KEY=value</code>)</li>
+        <li>Click <strong>Review…</strong> — the consent box appears showing the exact resolved command</li>
+        <li>Click <strong>Approve &amp; Connect</strong> to launch and register</li>
+      </ol>
+      <h3>Managing servers</h3>
+      <ul>
+        <li><strong>Transport badge</strong> — each server row shows its transport type (<code>http</code> or <code>stdio</code>)</li>
+        <li><strong>Consent drift</strong> — if a stdio server's config changes after approval, the row shows "Launch command changed — re-approval required". Click Review to see the new command before re-approving.</li>
+        <li><strong>Disable / Enable</strong> — disabling an http server disconnects it; disabling a stdio server terminates the child process</li>
+        <li><strong>Retry</strong> — re-attempt connection for http servers that were temporarily unreachable</li>
+        <li><strong>Remove</strong> — unregisters the server and removes it from persistent config immediately</li>
+      </ul>
+    </section>
+
+    <!-- MCP stdio detail -->
+    <section id="mcp-stdio">
+      <h2>MCP stdio: compatible servers</h2>
+      <p>Any MCP server that follows the stdio transport spec works. Common examples:</p>
+      <pre><code># Filesystem access
+Command: npx
+Args:    -y @modelcontextprotocol/server-filesystem /path/to/dir
+
+# Everything (demo server with all tool types)
+Command: npx
+Args:    -y @modelcontextprotocol/server-everything
+
+# SQLite
+Command: npx
+Args:    -y @modelcontextprotocol/server-sqlite /path/to/db.sqlite</code></pre>
+      <p>The command and args format mirrors the <code>mcpServers</code> object in Claude Desktop's <code>claude_desktop_config.json</code> — if you already have servers configured there, you can use the same command/args here.</p>
+    </section>
+
+    <!-- Browser Extension -->
+    <section id="browser-extension">
+      <h2>Browser Extension</h2>
+      <p>The VaultMorph browser extension brings the same sanitize-send-restore protection to AI web interfaces — without needing the desktop app open. Install it in Chrome or Edge using Developer Mode.</p>
+      <h3>Supported sites</h3>
+      <table>
+        <thead><tr><th>Site</th><th>URL</th></tr></thead>
+        <tbody>
+          <tr><td>ChatGPT</td><td>chatgpt.com</td></tr>
+          <tr><td>Claude</td><td>claude.ai</td></tr>
+          <tr><td>Gemini</td><td>gemini.google.com</td></tr>
+          <tr><td>Microsoft Copilot</td><td>copilot.microsoft.com</td></tr>
+        </tbody>
+      </table>
+      <h3>How it works</h3>
+      <ul>
+        <li>The extension injects into the AI site's input field and monitors what you type</li>
+        <li>Secrets are detected and replaced with VaultMorph tokens before you press Enter</li>
+        <li>The extension observes the AI's streaming response and restores original values automatically</li>
+        <li>Uses the same <code>&lt;&lt;VM_TOKEN_[TYPE]_[N]_[HASH]&gt;&gt;</code> token format as the desktop app — fully compatible</li>
+        <li>All processing is local in the browser — no data leaves the browser extension</li>
+      </ul>
+      <h3>Installation</h3>
+      <ol>
+        <li>Open the desktop app and go to Settings → Browser Extension</li>
+        <li>Click <strong>Copy to Documents</strong> to place the extension in an easy-to-find location</li>
+        <li>In Chrome or Edge, navigate to <code>chrome://extensions</code></li>
+        <li>Enable <strong>Developer mode</strong></li>
+        <li>Click <strong>Load unpacked</strong> and select the <code>VaultMorphExtension</code> folder</li>
+      </ol>
+      <h3>License sync</h3>
+      <p>After activating a Pro Trial or Enterprise license on the desktop app, click <strong>Sync License to Extension</strong> in Settings → Browser Extension. This generates a one-time token you paste into the extension's License tab so it uses the correct rule set (127 rules for Pro, 110 for Community).</p>
+    </section>
+
+    <!-- Document generation -->
+    <section id="doc-generation">
+      <h2>Document generation</h2>
+      <p>Ask the AI to create Excel spreadsheets, Word documents, or PowerPoint presentations directly from the chat. The generated file is saved to your Documents folder and opened automatically.</p>
+      <h3>Supported formats</h3>
+      <table>
+        <thead><tr><th>Format</th><th>Trigger example</th></tr></thead>
+        <tbody>
+          <tr><td>Excel (.xlsx)</td><td>"Create a spreadsheet of Q3 sales by region"</td></tr>
+          <tr><td>Word (.docx)</td><td>"Write a project proposal as a Word document"</td></tr>
+          <tr><td>PowerPoint (.pptx)</td><td>"Make a 5-slide deck summarising this data"</td></tr>
+        </tbody>
+      </table>
+      <h3>Security model</h3>
+      <p>Document generation uses a two-step pipeline that keeps real values off the network:</p>
+      <ol>
+        <li>Your request (with secrets sanitized as normal) is sent to the AI, which responds with a structured <strong>DocGenSpec</strong> — a JSON description of the document's content using only tokens.</li>
+        <li>The spec is validated locally, tokens are restored in-process, and the file is rendered entirely in JavaScript (no AI-generated code is executed on your device). The real values never left.</li>
+      </ol>
+      <p>The AI gets up to 3 self-healing attempts to produce a valid spec if the first response is malformed. The rendered file includes a watermark noting it contains real data restored from tokens.</p>
+    </section>
+
+    <!-- Artifacts -->
+    <section id="artifacts">
+      <h2>Artifacts <span class="tag tag-paid">Pro / Enterprise</span></h2>
+      <p>When the AI generates a self-contained HTML/CSS/JavaScript response (a chart, interactive widget, diagram, or mini-app), AI Shield renders it in a <strong>sandboxed WebView</strong> — an isolated frame that runs the content safely without giving it access to your sessions, API keys, or file system.</p>
+      <h3>How the sandbox works</h3>
+      <ol>
+        <li>The AI's HTML/JS output is wrapped by a <strong>sandbox bootstrap</strong> before rendering — it cannot reach the parent app's DOM, localStorage, or native APIs</li>
+        <li>Communication between the sandbox and the app goes through a <strong>postMessage protocol</strong> with a typed message schema. The sandbox can request specific, approved capabilities (like resizing) but cannot initiate arbitrary calls</li>
+        <li>The sandbox origin is a dedicated local scheme — browser-origin security policies prevent cross-frame reads</li>
+      </ol>
+      <div class="info-box">
+        <p>The artifact sandbox is enforced at the app level — it does not depend on the AI's own security awareness. Even if the AI generates malicious JavaScript, it cannot escape the sandbox boundary.</p>
+      </div>
+      <h3>Artifact types</h3>
+      <ul>
+        <li><strong>Charts &amp; data visualizations</strong> — the AI can produce Chart.js, D3, or plain SVG charts based on your data</li>
+        <li><strong>Interactive widgets</strong> — calculators, forms, filtering UIs built as self-contained HTML</li>
+        <li><strong>Documents</strong> — rich formatted text, tables, or styled reports viewable inline</li>
+      </ul>
+      <p>Artifacts appear as an expandable frame in the chat response. You can open them full-screen or copy the raw HTML source.</p>
+    </section>
+
+    <!-- Knowledge Base -->
+    <section id="knowledge-base">
+      <h2>Knowledge Base (RAG)</h2>
+      <p>The Knowledge Base lets you index your own documents so the AI can reference them during chat — without uploading documents to any server. Retrieval-Augmented Generation (RAG) runs entirely on your device.</p>
+      <h3>Adding documents</h3>
+      <ul>
+        <li>Settings → Knowledge Base → click <strong>+ Add document</strong> (up to 5 MB per file)</li>
+        <li>Or click the 📚 button in the chat input to attach and index a document in one step</li>
+      </ul>
+      <h3>How indexing works</h3>
+      <ol>
+        <li>Document text is chunked into overlapping segments</li>
+        <li>Each chunk is run through the detection pipeline — secrets are tokenized before any chunk touches disk</li>
+        <li>Embeddings are computed on-device from the original (pre-sanitization) text for retrieval quality; only the resulting vectors are stored — not the raw text they were computed from</li>
+        <li>Chunks and their embeddings are AES-256-GCM encrypted before being written to the local SQLite database</li>
+      </ol>
+      <h3>Retrieval during chat</h3>
+      <p>When you send a message, the KB performs a semantic search (cosine similarity) against the chunk embeddings and prepends the top-k most relevant chunks to the prompt — sanitized, as usual. The AI answers using your private documents without those documents ever leaving your device.</p>
+      <div class="info-box">
+        <p>Knowledge Base management (add, list, delete documents) is in Settings → Knowledge Base. Click × on any document to remove it and its chunks from the index.</p>
+      </div>
+    </section>
+
+    <!-- Voice input -->
+    <section id="voice-input">
+      <h2>Voice input</h2>
+      <p>Dictate messages using an on-device Whisper speech-to-text model. Transcription runs entirely locally — no audio or transcript is ever sent over the network.</p>
+      <h3>Setup</h3>
+      <ol>
+        <li>Download a <code>ggml-*.bin</code> Whisper model from <a href="https://huggingface.co/ggerganov/whisper.cpp/tree/main" target="_blank">Hugging Face (ggerganov/whisper.cpp)</a>. The <code>ggml-base.en.bin</code> model (~142 MB) is a good starting point.</li>
+        <li>In Settings → Voice Input, click <strong>Import model</strong> and select your downloaded <code>.bin</code> file</li>
+        <li>Once imported, the microphone button (🎤) appears in the chat input</li>
+      </ol>
+      <h3>Recording</h3>
+      <p>Click 🎤 to start recording; click again to stop. The transcript appears in the chat input as if you had typed it. It passes through the same sanitization pipeline as typed text — if you dictate an API key, it's tokenized before sending.</p>
+      <div class="info-box">
+        <p>No Whisper model is bundled in the standard installer to keep the download size reasonable. The app never downloads a model automatically — you always choose which model to import.</p>
+      </div>
+    </section>
+
+    <!-- Backup & Restore -->
+    <section id="backup-restore">
+      <h2>Backup &amp; restore</h2>
+      <p>Create an encrypted backup of your settings and conversation history in Settings → Backup.</p>
+      <h3>Creating a backup</h3>
+      <ol>
+        <li>Enter a password (minimum 8 characters)</li>
+        <li>Click <strong>Create backup</strong></li>
+        <li>Copy the backup text and store it securely (password manager, encrypted drive, etc.)</li>
+      </ol>
+      <p>The backup is AES-encrypted using your password. It includes settings stored in local storage. Conversation history and Knowledge Base data are stored separately in encrypted SQLite databases — back those up by copying the database files from your app data directory if needed.</p>
+      <h3>Restoring</h3>
+      <ol>
+        <li>Go to Settings → Backup → Restore tab</li>
+        <li>Paste the backup text and enter your password</li>
+        <li>Click <strong>Restore</strong> — settings are applied immediately</li>
+      </ol>
+      <div class="warning-box">
+        <p>Restoring overwrites current settings. API keys stored in the OS keychain are not included in the backup text — you will need to re-enter them after restoring.</p>
+      </div>
+    </section>
+
+    <!-- Compliance Reports -->
+    <section id="compliance-reports">
+      <h2>Compliance Reports <span class="tag tag-paid">Pro / Enterprise</span></h2>
+      <p>Generate de-identified audit exports of your Security Workspace findings for compliance, security audits, or SIEM ingestion. Reports contain statistical summaries and finding hashes — <strong>never raw secrets</strong>.</p>
+      <h3>Export formats</h3>
+      <table>
+        <thead><tr><th>Format</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td>HTML (printable)</td><td>Share with auditors, print to PDF for SOC 2 / ISO 27001 evidence</td></tr>
+          <tr><td>CSV</td><td>Import into SIEM (Splunk, Elastic, etc.), spreadsheet analysis</td></tr>
+        </tbody>
+      </table>
+      <h3>Generating a report</h3>
+      <ol>
+        <li>Go to Settings → Reports</li>
+        <li>Select a date range (e.g. last 30 days, or a custom range for a specific audit period)</li>
+        <li>Choose format (HTML or CSV)</li>
+        <li>Click <strong>Export</strong> — the file is saved locally and opened immediately</li>
+      </ol>
+      <h3>What's included / excluded</h3>
+      <ul>
+        <li><strong>Included:</strong> finding timestamps, rule IDs, category, risk score, file path, line number, AI verdict (confirmed / false_positive / needs_review), SHA-256 hash of the secret value</li>
+        <li><strong>Excluded:</strong> raw secret values, decoded token content, any PII not directly part of a finding</li>
+      </ul>
+      <div class="info-box">
+        <p><strong>Enterprise:</strong> Compliance reports can optionally be uploaded to the VaultMorph control plane for centralised audit trail across a team fleet. All uploads are de-identified — raw secrets never leave the device.</p>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog">
+      <h2>Changelog</h2>
+
+      <h3>v1.0.0-beta (July 2026) — current</h3>
+      <ul>
+        <li><strong>Detection engine v2.1.0</strong> — 127 rules across 10 categories (110 community, 17 pro-only)</li>
+        <li><strong>New categories</strong> — India PII (PAN, Aadhaar, UPI, OTP), Financial (credit cards, IBAN), Infrastructure (private IPs, MAC addresses)</li>
+        <li><strong>New API key patterns</strong> — NVIDIA NIM, Groq, xAI, Perplexity, Replicate, Resend, Razorpay, Fly.io, PlanetScale, Sentry, Slack/Discord Webhook URLs</li>
+        <li><strong>Risk scoring</strong> — CVSS-inspired numeric score (0–100) with severity-based calculation and diminishing returns</li>
+        <li><strong>Extended provider catalog</strong> — NVIDIA NIM, Groq, Mistral AI, Together AI, DeepSeek, Perplexity, OpenRouter (all with model lists)</li>
+        <li><strong>AI Gateways</strong> — Portkey and Bifrost with gateway header support, virtual keys, and semantic caching</li>
+        <li><strong>Projects</strong> — colour-coded conversation groups with collapsible sections, rename, and delete</li>
+        <li><strong>Interchat context</strong> — type <code>@</code> to inject context from any previous conversation</li>
+        <li><strong>Conversation export</strong> — Markdown and plain text (all editions); PDF and JSON (Pro Trial / Enterprise)</li>
+        <li><strong>System prompt</strong> — global custom system prompt via Settings → Advanced</li>
+        <li><strong>Advanced parameters</strong> — temperature, Top P, and Max Tokens sliders for custom providers</li>
+        <li><strong>Message management</strong> — delete individual messages, retry last turn</li>
+        <li><strong>Attachment scanning</strong> — 30+ document formats scanned through detection pipeline before sending</li>
+        <li><strong>Stop button</strong> — cancel in-flight AI requests mid-stream</li>
+        <li><strong>Streaming restore</strong> — live response display with buffered token restoration on completion</li>
+        <li><strong>Ed25519 rule pack signing</strong> — signed updates verified before applying</li>
+        <li><strong>AES-256-GCM API key encryption</strong> — via OS keychain (Windows Credential Manager, macOS Keychain)</li>
+        <li><strong>Zero telemetry</strong> — no usage data collected in any edition</li>
+        <li><strong>Security Workspace</strong> — Gitleaks + Semgrep SAST, AI verdict review (confirmed / false_positive / needs_review), folder scan, remote repo scan with PAT vault, HTML/JSON export</li>
+        <li><strong>MCP Servers</strong> — HTTP (loopback) and stdio (explicit consent gate, Windows cmd-shim resolution) transports</li>
+        <li><strong>Subscription providers</strong> — Claude Code (Pro/Max plan, no API key needed; models: default/sonnet/opus/haiku); ChatGPT Codex CLI (coming soon)</li>
+        <li><strong>Azure OpenAI</strong> — deployment-name routing, <code>api-key</code> header, default api-version <code>2024-10-01-preview</code></li>
+        <li><strong>Artifacts</strong> — AI-generated HTML/JS rendered in sandboxed WebView with postMessage security protocol</li>
+        <li><strong>Compliance reports</strong> — de-identified HTML and CSV audit export (no raw secrets), date range filter, SIEM-ready</li>
+        <li><strong>Knowledge Base (RAG)</strong> — on-device chunking, on-device embeddings, AES-256-GCM encrypted SQLite storage</li>
+        <li><strong>Voice input</strong> — local Whisper (ggml), fully offline, transcript sanitized before send</li>
+        <li><strong>Browser extension</strong> — Chrome/Edge, ChatGPT/Claude/Gemini/Copilot, local-only processing</li>
+        <li><strong>Document generation</strong> — Excel/Word/PPTX via structured DocGenSpec, no AI code execution</li>
+        <li><strong>Remote repo scan</strong> — HTTPS+PAT clone, PAT vault (AES encrypted, masked on readback), branch/tag selection</li>
+      </ul>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://vaultmorph.org/privacy">Privacy Policy</a>
+    <a href="https://vaultmorph.org/terms">Terms of Use</a>
+    <a href="https://vaultmorph.org/security">Security Policy</a>
+    <a href="https://vaultmorph.org/attributions">Open-source Attributions</a>
+    <a href="https://vaultmorph.org/ai_shield_chat/docs/">Documentation</a>
+  </div>
+  <p>© 2026 VaultMorph. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

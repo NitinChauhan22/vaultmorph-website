@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify Your Download — VaultMorph AI Shield</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+  <link rel="apple-touch-icon" href="../assets/icon-128.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1117; --surface: #181c24; --border: #2a2f3d;
+      --accent: #4f8ef7; --accent-dim: #2d4a80;
+      --text: #e2e8f0; --text-muted: #94a3b8;
+      --green: #22c55e; --red: #ef4444; --yellow: #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+    header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem; }
+    header .logo { font-weight: 700; font-size: 1.1rem; color: var(--accent); text-decoration: none; }
+    header .logo span { color: var(--text); font-weight: 400; }
+    header nav { margin-left: auto; display: flex; gap: 1.5rem; }
+    header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
+    header nav a:hover { color: var(--text); }
+    .container { max-width: 820px; margin: 0 auto; padding: 3rem 2rem; }
+    .badge { display: inline-block; background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-dim); border-radius: 4px; font-size: 0.75rem; font-weight: 600; padding: 0.2em 0.6em; margin-bottom: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .meta { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 2.5rem; }
+    section { margin-bottom: 3rem; }
+    h2 { font-size: 1.2rem; font-weight: 600; color: var(--text); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.25rem 0 0.5rem; color: var(--text); }
+    p { margin-bottom: 0.85rem; color: var(--text-muted); }
+    p strong { color: var(--text); }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.85rem; }
+    li { color: var(--text-muted); margin-bottom: 0.35rem; }
+    code { font-family: "Cascadia Code", "Fira Code", "Consolas", monospace; font-size: 0.85em; background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 0.1em 0.35em; color: #a5d6ff; }
+    pre { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; overflow-x: auto; margin-bottom: 1rem; position: relative; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.85rem; color: #c9d1d9; }
+    .copy-btn { position: absolute; top: 0.75rem; right: 0.75rem; background: var(--border); border: none; color: var(--text-muted); border-radius: 4px; padding: 0.25rem 0.6rem; font-size: 0.75rem; cursor: pointer; }
+    .copy-btn:hover { background: var(--accent-dim); color: var(--accent); }
+    .highlight-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+    .highlight-box p { margin: 0; }
+    .warning-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--yellow); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+    .warning-box p { margin: 0; }
+    /* Online checker UI */
+    .checker { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 2rem; margin-bottom: 2rem; }
+    .checker h3 { margin-top: 0; margin-bottom: 1rem; }
+    .checker label { display: block; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+    .checker input, .checker select {
+      width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text);
+      border-radius: 6px; padding: 0.6rem 0.85rem; font-size: 0.9rem; font-family: inherit;
+      outline: none; margin-bottom: 1rem;
+    }
+    .checker input:focus, .checker select:focus { border-color: var(--accent); }
+    .checker button {
+      background: var(--accent); color: #fff; border: none; border-radius: 6px;
+      padding: 0.65rem 1.5rem; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+    }
+    .checker button:hover { opacity: 0.9; }
+    .result-box { margin-top: 1.25rem; padding: 1rem 1.25rem; border-radius: 6px; display: none; }
+    .result-ok { background: #0d2b14; border: 1px solid #1a4d28; color: var(--green); }
+    .result-fail { background: #2b0d0d; border: 1px solid #4d1a1a; color: var(--red); }
+    .result-msg { font-weight: 600; margin-bottom: 0.25rem; }
+    .result-detail { font-size: 0.82rem; opacity: 0.85; font-family: monospace; word-break: break-all; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.875rem; }
+    th { background: var(--surface); border: 1px solid var(--border); padding: 0.6rem 0.9rem; text-align: left; font-weight: 600; color: var(--text); }
+    td { border: 1px solid var(--border); padding: 0.6rem 0.9rem; color: var(--text-muted); word-break: break-all; font-family: monospace; font-size: 0.78rem; }
+    td:first-child { font-family: inherit; font-size: 0.875rem; word-break: normal; }
+    a { color: var(--accent); }
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+    .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    header .logo { display: inline-flex; align-items: center; gap: 0.6rem; font-family: "Space Grotesk", "Inter", sans-serif; letter-spacing: -0.01em; }
+    header .logo img { width: 26px; height: 26px; display: block; }
+    h1, h2 { font-family: "Space Grotesk", "Inter", sans-serif; letter-spacing: -0.02em; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="https://vaultmorph.org"><img src="../assets/icon-128.png" alt="VaultMorph AI Shield logo" width="26" height="26" />VaultMorph <span>AI Shield</span></a>
+  <nav>
+    <a href="https://vaultmorph.org/ai_shield_chat/docs/">Docs</a>
+    <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases" target="_blank">Releases</a>
+    <a href="https://vaultmorph.org">Home</a>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="badge">Security</div>
+  <h1>Verify Your Download</h1>
+  <p class="meta">Ensure your installer has not been tampered with — takes 30 seconds.</p>
+
+  <div class="highlight-box">
+    <p><strong>Why verify?</strong> File verification confirms the installer came directly from VaultMorph and was not modified in transit or by a third-party site. We sign every release with an Ed25519 key whose public key is listed below.</p>
+  </div>
+
+  <!-- Online checker -->
+  <section>
+    <h2>Check a file online</h2>
+    <div class="checker">
+      <h3>SHA-256 hash checker</h3>
+      <label for="file-select">Select the release file you downloaded:</label>
+      <select id="file-select">
+        <option value="">-- Select a file --</option>
+        <option value="win-x64-exe">VaultMorph.AI.Shield_0.1.0_x64-setup.exe (Windows x64 installer)</option>
+        <option value="win-x64-msi">VaultMorph.AI.Shield_0.1.0_x64_en-US.msi (Windows x64 MSI)</option>
+        <option value="mac-arm">ai-shield-aarch64.dmg (macOS Apple Silicon)</option>
+        <option value="mac-x64">ai-shield-x64.dmg (macOS Intel)</option>
+        <option value="linux-deb">ai-shield-amd64.deb (Linux Debian/Ubuntu)</option>
+        <option value="linux-rpm">ai-shield-x86_64.rpm (Linux RHEL/Fedora)</option>
+      </select>
+      <label for="hash-input">Paste your file's SHA-256 hash:</label>
+      <input type="text" id="hash-input" placeholder="e.g. a3f9d2c1..." spellcheck="false" />
+      <button onclick="checkHash()">Verify</button>
+      <div class="result-box" id="result-box">
+        <div class="result-msg" id="result-msg"></div>
+        <div class="result-detail" id="result-detail"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHA-256 checksums table -->
+  <section>
+    <h2>SHA-256 checksums — v1.0.0</h2>
+    <p>These checksums are published at release time and are also available in <code>SHA256SUMS.txt</code> in each GitHub release.</p>
+    <table>
+      <thead><tr><th>File</th><th>SHA-256</th></tr></thead>
+      <tbody id="checksum-table">
+        <tr><td>VaultMorph.AI.Shield_0.1.0_x64-setup.exe</td><td id="h-win-x64-exe">00d85a2f61a8674ad73ed46439f03be001c5981e7cb575cd76a0eb4630c3708d</td></tr>
+        <tr><td>VaultMorph.AI.Shield_0.1.0_x64_en-US.msi</td><td id="h-win-x64-msi">8655159637b02f546e773d7e62d6a507bb967b8b4650db35a627fcbed881a8ac</td></tr>
+        <tr><td>ai-shield-aarch64.dmg</td><td id="h-mac-arm">— published at release —</td></tr>
+        <tr><td>ai-shield-x64.dmg</td><td id="h-mac-x64">— published at release —</td></tr>
+        <tr><td>ai-shield-amd64.deb</td><td id="h-linux-deb">— published at release —</td></tr>
+        <tr><td>ai-shield-x86_64.rpm</td><td id="h-linux-rpm">— published at release —</td></tr>
+      </tbody>
+    </table>
+    <p>The authoritative <code>SHA256SUMS.txt</code> is attached to every release at <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases" target="_blank">github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases</a>.</p>
+  </section>
+
+  <!-- Manual verification -->
+  <section>
+    <h2>Manual verification (command line)</h2>
+    <p>If you prefer to verify locally without using the form above:</p>
+
+    <h3>Windows (PowerShell)</h3>
+    <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>Get-FileHash .\VaultMorph.AI.Shield_0.1.0_x64-setup.exe -Algorithm SHA256 | Select-Object Hash</code></pre>
+    <p>Compare the output to the SHA-256 in the table above.</p>
+
+    <h3>macOS / Linux</h3>
+    <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>shasum -a 256 ai-shield-aarch64.dmg</code></pre>
+
+    <h3>Verify against the checksums file</h3>
+    <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Download checksums file alongside the installer, then:
+sha256sum --check SHA256SUMS.txt</code></pre>
+  </section>
+
+  <!-- Ed25519 signature -->
+  <section>
+    <h2>Ed25519 signature verification</h2>
+    <p>Each release is signed with our Ed25519 release key. The signature file (<code>.sig</code>) is published alongside each installer on GitHub Releases.</p>
+
+    <h3>VaultMorph release signing public key</h3>
+    <pre><code id="pubkey">— Ed25519 public key published at first stable release —</code></pre>
+    <p>This key is also pinned in the <code>README.md</code> at <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public" target="_blank">github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public</a>. If the key shown here and the key in the README differ, do not trust either — contact <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a> immediately.</p>
+
+    <h3>Verify with minisign (recommended)</h3>
+    <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Install minisign: https://jedisct1.github.io/minisign/
+minisign -V -p vaultmorph-release.pub -m VaultMorph.AI.Shield_0.1.0_x64-setup.exe</code></pre>
+
+    <h3>Verify with openssl</h3>
+    <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>openssl pkeyutl -verify \
+  -pubin -inkey vaultmorph-release.pub \
+  -sigfile VaultMorph.AI.Shield_0.1.0_x64-setup.exe.sig \
+  -in VaultMorph.AI.Shield_0.1.0_x64-setup.exe</code></pre>
+  </section>
+
+  <!-- Trust -->
+  <section>
+    <h2>Trusted download sources</h2>
+    <div class="warning-box">
+      <p><strong>Only download VaultMorph AI Shield from these official sources.</strong> We do not distribute through any third-party app stores, torrent sites, or download portals.</p>
+    </div>
+    <ul>
+      <li><a href="https://vaultmorph.org" target="_blank">vaultmorph.org</a> — official website</li>
+      <li><a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases" target="_blank">github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases</a> — GitHub Releases</li>
+    </ul>
+    <p>If you downloaded from anywhere else, delete the file and re-download from an official source.</p>
+  </section>
+</div>
+
+<script>
+  // Checksums are populated from a JSON fetch at release time.
+  // In production, replace these with a fetch from /api/checksums or embed them at build time.
+  const CHECKSUMS = {
+    "win-x64-exe": "00d85a2f61a8674ad73ed46439f03be001c5981e7cb575cd76a0eb4630c3708d",
+    "win-x64-msi": "8655159637b02f546e773d7e62d6a507bb967b8b4650db35a627fcbed881a8ac",
+    "mac-arm":    null,
+    "mac-x64":    null,
+    "linux-deb":  null,
+    "linux-rpm":  null,
+  };
+
+  function checkHash() {
+    const fileKey = document.getElementById('file-select').value;
+    const userHash = document.getElementById('hash-input').value.trim().toLowerCase();
+    const box = document.getElementById('result-box');
+    const msg = document.getElementById('result-msg');
+    const detail = document.getElementById('result-detail');
+
+    box.style.display = 'block';
+    box.className = 'result-box';
+
+    if (!fileKey) {
+      box.classList.add('result-fail');
+      msg.textContent = '⚠ Please select a file first.';
+      detail.textContent = '';
+      return;
+    }
+    if (!userHash) {
+      box.classList.add('result-fail');
+      msg.textContent = '⚠ Please paste your file hash.';
+      detail.textContent = '';
+      return;
+    }
+
+    const expected = CHECKSUMS[fileKey];
+    if (!expected) {
+      box.classList.add('result-fail');
+      msg.textContent = '⚠ Checksums not yet published for this release.';
+      detail.textContent = 'Check github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases for SHA256SUMS.txt';
+      return;
+    }
+
+    if (userHash === expected.toLowerCase()) {
+      box.classList.add('result-ok');
+      msg.textContent = '✓ Hash matches — your download is authentic.';
+      detail.textContent = expected;
+    } else {
+      box.classList.add('result-fail');
+      msg.textContent = '✗ Hash mismatch — do not install this file.';
+      detail.textContent = 'Expected: ' + expected + '\nGot: ' + userHash;
+    }
+  }
+
+  function copyCode(btn) {
+    const code = btn.nextElementSibling.textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 2000);
+    });
+  }
+</script>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://vaultmorph.org/privacy">Privacy Policy</a>
+    <a href="https://vaultmorph.org/terms">Terms of Use</a>
+    <a href="https://vaultmorph.org/security">Security Policy</a>
+    <a href="https://vaultmorph.org/attributions">Open-source Attributions</a>
+    <a href="https://vaultmorph.org/ai_shield_chat/docs/">Documentation</a>
+  </div>
+  <p>© 2026 VaultMorph. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

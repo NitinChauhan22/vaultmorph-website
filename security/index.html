@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Policy — VaultMorph AI Shield</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+  <link rel="apple-touch-icon" href="../assets/icon-128.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1117; --surface: #181c24; --border: #2a2f3d;
+      --accent: #4f8ef7; --accent-dim: #2d4a80;
+      --text: #e2e8f0; --text-muted: #94a3b8;
+      --green: #22c55e; --red: #ef4444; --yellow: #f59e0b;
+      --orange: #f97316;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+    header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem; }
+    header .logo { font-weight: 700; font-size: 1.1rem; color: var(--accent); text-decoration: none; }
+    header .logo span { color: var(--text); font-weight: 400; }
+    header nav { margin-left: auto; display: flex; gap: 1.5rem; }
+    header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
+    header nav a:hover { color: var(--text); }
+    .container { max-width: 780px; margin: 0 auto; padding: 3rem 2rem; }
+    .badge { display: inline-block; background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-dim); border-radius: 4px; font-size: 0.75rem; font-weight: 600; padding: 0.2em 0.6em; margin-bottom: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .meta { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 2.5rem; }
+    .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 3rem; }
+    .toc h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.75rem; }
+    .toc ol { padding-left: 1.25rem; }
+    .toc li { margin-bottom: 0.3rem; }
+    .toc a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .toc a:hover { text-decoration: underline; }
+    section { margin-bottom: 3rem; }
+    h2 { font-size: 1.2rem; font-weight: 600; color: var(--text); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.25rem 0 0.5rem; color: var(--text); }
+    p { margin-bottom: 0.85rem; color: var(--text-muted); }
+    p strong { color: var(--text); }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.85rem; }
+    li { color: var(--text-muted); margin-bottom: 0.4rem; }
+    li strong { color: var(--text); }
+    .highlight-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+    .highlight-box p { margin: 0; }
+    .warning-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--yellow); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+    .warning-box p { margin: 0; }
+    .red-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--red); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+    .red-box p { margin: 0; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.875rem; }
+    th { background: var(--surface); border: 1px solid var(--border); padding: 0.6rem 0.9rem; text-align: left; font-weight: 600; color: var(--text); }
+    td { border: 1px solid var(--border); padding: 0.6rem 0.9rem; color: var(--text-muted); }
+    .severity { display: inline-block; border-radius: 4px; font-size: 0.75rem; font-weight: 700; padding: 0.15em 0.5em; }
+    .severity-critical { background: #3d1010; color: var(--red); }
+    .severity-high { background: #3d2010; color: var(--orange); }
+    .severity-medium { background: #3d3010; color: var(--yellow); }
+    .severity-low { background: #1a2a1a; color: var(--green); }
+    .pgp-key { font-family: monospace; font-size: 0.78rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; white-space: pre-wrap; color: var(--text-muted); margin-bottom: 1rem; }
+    a { color: var(--accent); }
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+    .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    header .logo { display: inline-flex; align-items: center; gap: 0.6rem; font-family: "Space Grotesk", "Inter", sans-serif; letter-spacing: -0.01em; }
+    header .logo img { width: 26px; height: 26px; display: block; }
+    h1, h2 { font-family: "Space Grotesk", "Inter", sans-serif; letter-spacing: -0.02em; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="https://vaultmorph.org"><img src="../assets/icon-128.png" alt="VaultMorph AI Shield logo" width="26" height="26" />VaultMorph <span>AI Shield</span></a>
+  <nav>
+    <a href="https://vaultmorph.org/ai_shield_chat/docs/">Docs</a>
+    <a href="https://vaultmorph.org/privacy">Privacy</a>
+    <a href="https://vaultmorph.org">Home</a>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="badge">Security</div>
+  <h1>Security Policy &amp; Responsible Disclosure</h1>
+  <p class="meta">
+    Last updated: 19 July 2026 &nbsp;·&nbsp; Applies to: VaultMorph AI Shield desktop app, browser extension, Security Workspace, api.vaultmorph.org, and vaultmorph.org
+  </p>
+
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#scope">Scope</a></li>
+      <li><a href="#report">How to report a vulnerability</a></li>
+      <li><a href="#process">Disclosure process &amp; timeline</a></li>
+      <li><a href="#severity">Severity classification</a></li>
+      <li><a href="#safe-harbor">Safe harbor</a></li>
+      <li><a href="#out-of-scope">Out-of-scope issues</a></li>
+      <li><a href="#architecture">Security architecture summary</a></li>
+      <li><a href="#hall-of-fame">Hall of fame</a></li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <section id="scope">
+    <h2>1. Scope</h2>
+    <p>This policy applies to security vulnerabilities discovered in:</p>
+    <ul>
+      <li><strong>VaultMorph AI Shield desktop application</strong> — all editions (Community, Pro Trial, Enterprise)</li>
+      <li><strong>VaultMorph browser extension</strong> — Chrome/Edge extension for ChatGPT, Claude, Gemini, Copilot</li>
+      <li><strong>Security Workspace</strong> — Gitleaks/Semgrep sidecar, AI code review pipeline</li>
+      <li><strong>api.vaultmorph.org</strong> — the license server (Pro Trial activation, validation, rule updates)</li>
+      <li><strong>vaultmorph.org</strong> — the marketing and documentation website</li>
+      <li><strong>Rule pack signing infrastructure</strong> — Ed25519 key handling, signature verification</li>
+    </ul>
+    <div class="highlight-box">
+      <p>Security is central to VaultMorph AI Shield's purpose. The entire product exists to protect your secrets — so we take our own security very seriously. We welcome responsible disclosure from the security community.</p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section id="report">
+    <h2>2. How to report a vulnerability</h2>
+
+    <h3>Email (preferred)</h3>
+    <p>Send your report to <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a> with the subject line:<br>
+    <strong>"[SECURITY] Brief description of the issue"</strong></p>
+    <p>Please include:</p>
+    <ul>
+      <li>A clear description of the vulnerability and its potential impact</li>
+      <li>Steps to reproduce (proof-of-concept or minimal repro code preferred)</li>
+      <li>The affected component, version, and platform (Windows/macOS/Linux)</li>
+      <li>Whether you believe the vulnerability is already being exploited in the wild</li>
+      <li>Your preferred form of credit (name, handle, or anonymous) for the hall of fame</li>
+    </ul>
+
+    <h3>GitHub Security Advisory (alternative)</h3>
+    <p>You may also file a private <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/security/advisories/new" target="_blank">GitHub Security Advisory</a> for confidential disclosure without public disclosure. GitHub keeps these private until we coordinate a fix and publish the advisory together.</p>
+
+    <div class="warning-box">
+      <p><strong>Please do not open a public GitHub Issue for security vulnerabilities.</strong> Use the private advisory or email above. Public disclosure before a fix is available puts users at risk.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="process">
+    <h2>3. Disclosure process &amp; timeline</h2>
+    <table>
+      <thead>
+        <tr><th>Stage</th><th>Timeline</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Acknowledgement of your report</td><td>Within 48 hours</td></tr>
+        <tr><td>Initial triage and severity classification</td><td>Within 5 business days</td></tr>
+        <tr><td>Confirmation of validity (or explanation if not valid)</td><td>Within 10 business days</td></tr>
+        <tr><td>Patch development and testing</td><td>Depends on severity (see below)</td></tr>
+        <tr><td>Coordinated public disclosure</td><td>After patch is available; we will agree a date with you</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Target remediation timelines by severity</h3>
+    <table>
+      <thead>
+        <tr><th>Severity</th><th>Target patch timeline</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="severity severity-critical">Critical</span></td><td>72 hours (emergency patch)</td></tr>
+        <tr><td><span class="severity severity-high">High</span></td><td>7 days</td></tr>
+        <tr><td><span class="severity severity-medium">Medium</span></td><td>30 days</td></tr>
+        <tr><td><span class="severity severity-low">Low</span></td><td>Next scheduled release (≤90 days)</td></tr>
+      </tbody>
+    </table>
+    <p>We follow a coordinated disclosure model. We ask that you give us a reasonable amount of time to address the issue before any public disclosure. In return, we commit to the timelines above and will keep you informed throughout.</p>
+  </section>
+
+  <!-- 4 -->
+  <section id="severity">
+    <h2>4. Severity classification (CVSS-inspired)</h2>
+    <table>
+      <thead>
+        <tr><th>Severity</th><th>Examples</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="severity severity-critical">Critical</span></td>
+          <td>Remote code execution; exfiltration of raw secrets or API keys from the application; bypass of all sanitization allowing secrets to reach AI providers unmasked; license signing key compromise</td>
+        </tr>
+        <tr>
+          <td><span class="severity severity-high">High</span></td>
+          <td>Local privilege escalation; bypass of license verification without license key; partial sanitization bypass for a specific secret type; injection into signed rule packs</td>
+        </tr>
+        <tr>
+          <td><span class="severity severity-medium">Medium</span></td>
+          <td>Information disclosure of non-sensitive metadata; persistent XSS in the WebView rendering; denial-of-service of the license server</td>
+        </tr>
+        <tr>
+          <td><span class="severity severity-low">Low</span></td>
+          <td>Minor information leaks; low-impact UI spoofing; non-exploitable crash</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 5 -->
+  <section id="safe-harbor">
+    <h2>5. Safe harbor</h2>
+    <p>VaultMorph will not take legal action against researchers who:</p>
+    <ul>
+      <li>Discover and report vulnerabilities in good faith following this policy</li>
+      <li>Do not access, modify, or destroy data belonging to other users</li>
+      <li>Do not perform denial-of-service attacks or degrade service quality for others</li>
+      <li>Do not publicly disclose the vulnerability before we have had a reasonable opportunity to remediate it</li>
+      <li>Do not demand payment or extort us in connection with their findings</li>
+    </ul>
+    <p>We consider good-faith security research to be a valuable contribution to the safety of our users and will treat researchers accordingly.</p>
+  </section>
+
+  <!-- 6 -->
+  <section id="out-of-scope">
+    <h2>6. Out-of-scope issues</h2>
+    <p>The following are generally out of scope and will not be treated as security vulnerabilities:</p>
+    <ul>
+      <li>Theoretical vulnerabilities with no practical exploit path</li>
+      <li>Self-XSS (attacks that require the victim to execute their own code)</li>
+      <li>Issues in third-party libraries that are already publicly disclosed and not exploitable in our specific configuration</li>
+      <li>Physical access attacks (e.g. an attacker with physical access to your device can access your OS keychain — that is expected)</li>
+      <li>Social engineering attacks against VaultMorph staff</li>
+      <li>Clickjacking on pages with no sensitive actions</li>
+      <li>Missing security headers with low practical risk (e.g. X-Frame-Options on a static marketing page)</li>
+      <li>Findings from automated scanners with no proof-of-concept exploit</li>
+    </ul>
+  </section>
+
+  <!-- 7 -->
+  <section id="architecture">
+    <h2>7. Security architecture summary</h2>
+    <p>For context when evaluating findings, here is a summary of our security design:</p>
+
+    <h3>On-device (all editions)</h3>
+    <ul>
+      <li><strong>Sanitization is local-only:</strong> Raw secrets never leave the process. The sanitization engine runs in-memory; token maps are ephemeral and never written to disk as plaintext.</li>
+      <li><strong>Detection scope (v2.1.0 — 127 rules):</strong> API keys (79 patterns covering 70+ providers), authentication tokens (JWT, bearer), private keys (RSA/EC/DSA/OpenSSH/PGP), credentials and .env secrets, database connection strings (MongoDB, PostgreSQL, MySQL, Redis, MSSQL, Elasticsearch, Cassandra), PII (email, phone, US SSN), <strong>financial data (credit/debit cards, IBAN)</strong>, <strong>India PII (PAN card, Aadhaar, UPI IDs, OTP codes)</strong>, <strong>infrastructure identifiers (private IPs, MAC addresses, internal hostnames)</strong>, and network addresses.</li>
+      <li><strong>API key storage:</strong> Encrypted with AES-256-GCM before writing to disk. The encryption key is stored in the OS keychain (Windows Credential Manager / macOS Keychain / libsecret on Linux).</li>
+      <li><strong>License verification:</strong> Ed25519 signature verification occurs offline. The public key is embedded in the binary. License JWTs are verified without requiring a network connection.</li>
+      <li><strong>Rule pack updates:</strong> Signed with Ed25519. The application verifies the signature before applying any rule update. A tampered rule pack is rejected.</li>
+      <li><strong>No telemetry:</strong> No usage data, error reports, or crash dumps are sent to VaultMorph from any edition.</li>
+    </ul>
+
+    <h3>Security Workspace (code review / SAST)</h3>
+    <ul>
+      <li><strong>DLP-safe AI code review:</strong> File contents, diff hunks, finding snippets, Semgrep/Gitleaks descriptions, and even file paths all pass through the detect → tokenize → sanitize gate before being sent to the AI provider. The AI receives only tokens — it never sees raw secret values that appear in the code being reviewed.</li>
+      <li><strong>Static analysis is offline:</strong> Gitleaks and Semgrep are invoked as local sidecar binaries with no network calls. A tampered or missing binary causes the scan step to be skipped, never to silently degrade to an online fallback.</li>
+      <li><strong>Finding output is untrusted:</strong> Static analysis output (a finding's matched snippet often contains the raw secret it found) is treated as untrusted input and force-tokenized through the same gate as user-typed text before any downstream use.</li>
+      <li><strong>No AI-generated code execution:</strong> Document generation uses a structured JSON spec emitted by the AI; the spec is rendered by local JavaScript. No AI output is passed to eval() or executed on the device.</li>
+      <li><strong>Scan state is not persisted as plaintext:</strong> The in-memory token map for a review session is never written to disk. Exported HTML security reports contain token placeholders, not raw matched secret values.</li>
+    </ul>
+
+    <h3>MCP Server trust gate</h3>
+    <p>Two transports are supported; each has distinct trust controls.</p>
+    <h4 style="font-size:0.95rem;margin:0.75rem 0 0.4rem;color:var(--text);">HTTP transport (loopback)</h4>
+    <ul>
+      <li><strong>Loopback-only:</strong> MCP server URLs are validated at registration time; any non-loopback (non-localhost) URL is rejected before a connection is attempted.</li>
+      <li><strong>Explicit user approval required:</strong> A server is registered only when the user clicks Add — never automatically. Previously approved servers are reconnected on startup, but no new server is added without an explicit UI action.</li>
+    </ul>
+    <h4 style="font-size:0.95rem;margin:0.75rem 0 0.4rem;color:var(--text);">stdio transport (local process)</h4>
+    <ul>
+      <li><strong>Hard consent gate — always:</strong> Before any stdio server is spawned for the first time, the app resolves the full command line (including Windows <code>.cmd</code> shims for npx/npm/pnpm/yarn) and shows the user the exact, resolved command. The user must click <strong>Approve &amp; Connect</strong>. The process is never launched automatically, not even on app restart.</li>
+      <li><strong>Consent drift detection:</strong> If the stored command, args, or env variables are modified after approval, the app detects that consent is stale and re-requires explicit approval before re-spawning the process.</li>
+      <li><strong>Process isolation:</strong> stdio child processes are managed by the Tauri Rust layer. If the app quits or crashes, the child process is terminated.</li>
+    </ul>
+    <h4 style="font-size:0.95rem;margin:0.75rem 0 0.4rem;color:var(--text);">Both transports</h4>
+    <ul>
+      <li><strong>MCP tool output is sanitized:</strong> Tool return values from MCP servers pass through the same detect → tokenize → sanitize pipeline as anything else. A compromised local MCP server cannot exfiltrate data by embedding secrets in its tool output.</li>
+    </ul>
+
+    <h3>Browser Extension</h3>
+    <ul>
+      <li><strong>All processing is local:</strong> The extension runs entirely in the browser process. No data — neither the original text nor the tokens — leaves the browser extension to VaultMorph servers.</li>
+      <li><strong>Input interception only:</strong> The extension intercepts the AI site's input field before submission and the AI site's streaming response during display. It does not read page content outside those two elements.</li>
+      <li><strong>Same token format:</strong> The extension uses the same <code>&lt;&lt;VM_TOKEN_[TYPE]_[N]_[HASH]&gt;&gt;</code> format as the desktop app. A session token map is maintained in extension memory for the duration of the browser session only.</li>
+      <li><strong>Supported sites:</strong> ChatGPT (chatgpt.com), Claude (claude.ai), Gemini (gemini.google.com), Copilot (copilot.microsoft.com). No other domains are modified.</li>
+    </ul>
+
+    <h3>Artifact sandbox</h3>
+    <ul>
+      <li><strong>Sandboxed WebView:</strong> AI-generated HTML/JS responses are rendered in an isolated WebView frame with a dedicated sandbox bootstrap. The frame cannot access the parent app's DOM, localStorage, OS APIs, or any data outside the frame boundary.</li>
+      <li><strong>postMessage-only communication:</strong> The sandbox frame communicates with the host app via a typed postMessage protocol. The host validates every incoming message against an allowed message schema; arbitrary function calls from sandboxed content are not possible.</li>
+      <li><strong>Origin isolation:</strong> The sandbox frame uses a dedicated local scheme that browser-origin security policies prevent from reading across frame boundaries into the parent app.</li>
+      <li><strong>No AI-generated code execution:</strong> The sandbox is enforced at the app layer and does not depend on the AI generating safe content. Even malicious JavaScript generated by the AI cannot escape the sandbox.</li>
+    </ul>
+
+    <h3>Subscription providers (Claude Code &amp; ChatGPT Codex CLI)</h3>
+    <ul>
+      <li><strong>Claude Code:</strong> Routes requests through the local <code>claude</code> CLI binary (Anthropic's own Claude Code tool). The app detects the CLI path via Tauri, shows a consent modal on first connect, and then passes sanitized prompts to the CLI. Requests go from your Claude Code subscription account — no VaultMorph servers are involved in the message path.</li>
+      <li><strong>No API key stored:</strong> Subscription providers authenticate via the Claude Code or Codex CLI's own credential mechanism (oauth token, subscription session). VaultMorph never stores or sees that credential.</li>
+    </ul>
+
+    <h3>Azure OpenAI provider</h3>
+    <ul>
+      <li>Uses the <code>api-key</code> header (not Bearer) — stored AES-256-GCM encrypted in the OS keychain, same as all other API keys.</li>
+      <li>Requests go directly from your device to your Azure OpenAI endpoint (<code>{baseUrl}/openai/deployments/{deploymentName}/chat/completions</code>). Traffic does not route through VaultMorph servers.</li>
+      <li>The deployment name and api-version are user-controlled configuration; defaults follow Microsoft's recommendation (<code>2024-10-01-preview</code>).</li>
+    </ul>
+
+    <h3>Knowledge Base (RAG)</h3>
+    <ul>
+      <li><strong>Chunks are sanitized before storage:</strong> Document text is tokenized through the sanitization pipeline before any chunk is written to the encrypted SQLite database. Only token placeholders — never raw secrets — are persisted on disk.</li>
+      <li><strong>Embeddings computed on original text:</strong> Vector embeddings are computed on the original (pre-sanitization) chunk text on-device for retrieval quality, then immediately discarded. Only the resulting float vectors are stored — not the plaintext used to produce them.</li>
+      <li><strong>Storage is encrypted:</strong> Chunk text and embeddings are AES-256-GCM encrypted (same key as API key storage) before being written to the local database.</li>
+      <li><strong>Retrieval is sanitized:</strong> Chunks retrieved for a prompt are routed through the sanitization pipeline again before being prepended — a no-op for already-tokenized text, but a second-layer defence against un-tokenized content reaching the provider.</li>
+    </ul>
+
+    <h3>Voice Input</h3>
+    <ul>
+      <li><strong>Transcription is fully offline:</strong> The Whisper model runs via whisper-rs (whisper.cpp Rust bindings) entirely in-process. No audio and no transcript is sent over the network.</li>
+      <li><strong>Transcript is sanitized:</strong> The resulting transcript text is treated as untrusted input and passes through the standard detect → tokenize → sanitize pipeline exactly like typed text.</li>
+    </ul>
+
+    <h3>License server (api.vaultmorph.org)</h3>
+    <ul>
+      <li>TLS 1.2+ enforced. Let's Encrypt certificate with auto-renewal.</li>
+      <li>License JWTs signed with Ed25519 server-side private key. The private key is not exposed through any API endpoint.</li>
+      <li>Database: SQLite. No personal data beyond email address and one-way device hash (Pro Trial only).</li>
+      <li>Admin endpoints require a secret header; not publicly accessible.</li>
+      <li>Server located in India — OCI Mumbai region.</li>
+    </ul>
+  </section>
+
+  <!-- 8 -->
+  <section id="hall-of-fame">
+    <h2>8. Hall of fame</h2>
+    <p>We are grateful to the following researchers who have responsibly disclosed security issues to us:</p>
+    <p style="font-style: italic; color: var(--text-muted);">No submissions yet — be the first! We recognise all valid reports here (with your permission).</p>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://vaultmorph.org/privacy">Privacy Policy</a>
+    <a href="https://vaultmorph.org/terms">Terms of Use</a>
+    <a href="https://vaultmorph.org/security">Security Policy</a>
+    <a href="https://vaultmorph.org/attributions">Open-source Attributions</a>
+    <a href="https://vaultmorph.org/ai_shield_chat/docs/">Documentation</a>
+  </div>
+  <p>© 2026 VaultMorph. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

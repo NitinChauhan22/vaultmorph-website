@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Open-source Attributions — VaultMorph AI Shield</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+  <link rel="apple-touch-icon" href="../assets/icon-128.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1117; --surface: #181c24; --border: #2a2f3d;
+      --accent: #4f8ef7; --accent-dim: #2d4a80;
+      --text: #e2e8f0; --text-muted: #94a3b8;
+      --green: #22c55e; --tag-bg: #1e2533;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+    header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem; }
+    header .logo { font-weight: 700; font-size: 1.1rem; color: var(--accent); text-decoration: none; }
+    header .logo span { color: var(--text); font-weight: 400; }
+    header nav { margin-left: auto; display: flex; gap: 1.5rem; }
+    header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
+    header nav a:hover { color: var(--text); }
+    .container { max-width: 860px; margin: 0 auto; padding: 3rem 2rem; }
+    .badge { display: inline-block; background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-dim); border-radius: 4px; font-size: 0.75rem; font-weight: 600; padding: 0.2em 0.6em; margin-bottom: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .meta { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 2.5rem; }
+    p { margin-bottom: 0.85rem; color: var(--text-muted); }
+    p strong { color: var(--text); }
+    section { margin-bottom: 3rem; }
+    h2 { font-size: 1.2rem; font-weight: 600; color: var(--text); margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    .dep-grid { display: grid; gap: 0.75rem; }
+    .dep-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; display: flex; align-items: flex-start; gap: 1rem; }
+    .dep-card:hover { border-color: var(--accent-dim); }
+    .dep-info { flex: 1; }
+    .dep-name { font-weight: 600; color: var(--text); font-size: 0.95rem; }
+    .dep-ver { color: var(--text-muted); font-size: 0.8rem; margin-left: 0.4rem; }
+    .dep-desc { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.15rem; }
+    .dep-link { font-size: 0.8rem; color: var(--accent); text-decoration: none; display: inline-block; margin-top: 0.2rem; }
+    .dep-link:hover { text-decoration: underline; }
+    .license-tag { background: var(--tag-bg); color: var(--green); border: 1px solid #2a3d2a; border-radius: 4px; font-size: 0.72rem; font-weight: 600; padding: 0.15em 0.5em; white-space: nowrap; flex-shrink: 0; margin-top: 0.15rem; }
+    .info-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 2rem; }
+    .info-box p { margin: 0; }
+    a { color: var(--accent); }
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+    .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    header .logo { display: inline-flex; align-items: center; gap: 0.6rem; font-family: "Space Grotesk", "Inter", sans-serif; letter-spacing: -0.01em; }
+    header .logo img { width: 26px; height: 26px; display: block; }
+    h1, h2 { font-family: "Space Grotesk", "Inter", sans-serif; letter-spacing: -0.02em; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="https://vaultmorph.org"><img src="../assets/icon-128.png" alt="VaultMorph AI Shield logo" width="26" height="26" />VaultMorph <span>AI Shield</span></a>
+  <nav>
+    <a href="https://vaultmorph.org/ai_shield_chat/docs/">Docs</a>
+    <a href="https://vaultmorph.org/terms">Terms</a>
+    <a href="https://vaultmorph.org">Home</a>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="badge">Legal</div>
+  <h1>Open-source Attributions</h1>
+  <p class="meta">VaultMorph AI Shield v1.0 — last updated 1 July 2026</p>
+
+  <div class="info-box">
+    <p>VaultMorph AI Shield is <strong>proprietary software</strong>, but it is built on top of world-class open-source components. We are grateful to every contributor and maintainer of the projects listed below. Each component is used under its respective license — click the license tag for the full license text.</p>
+  </div>
+
+  <!-- Frontend / Desktop UI -->
+  <section>
+    <h2>Frontend &amp; Desktop Shell (Node / TypeScript)</h2>
+    <div class="dep-grid">
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">React</span><span class="dep-ver">^18.3.1</span>
+          <div class="dep-desc">Declarative UI library for building the desktop interface. Used for the chat pane, settings, findings panel, and all interactive UI components.</div>
+          <a class="dep-link" href="https://github.com/facebook/react" target="_blank">github.com/facebook/react</a>
+        </div>
+        <span class="license-tag">MIT</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">react-dom</span><span class="dep-ver">^18.3.1</span>
+          <div class="dep-desc">React renderer for the browser/WebView DOM environment inside Tauri.</div>
+          <a class="dep-link" href="https://github.com/facebook/react" target="_blank">github.com/facebook/react</a>
+        </div>
+        <span class="license-tag">MIT</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">react-markdown</span><span class="dep-ver">^10.1.0</span>
+          <div class="dep-desc">Renders AI response text as safe, formatted Markdown inside the chat window without using dangerouslySetInnerHTML.</div>
+          <a class="dep-link" href="https://github.com/remarkjs/react-markdown" target="_blank">github.com/remarkjs/react-markdown</a>
+        </div>
+        <span class="license-tag">MIT</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">remark-gfm</span><span class="dep-ver">^4.0.1</span>
+          <div class="dep-desc">GitHub Flavored Markdown plugin for remark — adds tables, strikethrough, task lists, and auto-links to the Markdown renderer.</div>
+          <a class="dep-link" href="https://github.com/remarkjs/remark-gfm" target="_blank">github.com/remarkjs/remark-gfm</a>
+        </div>
+        <span class="license-tag">MIT</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">@tauri-apps/api</span><span class="dep-ver">^2.11.0</span>
+          <div class="dep-desc">JavaScript/TypeScript bindings for the Tauri framework — provides IPC commands, OS keychain access, clipboard integration, and file system operations from the frontend.</div>
+          <a class="dep-link" href="https://github.com/tauri-apps/tauri" target="_blank">github.com/tauri-apps/tauri</a>
+        </div>
+        <span class="license-tag">MIT / Apache-2.0</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">TypeScript</span><span class="dep-ver">^5.6.3</span>
+          <div class="dep-desc">Typed superset of JavaScript. The entire desktop application and core engine are written in TypeScript for type safety and maintainability.</div>
+          <a class="dep-link" href="https://github.com/microsoft/TypeScript" target="_blank">github.com/microsoft/TypeScript</a>
+        </div>
+        <span class="license-tag">Apache-2.0</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">Vite</span><span class="dep-ver">^5.4.10</span>
+          <div class="dep-desc">Frontend build tool and dev server. Bundles and optimises the React application that runs inside the Tauri WebView.</div>
+          <a class="dep-link" href="https://github.com/vitejs/vite" target="_blank">github.com/vitejs/vite</a>
+        </div>
+        <span class="license-tag">MIT</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">@vitejs/plugin-react</span><span class="dep-ver">^4.3.3</span>
+          <div class="dep-desc">Vite plugin that enables React Fast Refresh and JSX transform during development.</div>
+          <a class="dep-link" href="https://github.com/vitejs/vite-plugin-react" target="_blank">github.com/vitejs/vite-plugin-react</a>
+        </div>
+        <span class="license-tag">MIT</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">vitest</span><span class="dep-ver">^2.1.8</span>
+          <div class="dep-desc">Unit test runner for the TypeScript core engine and React components. Powered by Vite for near-instant test execution.</div>
+          <a class="dep-link" href="https://github.com/vitest-dev/vitest" target="_blank">github.com/vitest-dev/vitest</a>
+        </div>
+        <span class="license-tag">MIT</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">@testing-library/react</span><span class="dep-ver">^16.3.2</span>
+          <div class="dep-desc">DOM testing utilities for React components — used in integration tests for the settings pane and API key flows.</div>
+          <a class="dep-link" href="https://github.com/testing-library/react-testing-library" target="_blank">github.com/testing-library/react-testing-library</a>
+        </div>
+        <span class="license-tag">MIT</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">@testing-library/user-event</span><span class="dep-ver">^14.6.1</span>
+          <div class="dep-desc">Simulates real user interactions (typing, clicking) in unit tests.</div>
+          <a class="dep-link" href="https://github.com/testing-library/user-event" target="_blank">github.com/testing-library/user-event</a>
+        </div>
+        <span class="license-tag">MIT</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">@testing-library/jest-dom</span><span class="dep-ver">^6.9.1</span>
+          <div class="dep-desc">Custom Jest/vitest matchers for asserting on DOM nodes (e.g. toBeVisible, toHaveTextContent).</div>
+          <a class="dep-link" href="https://github.com/testing-library/jest-dom" target="_blank">github.com/testing-library/jest-dom</a>
+        </div>
+        <span class="license-tag">MIT</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">jsdom</span><span class="dep-ver">^29.1.1</span>
+          <div class="dep-desc">JavaScript DOM implementation used as the test environment for vitest, simulating a browser context in Node.js.</div>
+          <a class="dep-link" href="https://github.com/jsdom/jsdom" target="_blank">github.com/jsdom/jsdom</a>
+        </div>
+        <span class="license-tag">MIT</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">@tauri-apps/cli</span><span class="dep-ver">^2.0.0</span>
+          <div class="dep-desc">Build toolchain for Tauri — invokes the Rust compiler, bundles the frontend, and produces platform installers (.msi, .dmg, .deb).</div>
+          <a class="dep-link" href="https://github.com/tauri-apps/tauri" target="_blank">github.com/tauri-apps/tauri</a>
+        </div>
+        <span class="license-tag">MIT / Apache-2.0</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Rust / Tauri Backend -->
+  <section>
+    <h2>Rust Backend (Tauri / Cargo)</h2>
+    <div class="dep-grid">
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">tauri</span><span class="dep-ver">2.0.1</span>
+          <div class="dep-desc">Cross-platform desktop application framework. Provides the application shell, WebView, IPC bridge, OS-level integrations (clipboard, tray, windows), and the packaging toolchain.</div>
+          <a class="dep-link" href="https://github.com/tauri-apps/tauri" target="_blank">github.com/tauri-apps/tauri</a>
+        </div>
+        <span class="license-tag">MIT / Apache-2.0</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">tauri-build</span><span class="dep-ver">2.0.1</span>
+          <div class="dep-desc">Tauri build helper — generates the Tauri resource manifest and links platform-specific libraries at compile time.</div>
+          <a class="dep-link" href="https://github.com/tauri-apps/tauri" target="_blank">github.com/tauri-apps/tauri</a>
+        </div>
+        <span class="license-tag">MIT / Apache-2.0</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">aes-gcm</span><span class="dep-ver">0.10</span>
+          <div class="dep-desc">AES-256-GCM authenticated encryption used to encrypt API keys stored on disk. Provides both encryption and integrity verification (AEAD).</div>
+          <a class="dep-link" href="https://github.com/RustCrypto/AEADs" target="_blank">github.com/RustCrypto/AEADs</a>
+        </div>
+        <span class="license-tag">MIT / Apache-2.0</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">base64</span><span class="dep-ver">0.22</span>
+          <div class="dep-desc">Base64 encoding and decoding — used for encoding encrypted blobs and Ed25519 signatures for storage and transport.</div>
+          <a class="dep-link" href="https://github.com/marshallpierce/rust-base64" target="_blank">github.com/marshallpierce/rust-base64</a>
+        </div>
+        <span class="license-tag">MIT / Apache-2.0</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">dirs</span><span class="dep-ver">5</span>
+          <div class="dep-desc">Cross-platform directory paths — resolves the OS-appropriate config directory, data directory, and cache directory for storing encrypted local data.</div>
+          <a class="dep-link" href="https://github.com/dirs-dev/dirs-rs" target="_blank">github.com/dirs-dev/dirs-rs</a>
+        </div>
+        <span class="license-tag">MIT / Apache-2.0</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">rand</span><span class="dep-ver">0.8</span>
+          <div class="dep-desc">Cryptographically secure random number generation — used for generating AES-GCM nonces and encryption keys.</div>
+          <a class="dep-link" href="https://github.com/rust-random/rand" target="_blank">github.com/rust-random/rand</a>
+        </div>
+        <span class="license-tag">MIT / Apache-2.0</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">regex</span><span class="dep-ver">1</span>
+          <div class="dep-desc">High-performance regular expression library — forms the engine behind the detection rule pack (110–127 rules for identifying secrets, keys, and sensitive patterns).</div>
+          <a class="dep-link" href="https://github.com/rust-lang/regex" target="_blank">github.com/rust-lang/regex</a>
+        </div>
+        <span class="license-tag">MIT / Apache-2.0</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">reqwest</span><span class="dep-ver">0.12</span>
+          <div class="dep-desc">Async HTTP client — used for license server communication (Pro Trial activation, revalidation) and rule pack updates. Configured with rustls-tls for pure-Rust TLS with no OpenSSL dependency.</div>
+          <a class="dep-link" href="https://github.com/seanmonstar/reqwest" target="_blank">github.com/seanmonstar/reqwest</a>
+        </div>
+        <span class="license-tag">MIT / Apache-2.0</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">serde</span><span class="dep-ver">1</span>
+          <div class="dep-desc">Serialization/deserialization framework — used throughout for JSON serialization of license JWTs, rule packs, configuration, and IPC message payloads.</div>
+          <a class="dep-link" href="https://github.com/serde-rs/serde" target="_blank">github.com/serde-rs/serde</a>
+        </div>
+        <span class="license-tag">MIT / Apache-2.0</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">serde_json</span><span class="dep-ver">1</span>
+          <div class="dep-desc">JSON support for serde — deserializes rule packs and license payloads from JSON, and serializes IPC responses to the frontend.</div>
+          <a class="dep-link" href="https://github.com/serde-rs/json" target="_blank">github.com/serde-rs/json</a>
+        </div>
+        <span class="license-tag">MIT / Apache-2.0</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">tokio</span><span class="dep-ver">1</span>
+          <div class="dep-desc">Asynchronous runtime for Rust — provides the async executor for all background tasks including license network requests and rule update downloads.</div>
+          <a class="dep-link" href="https://github.com/tokio-rs/tokio" target="_blank">github.com/tokio-rs/tokio</a>
+        </div>
+        <span class="license-tag">MIT</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">hostname</span><span class="dep-ver">0.3</span>
+          <div class="dep-desc">Retrieves the system hostname — one of the inputs used to derive the one-way device hash for license binding. The hash itself is never reversible.</div>
+          <a class="dep-link" href="https://github.com/svartalf/hostname" target="_blank">github.com/svartalf/hostname</a>
+        </div>
+        <span class="license-tag">MIT</span>
+      </div>
+
+      <div class="dep-card">
+        <div class="dep-info">
+          <span class="dep-name">rfd</span><span class="dep-ver">0.14</span>
+          <div class="dep-desc">Rust File Dialogs — provides native OS file picker dialogs for importing Enterprise license files (.vml) and exporting conversation exports.</div>
+          <a class="dep-link" href="https://github.com/PolyMeilex/rfd" target="_blank">github.com/PolyMeilex/rfd</a>
+        </div>
+        <span class="license-tag">MIT</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- License text note -->
+  <section>
+    <h2>License texts</h2>
+    <p>The MIT License and Apache-2.0 License texts are reproduced below for reference. Where a component is dual-licensed (MIT / Apache-2.0), you may choose either license.</p>
+
+    <h3>MIT License (representative text)</h3>
+    <p style="font-family: monospace; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; font-size: 0.8rem; white-space: pre-wrap; color: var(--text-muted);">Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.</p>
+
+    <p>The Apache-2.0 License full text is available at: <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">apache.org/licenses/LICENSE-2.0</a></p>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://vaultmorph.org/privacy">Privacy Policy</a>
+    <a href="https://vaultmorph.org/terms">Terms of Use</a>
+    <a href="https://vaultmorph.org/security">Security Policy</a>
+    <a href="https://vaultmorph.org/attributions">Open-source Attributions</a>
+    <a href="https://vaultmorph.org/ai_shield_chat/docs/">Documentation</a>
+  </div>
+  <p>© 2026 VaultMorph. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

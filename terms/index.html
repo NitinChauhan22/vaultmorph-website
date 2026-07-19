@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Use — VaultMorph AI Shield</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+  <link rel="apple-touch-icon" href="../assets/icon-128.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1117; --surface: #181c24; --border: #2a2f3d;
+      --accent: #4f8ef7; --accent-dim: #2d4a80;
+      --text: #e2e8f0; --text-muted: #94a3b8;
+      --green: #22c55e; --red: #ef4444; --yellow: #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+    header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem; }
+    header .logo { font-weight: 700; font-size: 1.1rem; color: var(--accent); text-decoration: none; }
+    header .logo span { color: var(--text); font-weight: 400; }
+    header nav { margin-left: auto; display: flex; gap: 1.5rem; }
+    header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
+    header nav a:hover { color: var(--text); }
+    .container { max-width: 780px; margin: 0 auto; padding: 3rem 2rem; }
+    .badge { display: inline-block; background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-dim); border-radius: 4px; font-size: 0.75rem; font-weight: 600; padding: 0.2em 0.6em; margin-bottom: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .meta { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 2.5rem; }
+    .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 3rem; }
+    .toc h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.75rem; }
+    .toc ol { padding-left: 1.25rem; }
+    .toc li { margin-bottom: 0.3rem; }
+    .toc a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .toc a:hover { text-decoration: underline; }
+    section { margin-bottom: 3rem; }
+    h2 { font-size: 1.2rem; font-weight: 600; color: var(--text); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.25rem 0 0.5rem; color: var(--text); }
+    p { margin-bottom: 0.85rem; color: var(--text-muted); }
+    p strong { color: var(--text); }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.85rem; }
+    li { color: var(--text-muted); margin-bottom: 0.3rem; }
+    li strong { color: var(--text); }
+    .highlight-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+    .highlight-box p { margin: 0; }
+    .info-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+    .info-box p { margin: 0; }
+    .warning-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--yellow); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+    .warning-box p { margin: 0; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.875rem; }
+    th { background: var(--surface); border: 1px solid var(--border); padding: 0.6rem 0.9rem; text-align: left; font-weight: 600; color: var(--text); }
+    td { border: 1px solid var(--border); padding: 0.6rem 0.9rem; color: var(--text-muted); }
+    a { color: var(--accent); }
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+    .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    header .logo { display: inline-flex; align-items: center; gap: 0.6rem; font-family: "Space Grotesk", "Inter", sans-serif; letter-spacing: -0.01em; }
+    header .logo img { width: 26px; height: 26px; display: block; }
+    h1, h2 { font-family: "Space Grotesk", "Inter", sans-serif; letter-spacing: -0.02em; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="https://vaultmorph.org"><img src="../assets/icon-128.png" alt="VaultMorph AI Shield logo" width="26" height="26" />VaultMorph <span>AI Shield</span></a>
+  <nav>
+    <a href="https://vaultmorph.org/ai_shield_chat/docs/">Docs</a>
+    <a href="https://vaultmorph.org/privacy">Privacy</a>
+    <a href="https://vaultmorph.org">Home</a>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="badge">Legal</div>
+  <h1>Terms of Use &amp; License Agreement</h1>
+  <p class="meta">
+    Effective date: 1 July 2026 &nbsp;·&nbsp; Last updated: 1 July 2026<br>
+    Applies to: VaultMorph AI Shield desktop application and vaultmorph.org
+  </p>
+
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#acceptance">Acceptance of terms</a></li>
+      <li><a href="#product">Product description</a></li>
+      <li><a href="#editions">Editions &amp; license grants</a></li>
+      <li><a href="#restrictions">Restrictions</a></li>
+      <li><a href="#pro-trial">Pro Trial terms</a></li>
+      <li><a href="#enterprise">Enterprise license</a></li>
+      <li><a href="#updates">Updates &amp; rule packs</a></li>
+      <li><a href="#ip">Intellectual property</a></li>
+      <li><a href="#disclaimer">Disclaimer of warranties</a></li>
+      <li><a href="#liability">Limitation of liability</a></li>
+      <li><a href="#termination">Termination</a></li>
+      <li><a href="#governing">Governing law</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <section id="acceptance">
+    <h2>1. Acceptance of terms</h2>
+    <p>By downloading, installing, or using VaultMorph AI Shield ("the Software"), you agree to be bound by these Terms of Use and License Agreement ("Terms"). If you do not agree, do not install or use the Software.</p>
+    <p>These Terms form a legally binding agreement between you (an individual or entity) and VaultMorph ("we", "us", "our").</p>
+  </section>
+
+  <!-- 2 -->
+  <section id="product">
+    <h2>2. Product description</h2>
+    <p>VaultMorph AI Shield is a proprietary desktop application that sanitizes sensitive data (credentials, API keys, personal identifiers, and other secrets) locally on your device before sending prompts to AI providers, then restores original values locally from the AI response.</p>
+    <div class="highlight-box">
+      <p><strong>Core security guarantee:</strong> Raw secrets never leave your device. Sanitization and restoration occur entirely in-process. AI providers receive only sanitized prompts — never your original content.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="editions">
+    <h2>3. Editions &amp; license grants</h2>
+    <table>
+      <thead>
+        <tr><th>Edition</th><th>Price</th><th>Detection rules</th><th>License type</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Community</strong></td><td>Free</td><td>110 rules</td><td>Offline auto-generated (no account)</td></tr>
+        <tr><td><strong>Pro Trial</strong></td><td>Free for 6 months</td><td>127 rules (full)</td><td>Server-issued JWT (email required)</td></tr>
+        <tr><td><strong>Enterprise</strong></td><td>Contact us</td><td>127 rules (full)</td><td>Offline .vml file (Ed25519 signed)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>3.1 Community Edition license grant</h3>
+    <p>Subject to these Terms, VaultMorph grants you a non-exclusive, non-transferable, royalty-free license to use the Community Edition for any lawful personal or commercial purpose. No registration, account, or internet connection is required.</p>
+
+    <h3>3.2 Pro Trial license grant</h3>
+    <p>Subject to these Terms and successful license activation, VaultMorph grants you a non-exclusive, non-transferable license to use the Pro Trial Edition for 6 months from the date of activation. The Pro Trial is free; no credit card or payment is required.</p>
+
+    <h3>3.3 Enterprise license grant</h3>
+    <p>Enterprise licenses are governed by a separate Enterprise License Agreement executed between VaultMorph and the customer. The offline .vml license file is issued per organization and may govern multiple seats as specified in the agreement.</p>
+  </section>
+
+  <!-- 4 -->
+  <section id="restrictions">
+    <h2>4. Restrictions</h2>
+    <p>Regardless of edition, you may not:</p>
+    <ul>
+      <li>Reverse-engineer, decompile, or disassemble the Software, except to the limited extent permitted by applicable law that cannot be contractually waived</li>
+      <li>Remove, alter, or obscure any copyright, trademark, or proprietary notice in the Software</li>
+      <li>Rent, lease, lend, sublicense, or resell the Software or access to it</li>
+      <li>Use the Software to build a competing product or service</li>
+      <li>Circumvent, disable, or tamper with any license verification, feature-flag, or security mechanism in the Software</li>
+      <li>Use the Software in any way that violates applicable law</li>
+    </ul>
+  </section>
+
+  <!-- 5 -->
+  <section id="pro-trial">
+    <h2>5. Pro Trial terms</h2>
+    <p>The Pro Trial activates the full 127-rule detection pack for 6 months at no cost. At the end of the trial period:</p>
+    <ul>
+      <li>The application automatically downgrades to Community Edition (110 rules). No data is lost.</li>
+      <li>You may renew your Pro Trial or upgrade to a paid Pro plan (when available) at any time.</li>
+    </ul>
+    <div class="info-box">
+      <p><strong>No credit card is ever required</strong> for the Pro Trial. VaultMorph will not charge you without your explicit consent through a separate billing agreement.</p>
+    </div>
+    <p>During the Pro Trial adoption phase, renewals are granted automatically and indefinitely at our discretion. We reserve the right to introduce paid Pro plans with reasonable notice (minimum 30 days) before any charge applies to existing trial users.</p>
+  </section>
+
+  <!-- 6 -->
+  <section id="enterprise">
+    <h2>6. Enterprise license</h2>
+    <p>Enterprise licenses are distributed as offline .vml files signed with Ed25519. They work without any internet connection and never expire unless a specific expiry date is set in the agreement. For Enterprise licensing inquiries, contact <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a>.</p>
+  </section>
+
+  <!-- 7 -->
+  <section id="updates">
+    <h2>7. Updates &amp; rule packs</h2>
+    <p>VaultMorph may release updates to the application and detection rule packs. Rule pack updates are signed with Ed25519 and the signature is verified locally before applying. You are not obligated to install updates, but we recommend doing so to benefit from improved detection coverage and security fixes.</p>
+    <p>We reserve the right to modify, suspend, or discontinue the rule update service with reasonable notice. The application remains fully functional offline with its last downloaded rule pack.</p>
+  </section>
+
+  <!-- 8 -->
+  <section id="ip">
+    <h2>8. Intellectual property</h2>
+    <p>VaultMorph AI Shield, including all source code, detection rules, UI designs, documentation, and the VaultMorph name and logo, is proprietary to VaultMorph and protected by copyright and other intellectual property laws.</p>
+    <p>The Software incorporates open-source components. All open-source components are used under their respective licenses. A full list of open-source attributions is available at <a href="https://vaultmorph.org/attributions">vaultmorph.org/attributions</a>. Your rights to those components are governed by the respective open-source licenses, not these Terms.</p>
+    <p><strong>The Community Edition is free for use but is not open-source.</strong> The source code is not publicly available. "Free" refers to price, not to source code access.</p>
+  </section>
+
+  <!-- 9 -->
+  <section id="disclaimer">
+    <h2>9. Disclaimer of warranties</h2>
+    <p>THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, VAULTMORPH DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>
+    <p>VaultMorph does not warrant that the Software will detect all sensitive data in all scenarios, that it will be free of errors or interruptions, or that it will meet your specific security requirements. You are responsible for evaluating whether the Software is appropriate for your use case.</p>
+  </section>
+
+  <!-- 10 -->
+  <section id="liability">
+    <h2>10. Limitation of liability</h2>
+    <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL VAULTMORPH BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING LOSS OF DATA, REVENUE, GOODWILL, OR BUSINESS INTERRUPTION) ARISING OUT OF OR RELATING TO THE USE OR INABILITY TO USE THE SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
+    <p>VaultMorph's total cumulative liability to you for any claims arising under these Terms shall not exceed the greater of (a) the amount paid by you for the Software in the 12 months preceding the claim, or (b) USD 100.</p>
+    <p>Some jurisdictions do not allow limitation of liability for certain types of damages. In such jurisdictions, VaultMorph's liability is limited to the maximum extent permitted by law.</p>
+  </section>
+
+  <!-- 11 -->
+  <section id="termination">
+    <h2>11. Termination</h2>
+    <p>These Terms are effective until terminated. Your rights under these Terms terminate automatically if you breach any provision. Upon termination, you must cease all use of the Software and delete all copies in your possession.</p>
+    <p>Sections 4, 8, 9, 10, and 12 survive termination.</p>
+  </section>
+
+  <!-- 12 -->
+  <section id="governing">
+    <h2>12. Governing law &amp; dispute resolution</h2>
+    <p>These Terms shall be governed by and construed in accordance with applicable law. VaultMorph operates internationally; we aim to resolve disputes amicably before any formal proceedings.</p>
+    <p>For any dispute, please first contact <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a>. We will endeavour to resolve your concern within 30 days.</p>
+  </section>
+
+  <!-- 13 -->
+  <section id="contact">
+    <h2>13. Contact</h2>
+    <p>
+      <strong>Email:</strong> <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a><br>
+      <strong>Website:</strong> <a href="https://vaultmorph.org">vaultmorph.org</a><br>
+      <strong>Issues / feedback:</strong> <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/issues" target="_blank">github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/issues</a>
+    </p>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://vaultmorph.org/privacy">Privacy Policy</a>
+    <a href="https://vaultmorph.org/terms">Terms of Use</a>
+    <a href="https://vaultmorph.org/security">Security Policy</a>
+    <a href="https://vaultmorph.org/attributions">Open-source Attributions</a>
+    <a href="https://vaultmorph.org/ai_shield_chat/docs/">Documentation</a>
+  </div>
+  <p>© 2026 VaultMorph. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

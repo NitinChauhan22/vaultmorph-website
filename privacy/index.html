@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — VaultMorph AI Shield</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+  <link rel="apple-touch-icon" href="../assets/icon-128.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #181c24;
+      --border: #2a2f3d;
+      --accent: #4f8ef7;
+      --accent-dim: #2d4a80;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    header .logo {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    header .logo span { color: var(--text); font-weight: 400; }
+    header nav { margin-left: auto; display: flex; gap: 1.5rem; }
+    header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
+    header nav a:hover { color: var(--text); }
+    .container { max-width: 780px; margin: 0 auto; padding: 3rem 2rem; }
+    .badge {
+      display: inline-block;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid var(--accent-dim);
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2em 0.6em;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .meta { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 2.5rem; }
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .toc h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.75rem; }
+    .toc ol { padding-left: 1.25rem; }
+    .toc li { margin-bottom: 0.3rem; }
+    .toc a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .toc a:hover { text-decoration: underline; }
+    section { margin-bottom: 3rem; }
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.25rem 0 0.5rem; }
+    p { margin-bottom: 0.85rem; color: var(--text-muted); }
+    p strong { color: var(--text); }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.85rem; }
+    li { color: var(--text-muted); margin-bottom: 0.3rem; }
+    li strong { color: var(--text); }
+    .highlight-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .highlight-box p { margin: 0; }
+    .warning-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--yellow);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .warning-box p { margin: 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+    th {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text);
+    }
+    td {
+      border: 1px solid var(--border);
+      padding: 0.6rem 0.9rem;
+      color: var(--text-muted);
+    }
+    a { color: var(--accent); }
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    header .logo { display: inline-flex; align-items: center; gap: 0.6rem; font-family: "Space Grotesk", "Inter", sans-serif; letter-spacing: -0.01em; }
+    header .logo img { width: 26px; height: 26px; display: block; }
+    h1, h2 { font-family: "Space Grotesk", "Inter", sans-serif; letter-spacing: -0.02em; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="https://vaultmorph.org"><img src="../assets/icon-128.png" alt="VaultMorph AI Shield logo" width="26" height="26" />VaultMorph <span>AI Shield</span></a>
+  <nav>
+    <a href="https://vaultmorph.org/ai_shield_chat/docs/">Docs</a>
+    <a href="https://vaultmorph.org/security">Security</a>
+    <a href="https://vaultmorph.org">Home</a>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="badge">Legal</div>
+  <h1>Privacy Policy</h1>
+  <p class="meta">
+    Effective date: 1 July 2026 &nbsp;·&nbsp; Last updated: 1 July 2026<br>
+    Applies to: VaultMorph AI Shield desktop application and vaultmorph.org
+  </p>
+
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#overview">Overview &amp; quick summary</a></li>
+      <li><a href="#who-we-are">Who we are</a></li>
+      <li><a href="#editions">Data collected by edition</a></li>
+      <li><a href="#what-we-collect">What we collect (Pro Trial)</a></li>
+      <li><a href="#legal-basis">Legal basis for processing</a></li>
+      <li><a href="#storage">Data storage &amp; transfers</a></li>
+      <li><a href="#sharing">Data sharing</a></li>
+      <li><a href="#retention">Data retention</a></li>
+      <li><a href="#rights-gdpr">Your rights — GDPR (EU/EEA/UK)</a></li>
+      <li><a href="#rights-dpdp">Your rights — India DPDP Act 2023</a></li>
+      <li><a href="#cookies">Cookies &amp; analytics</a></li>
+      <li><a href="#security">Security measures</a></li>
+      <li><a href="#children">Children's privacy</a></li>
+      <li><a href="#changes">Changes to this policy</a></li>
+      <li><a href="#contact">Contact &amp; DPO</a></li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <section id="overview">
+    <h2>1. Overview &amp; quick summary</h2>
+    <div class="highlight-box">
+      <p><strong>Community Edition collects zero personal data.</strong> Everything stays on your device. No analytics, no telemetry, no account required.</p>
+    </div>
+    <div class="warning-box">
+      <p><strong>Pro Trial Edition</strong> collects your email address and a one-way device hash for license issuance. No payment data is ever collected — the Pro Trial is free for 6 months, no credit card required.</p>
+    </div>
+    <p>VaultMorph AI Shield is a privacy-first application. Its core function — sanitizing sensitive data before it leaves your device — means the product is architecturally designed to process as little personal data as possible.</p>
+  </section>
+
+  <!-- 2 -->
+  <section id="who-we-are">
+    <h2>2. Who we are</h2>
+    <p><strong>Data Controller:</strong> VaultMorph (operating under vaultmorph.org)<br>
+    <strong>Contact:</strong> <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a><br>
+    <strong>Data deletion requests:</strong> <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a> or via <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/issues" target="_blank">GitHub Issues</a></p>
+  </section>
+
+  <!-- 3 -->
+  <section id="editions">
+    <h2>3. Data collected by edition</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Edition</th>
+          <th>Personal data collected</th>
+          <th>Telemetry</th>
+          <th>Account required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Community</strong></td>
+          <td>None</td>
+          <td>None</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><strong>Pro Trial</strong></td>
+          <td>Email address, device hash (one-way)</td>
+          <td>None</td>
+          <td>Email only</td>
+        </tr>
+        <tr>
+          <td><strong>Enterprise</strong></td>
+          <td>None (offline license file)</td>
+          <td>None</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Your prompts, sanitized tokens, API keys, and conversation history are processed and stored <strong>exclusively on your device</strong>. None of this data is sent to VaultMorph servers at any time, in any edition.</p>
+  </section>
+
+  <!-- 4 -->
+  <section id="what-we-collect">
+    <h2>4. What we collect (Pro Trial)</h2>
+    <h3>4.1 Email address</h3>
+    <p>Collected when you activate a Pro Trial license. Used solely to issue and identify your license JWT. We do not use your email for marketing unless you explicitly opt in (we currently have no marketing programme).</p>
+
+    <h3>4.2 Device hash</h3>
+    <p>A one-way SHA-256 hash of non-identifying hardware identifiers (hostname, OS identifiers). This hash cannot be reversed to identify you or your machine. It is used to prevent a single trial license being activated on an unlimited number of devices.</p>
+
+    <h3>4.3 License metadata</h3>
+    <p>Issue date, expiry date, and edition. Stored server-side to allow license renewal and revocation.</p>
+
+    <h3>4.4 What we never collect</h3>
+    <ul>
+      <li>Your prompts or conversations</li>
+      <li>The secrets or tokens you sanitize</li>
+      <li>Your API keys</li>
+      <li>IP address (not logged beyond standard nginx access logs, retained for 7 days only)</li>
+      <li>Payment or financial information (the Pro Trial requires no payment)</li>
+      <li>Browser fingerprints, cookies, or behavioural analytics</li>
+    </ul>
+  </section>
+
+  <!-- 5 -->
+  <section id="legal-basis">
+    <h2>5. Legal basis for processing (GDPR Article 6)</h2>
+    <table>
+      <thead>
+        <tr><th>Data</th><th>Legal basis</th><th>Details</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Email address</td>
+          <td>Contract performance (Art. 6(1)(b))</td>
+          <td>Required to issue and identify your Pro Trial license</td>
+        </tr>
+        <tr>
+          <td>Device hash</td>
+          <td>Legitimate interest (Art. 6(1)(f))</td>
+          <td>Preventing license abuse; hash is irreversible, impact is minimal</td>
+        </tr>
+        <tr>
+          <td>License metadata</td>
+          <td>Contract performance (Art. 6(1)(b))</td>
+          <td>Fulfilling the license agreement; enabling renewal and revocation</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 6 -->
+  <section id="storage">
+    <h2>6. Data storage &amp; international transfers</h2>
+    <p>Pro Trial data (email address, device hash, license metadata) is stored on servers located in <strong>India — OCI Mumbai region</strong>, operated by Oracle Cloud Infrastructure.</p>
+    <p><strong>If you are in the EU/EEA:</strong> Your data is transferred to and processed in India, which is outside the EU/EEA and does not currently hold an EU adequacy decision. This transfer is made under Article 49(1)(b) GDPR — the transfer is necessary for the performance of a contract entered into at your request (license activation). We collect the minimum data necessary for this purpose. If you have concerns about this transfer, you may contact us at <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a>, or choose the Community edition, which requires no data submission and makes no network connection to our servers.</p>
+    <p><strong>If you are in India:</strong> Your data is stored domestically in the OCI Mumbai region. No cross-border data transfer occurs. Processing is on a contractual necessity basis under the DPDP Act 2023. You may request deletion at any time (see Section 10).</p>
+    <p><strong>Community and Enterprise editions:</strong> No data is transmitted to our servers; no transfer occurs.</p>
+  </section>
+
+  <!-- 7 -->
+  <section id="sharing">
+    <h2>7. Data sharing</h2>
+    <p><strong>We do not sell, rent, or share your personal data with any third party.</strong></p>
+    <p>The only sub-processor is Oracle Cloud Infrastructure (OCI), which provides the server infrastructure in Mumbai, India. OCI processes data solely as a hosting provider and is bound by data processing agreements.</p>
+    <p>We may disclose data if required by law or court order, but will notify you to the extent permitted by law before doing so.</p>
+  </section>
+
+  <!-- 8 -->
+  <section id="retention">
+    <h2>8. Data retention</h2>
+    <table>
+      <thead>
+        <tr><th>Data</th><th>Retention period</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Email address + license record</td><td>Until you request deletion, or 12 months after license expiry, whichever is sooner</td></tr>
+        <tr><td>Device hash</td><td>Same as above</td></tr>
+        <tr><td>nginx access logs</td><td>7 days, then automatically deleted</td></tr>
+      </tbody>
+    </table>
+    <p>To request earlier deletion, email <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a> with subject line "Data Deletion Request" or use <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/issues" target="_blank">GitHub Issues</a>. We will confirm deletion within 30 days.</p>
+  </section>
+
+  <!-- 9 -->
+  <section id="rights-gdpr">
+    <h2>9. Your rights — GDPR (EU / EEA / UK)</h2>
+    <p>If you are in the EU, EEA, or UK, you have the following rights under the GDPR:</p>
+    <ul>
+      <li><strong>Right of access (Art. 15)</strong> — request a copy of data we hold about you</li>
+      <li><strong>Right to rectification (Art. 16)</strong> — correct inaccurate data</li>
+      <li><strong>Right to erasure (Art. 17)</strong> — request deletion ("right to be forgotten")</li>
+      <li><strong>Right to restriction (Art. 18)</strong> — restrict how we process your data</li>
+      <li><strong>Right to portability (Art. 20)</strong> — receive your data in a structured, machine-readable format</li>
+      <li><strong>Right to object (Art. 21)</strong> — object to processing based on legitimate interests</li>
+      <li><strong>Right to lodge a complaint</strong> — with your national supervisory authority (e.g. your country's Data Protection Authority)</li>
+    </ul>
+    <p>Exercise any right by emailing <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a>. We will respond within 30 days (extendable to 90 days for complex requests with notice).</p>
+  </section>
+
+  <!-- 10 -->
+  <section id="rights-dpdp">
+    <h2>10. Your rights — India DPDP Act 2023</h2>
+    <p>If you are a data principal in India under the Digital Personal Data Protection Act 2023, you have the following rights:</p>
+    <ul>
+      <li><strong>Right to information</strong> — know what personal data we process and for what purpose</li>
+      <li><strong>Right of access</strong> — obtain a summary of personal data processed</li>
+      <li><strong>Right to correction and erasure</strong> — correct inaccurate or incomplete data, or request erasure</li>
+      <li><strong>Right to grievance redressal</strong> — raise a grievance and receive a response within 48 hours</li>
+      <li><strong>Right to nominate</strong> — nominate another individual to exercise rights in the event of death or incapacity</li>
+    </ul>
+    <p>To exercise these rights or raise a grievance, contact our Data Protection Officer: <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a>. We will respond within 48 hours for acknowledgment and within 30 days for resolution.</p>
+    <p>If your grievance is unresolved, you may escalate to the Data Protection Board of India once it is constituted and operational.</p>
+  </section>
+
+  <!-- 11 -->
+  <section id="cookies">
+    <h2>11. Cookies &amp; analytics (website)</h2>
+    <p>vaultmorph.org currently uses no analytics, tracking scripts, or third-party cookies. Only a strictly necessary session cookie may be set if you visit an authenticated page (e.g. license management). We do not use Google Analytics, Meta Pixel, or any behavioural tracking.</p>
+  </section>
+
+  <!-- 12 -->
+  <section id="security">
+    <h2>12. Security measures</h2>
+    <ul>
+      <li>Data in transit: TLS 1.2+ enforced on all API endpoints</li>
+      <li>Data at rest: encrypted at the OCI storage layer (AES-256)</li>
+      <li>License JWTs: signed with Ed25519 — tamper-evident and verifiable offline</li>
+      <li>API keys (on your device): AES-256-GCM, stored in OS keychain (Windows Credential Manager / macOS Keychain)</li>
+      <li>No raw secrets are transmitted to our servers in any scenario</li>
+    </ul>
+    <p>To report a security vulnerability, see our <a href="https://vaultmorph.org/security">Security Policy</a>.</p>
+  </section>
+
+  <!-- 13 -->
+  <section id="children">
+    <h2>13. Children's privacy</h2>
+    <p>VaultMorph AI Shield is not directed at children under 13 (or under 18 in jurisdictions where applicable). We do not knowingly collect personal data from children. If you believe a child has provided us with personal data, contact us immediately and we will delete it.</p>
+  </section>
+
+  <!-- 14 -->
+  <section id="changes">
+    <h2>14. Changes to this policy</h2>
+    <p>We may update this policy as the product evolves. When changes are material, we will update the "Last updated" date at the top of this page and, where feasible, notify Pro Trial users by email at least 14 days before the change takes effect. Continued use of the application after that date constitutes acceptance of the updated policy.</p>
+  </section>
+
+  <!-- 15 -->
+  <section id="contact">
+    <h2>15. Contact &amp; DPO</h2>
+    <p>
+      <strong>Email:</strong> <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a><br>
+      <strong>Subject line for privacy requests:</strong> "Privacy Request — [your request type]"<br>
+      <strong>GitHub Issues:</strong> <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/issues" target="_blank">github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/issues</a>
+    </p>
+    <p>Response time: acknowledgment within 48 hours, resolution within 30 days.</p>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://vaultmorph.org/privacy">Privacy Policy</a>
+    <a href="https://vaultmorph.org/terms">Terms of Use</a>
+    <a href="https://vaultmorph.org/security">Security Policy</a>
+    <a href="https://vaultmorph.org/attributions">Open-source Attributions</a>
+    <a href="https://vaultmorph.org/ai_shield_chat/docs/">Documentation</a>
+  </div>
+  <p>© 2026 VaultMorph. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

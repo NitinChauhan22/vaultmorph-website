@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI Shield Chatbot — a privacy-first AI chat client for developers. 127-rule detection engine, Security Workspace (Gitleaks + Semgrep + AI review), MCP servers, browser extension, RAG, voice input. Secrets never leave your device." />
+  <meta property="og:title" content="VaultMorph AI Shield Chatbot — Chat With AI. Zero Leaks." />
+  <meta property="og:description" content="A full AI chat client with built-in DLP. 127-rule detection, Gitleaks/Semgrep SAST, AI review, MCP servers, browser extension. Windows · macOS · Linux." />
+  <meta property="og:url" content="https://vaultmorph.org/ai_shield_chat/" />
+  <meta property="og:image" content="https://vaultmorph.org/assets/icon-256.png" />
+  <meta name="theme-color" content="#0b0d13" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+  <link rel="apple-touch-icon" href="../assets/icon-128.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <title>VaultMorph AI Shield Chatbot — Chat With AI. Zero Leaks.</title>
+  <style>
+    :root {
+      --bg: #0b0d13;
+      --bg2: #0f1117;
+      --surface: rgba(24, 28, 36, 0.72);
+      --surface-solid: #171b24;
+      --surface2: #1e2330;
+      --border: #262c3a;
+      --border-hi: #35405a;
+      --accent: #4f8ef7;
+      --accent2: #7db2ff;
+      --accent-dim: #1e3a6e;
+      --accent-glow: rgba(79, 142, 247, 0.16);
+      --text: #e8edf5;
+      --text-muted: #94a3b8;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --purple: #a78bfa;
+      --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-display: "Space Grotesk", "Inter", sans-serif;
+      --font-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--accent-dim); color: #fff; }
+
+    /* ── ambient background ── */
+    .bg-fx {
+      position: fixed; inset: 0; z-index: -2; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 45% at 70% -5%, rgba(79,142,247,0.13), transparent 60%),
+        radial-gradient(ellipse 45% 35% at 12% 20%, rgba(167,139,250,0.07), transparent 60%),
+        var(--bg);
+    }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.5;
+      background-image:
+        linear-gradient(rgba(148,163,184,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,0.045) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 640px);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 640px);
+    }
+
+    /* ── scroll reveal ── */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ── NAV ── */
+    header {
+      background: rgba(11, 13, 19, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.8rem 2rem;
+      display: flex; align-items: center; gap: 1.25rem;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-logo {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-family: var(--font-display);
+      font-weight: 700; font-size: 1.02rem; color: var(--text);
+      text-decoration: none; white-space: nowrap; letter-spacing: -0.01em;
+    }
+    .nav-logo img { width: 28px; height: 28px; display: block; }
+    .nav-logo b { color: var(--accent); font-weight: 700; }
+    .nav-logo span { color: var(--text-muted); font-weight: 500; }
+    header nav { margin-left: auto; display: flex; gap: 1.4rem; align-items: center; flex-wrap: wrap; }
+    header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.15s; }
+    header nav a:hover { color: var(--text); }
+    .nav-cta {
+      background: linear-gradient(135deg, #3b7de8, #5b9bff);
+      color: #fff !important; padding: 0.45rem 1.1rem; border-radius: 8px;
+      font-weight: 600; font-size: 0.85rem !important;
+      box-shadow: 0 0 18px rgba(79,142,247,0.35);
+      transition: box-shadow 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { box-shadow: 0 0 28px rgba(79,142,247,0.55); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 1120px; margin: 0 auto;
+      padding: 4.5rem 2rem 4rem;
+      display: grid; grid-template-columns: 1.05fr 1fr; gap: 3.5rem;
+      align-items: center;
+    }
+    @media (max-width: 920px) { .hero { grid-template-columns: 1fr; padding-top: 3rem; } }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(79,142,247,0.08);
+      color: var(--accent2);
+      border: 1px solid rgba(79,142,247,0.28);
+      border-radius: 100px;
+      font-size: 0.76rem; font-weight: 600;
+      padding: 0.32em 1em; letter-spacing: 0.04em;
+      margin-bottom: 1.4rem;
+    }
+    .hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2.2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 4.6vw, 3.35rem);
+      font-weight: 700; line-height: 1.08;
+      margin-bottom: 1.2rem; letter-spacing: -0.03em;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(100deg, var(--accent) 10%, var(--accent2) 55%, var(--purple) 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+    }
+    .hero p { font-size: 1.08rem; color: var(--text-muted); max-width: 560px; margin-bottom: 2rem; }
+    .hero-ctas { display: flex; gap: 0.9rem; flex-wrap: wrap; margin-bottom: 1.8rem; }
+    .btn-primary {
+      background: linear-gradient(135deg, #3b7de8, #5b9bff);
+      color: #fff; padding: 0.8rem 1.7rem; border-radius: 10px;
+      text-decoration: none; font-weight: 700; font-size: 0.95rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      box-shadow: 0 4px 24px rgba(79,142,247,0.35);
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 34px rgba(79,142,247,0.5); }
+    .btn-secondary {
+      background: rgba(24,28,36,0.6); color: var(--text);
+      border: 1px solid var(--border-hi);
+      padding: 0.8rem 1.7rem; border-radius: 10px;
+      text-decoration: none; font-weight: 600; font-size: 0.95rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: border-color 0.15s, color 0.15s, transform 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent2); transform: translateY(-2px); }
+    .hero-meta { color: var(--text-muted); font-size: 0.82rem; display: flex; gap: 0.5rem 1.4rem; flex-wrap: wrap; }
+    .hero-meta span { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .hero-meta svg { width: 14px; height: 14px; color: var(--green); flex-shrink: 0; }
+
+    /* ── HERO DEMO (live tokenization) ── */
+    .demo-window {
+      background: rgba(15, 17, 23, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-hi);
+      border-radius: 14px;
+      box-shadow: 0 24px 70px rgba(0,0,0,0.5), 0 0 60px rgba(79,142,247,0.08);
+      overflow: hidden;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      position: relative;
+    }
+    .demo-titlebar {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.65rem 1rem;
+      background: rgba(24,28,36,0.9);
+      border-bottom: 1px solid var(--border);
+    }
+    .demo-titlebar .tl { width: 11px; height: 11px; border-radius: 50%; }
+    .demo-titlebar .t-name { margin-left: 0.5rem; color: var(--text-muted); font-size: 0.72rem; display: inline-flex; align-items: center; gap: 0.45rem; }
+    .demo-titlebar .t-name img { width: 15px; height: 15px; }
+    .demo-body { padding: 1.1rem 1.2rem 1.3rem; min-height: 300px; }
+    .demo-line { margin-bottom: 0.85rem; line-height: 1.65; word-break: break-word; }
+    .demo-label { display: block; font-size: 0.66rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.3rem; font-family: var(--font-body); font-weight: 600; }
+    .demo-prompt { color: #c9d1d9; }
+    .caret { display: inline-block; width: 7px; height: 1em; background: var(--accent); vertical-align: text-bottom; animation: blink 0.9s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .tok-danger {
+      background: rgba(239,68,68,0.13); color: #f87171;
+      border: 1px solid rgba(239,68,68,0.4); border-radius: 5px;
+      padding: 0.06em 0.35em;
+      transition: all 0.4s;
+    }
+    .tok-danger.flash { animation: dangerflash 0.7s ease 2; }
+    @keyframes dangerflash { 50% { background: rgba(239,68,68,0.4); box-shadow: 0 0 14px rgba(239,68,68,0.5); } }
+    .tok-safe {
+      background: rgba(79,142,247,0.13); color: var(--accent2);
+      border: 1px solid rgba(79,142,247,0.45); border-radius: 5px;
+      padding: 0.06em 0.35em;
+    }
+    .demo-status {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-family: var(--font-body); font-size: 0.74rem; font-weight: 600;
+      border-radius: 100px; padding: 0.28em 0.85em;
+      margin-top: 0.15rem;
+    }
+    .st-scan { background: rgba(245,158,11,0.1); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); }
+    .st-ok { background: rgba(34,197,94,0.1); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+    .demo-fade { opacity: 0; transform: translateY(8px); transition: opacity 0.45s ease, transform 0.45s ease; }
+    .demo-fade.on { opacity: 1; transform: none; }
+    .demo-glow {
+      position: absolute; inset: auto -30% -55% -30%; height: 70%;
+      background: radial-gradient(ellipse at center, rgba(79,142,247,0.18), transparent 65%);
+      pointer-events: none;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(24,28,36,0.55), rgba(15,17,23,0.4));
+      padding: 2rem;
+    }
+    .stats-inner {
+      max-width: 960px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 2rem; text-align: center;
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.4rem; font-weight: 700; display: block;
+      background: linear-gradient(120deg, var(--accent2), var(--accent));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+    .stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.1rem; }
+
+    /* ── SECTIONS ── */
+    .section { max-width: 1040px; margin: 0 auto; padding: 4.5rem 2rem; }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); font-weight: 600; margin-bottom: 0.8rem;
+    }
+    .section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+      font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.02em; line-height: 1.2;
+    }
+    .section > p { color: var(--text-muted); max-width: 660px; margin-bottom: 2.4rem; font-size: 1rem; }
+    .divider { border: none; border-top: 1px solid var(--border); max-width: 1040px; margin: 0 auto; }
+
+    /* ── FEATURE GRID ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.1rem; margin-top: 2rem;
+    }
+    .feature-card {
+      background: var(--surface);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      position: relative; overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease;
+    }
+    .feature-card::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(79,142,247,0.09), transparent 45%);
+      opacity: 0; transition: opacity 0.25s;
+      pointer-events: none;
+    }
+    .feature-card:hover { transform: translateY(-3px); border-color: var(--border-hi); box-shadow: 0 14px 40px rgba(0,0,0,0.35); }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: linear-gradient(145deg, rgba(79,142,247,0.16), rgba(79,142,247,0.05));
+      border: 1px solid rgba(79,142,247,0.25);
+      margin-bottom: 0.9rem;
+    }
+    .feature-icon svg { width: 20px; height: 20px; color: var(--accent2); }
+    .feature-card h3 { font-size: 0.97rem; font-weight: 700; margin-bottom: 0.45rem; color: var(--text); letter-spacing: -0.01em; }
+    .feature-card p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
+
+    /* ── PIPELINE VIZ ── */
+    .pipeline {
+      background: var(--surface);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem; margin-top: 2rem;
+      font-family: var(--font-mono);
+      position: relative; overflow: hidden;
+    }
+    .pipeline::after {
+      content: ""; position: absolute; top: 0; left: -60%; width: 45%; height: 100%;
+      background: linear-gradient(105deg, transparent, rgba(79,142,247,0.05), transparent);
+      animation: sweep 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes sweep { 0% { left: -60%; } 60%, 100% { left: 120%; } }
+    .pipeline-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.85rem; }
+    .pipeline-row:last-child { margin-bottom: 0; }
+    .pill {
+      display: inline-block; padding: 0.32em 0.8em; border-radius: 100px;
+      font-size: 0.79rem; font-weight: 600; font-family: var(--font-mono);
+    }
+    .pill-red { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.32); }
+    .pill-blue { background: rgba(79,142,247,0.1); color: var(--accent2); border: 1px solid rgba(79,142,247,0.32); }
+    .pill-green { background: rgba(34,197,94,0.1); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+    .pill-gray { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
+    .arrow { color: var(--border-hi); font-size: 0.85rem; }
+    .pipeline-label { font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-body); margin-left: 0.25rem; }
+
+    /* ── DETECTION ── */
+    .detect-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.65rem; margin-top: 1.5rem;
+    }
+    .detect-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      font-size: 0.83rem; color: var(--text-muted);
+      display: flex; align-items: center; gap: 0.6rem;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .detect-item:hover { border-color: var(--border-hi); transform: translateY(-2px); }
+    .detect-count {
+      font-family: var(--font-display);
+      font-weight: 700; color: var(--accent2); font-variant-numeric: tabular-nums;
+      font-size: 1.05rem; min-width: 1.6em; text-align: right;
+    }
+
+    /* ── WORKSPACE ── */
+    .workspace-steps {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1rem; margin-top: 1.5rem; counter-reset: ws;
+    }
+    .ws-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.3rem;
+      position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .ws-step:hover { border-color: var(--border-hi); transform: translateY(-3px); }
+    .ws-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem; font-weight: 600; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 0.5rem;
+    }
+    .ws-step h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .ws-step p { font-size: 0.82rem; color: var(--text-muted); margin: 0; line-height: 1.55; }
+    .ws-step code { font-family: var(--font-mono); font-size: 0.78em; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; padding: 0.08em 0.35em; color: var(--accent2); }
+
+    /* ── PRICING ── */
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.25rem; margin-top: 2.2rem; align-items: start;
+    }
+    .pricing-card {
+      background: var(--surface);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.85rem; position: relative;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .pricing-card:hover { transform: translateY(-3px); border-color: var(--border-hi); }
+    .pricing-card.featured {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent), 0 12px 50px var(--accent-glow);
+      background: linear-gradient(180deg, rgba(79,142,247,0.06), var(--surface));
+    }
+    .featured-badge {
+      position: absolute; top: -0.75rem; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, #3b7de8, #5b9bff);
+      color: #fff; font-size: 0.68rem; font-weight: 700;
+      padding: 0.25em 0.9em; border-radius: 100px;
+      text-transform: uppercase; letter-spacing: 0.07em; white-space: nowrap;
+      box-shadow: 0 0 18px rgba(79,142,247,0.5);
+    }
+    .plan-name { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .plan-price { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--accent2); margin-bottom: 0.25rem; letter-spacing: -0.01em; }
+    .plan-sub { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.25rem; }
+    .plan-features { list-style: none; margin-bottom: 1.6rem; }
+    .plan-features li { font-size: 0.85rem; color: var(--text-muted); padding: 0.34rem 0; border-bottom: 1px solid rgba(38,44,58,0.6); display: flex; gap: 0.55rem; align-items: flex-start; }
+    .plan-features li:last-child { border-bottom: none; }
+    .plan-features li .check { color: var(--green); flex-shrink: 0; font-weight: 700; }
+    .plan-features li .dash { color: var(--border-hi); flex-shrink: 0; }
+    .plan-cta { display: block; text-align: center; padding: 0.7rem; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 0.875rem; transition: all 0.15s; }
+    .plan-cta-primary { background: linear-gradient(135deg, #3b7de8, #5b9bff); color: #fff; box-shadow: 0 4px 18px rgba(79,142,247,0.3); }
+    .plan-cta-primary:hover { box-shadow: 0 6px 28px rgba(79,142,247,0.5); transform: translateY(-1px); }
+    .plan-cta-outline { border: 1px solid var(--border-hi); color: var(--text); }
+    .plan-cta-outline:hover { border-color: var(--accent); color: var(--accent2); }
+
+    /* ── DOWNLOAD ── */
+    .download-box {
+      background:
+        radial-gradient(ellipse 70% 90% at 50% -10%, rgba(79,142,247,0.14), transparent 60%),
+        var(--surface-solid);
+      border: 1px solid var(--border-hi);
+      border-radius: 20px;
+      padding: 3rem 2.5rem; text-align: center; margin-top: 2rem;
+      position: relative; overflow: hidden;
+    }
+    .download-box .dl-icon { width: 64px; height: 64px; margin: 0 auto 1.1rem; display: block; filter: drop-shadow(0 6px 22px rgba(79,142,247,0.45)); }
+    .download-box h2 { font-family: var(--font-display); font-size: 1.65rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+    .download-box > p { color: var(--text-muted); margin-bottom: 1.9rem; }
+    .download-platforms { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .dl-btn {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.75rem 1.5rem; border-radius: 10px;
+      text-decoration: none; font-weight: 600; font-size: 0.9rem;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .dl-btn-windows { background: linear-gradient(135deg, #3b7de8, #5b9bff); color: #fff; box-shadow: 0 4px 22px rgba(79,142,247,0.35); }
+    .dl-btn-windows:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(79,142,247,0.55); }
+    .dl-btn-soon { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); cursor: default; }
+    .dl-meta { display: flex; gap: 0.4rem 1.5rem; justify-content: center; flex-wrap: wrap; font-size: 0.8rem; color: var(--text-muted); }
+    .dl-meta span::before { content: "· "; }
+    .dl-meta span:first-child::before { content: ""; }
+    .sha-box {
+      margin-top: 1.4rem; background: var(--bg);
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 0.85rem 1rem; font-family: var(--font-mono);
+      font-size: 0.78rem; color: var(--text-muted); word-break: break-all;
+      text-align: left; max-width: 640px; margin-left: auto; margin-right: auto;
+    }
+    .sha-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 0.4rem; font-family: var(--font-body); font-weight: 600; }
+
+    /* ── INFO BOXES ── */
+    .info-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 1rem 1.3rem; margin: 1.4rem 0;
+      font-size: 0.9rem; color: var(--text-muted);
+    }
+    .info-box strong { color: var(--text); }
+    .info-box code { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; padding: 0.08em 0.35em; color: var(--accent2); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 3rem 2rem 2.5rem; }
+    .footer-inner {
+      max-width: 1040px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem;
+    }
+    .footer-brand-logo { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--font-display); font-weight: 700; font-size: 1rem; }
+    .footer-brand-logo img { width: 30px; height: 30px; }
+    .footer-brand-logo b { color: var(--accent); }
+    .footer-brand-logo span { color: var(--text-muted); font-weight: 500; }
+    .footer-brand p { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.7rem; line-height: 1.6; max-width: 300px; }
+    .footer-col h4 { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.8rem; font-weight: 600; }
+    .footer-col a { display: block; font-size: 0.875rem; color: var(--text-muted); text-decoration: none; margin-bottom: 0.45rem; transition: color 0.15s; }
+    .footer-col a:hover { color: var(--accent2); }
+    .footer-bottom {
+      max-width: 1040px; margin: 2.2rem auto 0; padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem; font-size: 0.8rem; color: var(--text-muted);
+    }
+    @media (max-width: 640px) {
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: 1 / -1; }
+      header { padding: 0.8rem 1.1rem; }
+      header nav { gap: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-fx"></div>
+<div class="bg-grid"></div>
+
+<!-- NAV -->
+<header>
+  <a class="nav-logo" href="https://vaultmorph.org">
+    <img src="../assets/icon-128.png" alt="VaultMorph AI Shield logo" width="28" height="28" />
+    <b>VaultMorph</b>&nbsp;<span>AI Shield</span>
+  </a>
+  <nav>
+    <a href="#features">Features</a>
+    <a href="#workspace">Security Workspace</a>
+    <a href="#pricing">Pricing</a>
+    <a href="docs/">Docs</a>
+    <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public" target="_blank" rel="noopener">GitHub</a>
+    <a href="#download" class="nav-cta">Download</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="hero-badge"><span class="dot"></span> v1.0.0-beta &nbsp;·&nbsp; Windows · macOS · Linux</div>
+    <h1>Chat with AI.<br><em>Zero secrets leaked.</em><br>Ever.</h1>
+    <p>A full AI chat client with a built-in 127-rule detection engine, Security Workspace (Gitleaks + Semgrep + AI review), MCP servers, and a browser extension. Every byte of detection runs on your device.</p>
+    <div class="hero-ctas">
+      <a href="#download" class="btn-primary">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Free — Windows
+      </a>
+      <a href="docs/" class="btn-secondary">Read the Docs →</a>
+    </div>
+    <div class="hero-meta">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>127-rule detection engine</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Zero telemetry</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Runs fully offline</span>
+    </div>
+  </div>
+
+  <!-- Live tokenization demo -->
+  <div class="demo-window" aria-hidden="true">
+    <div class="demo-titlebar">
+      <span class="tl" style="background:#ff5f57"></span>
+      <span class="tl" style="background:#febc2e"></span>
+      <span class="tl" style="background:#28c840"></span>
+      <span class="t-name"><img src="../assets/icon-128.png" alt="" /> AI Shield — live DLP</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-line">
+        <span class="demo-label">You type</span>
+        <span class="demo-prompt" id="d-typed"></span><span class="caret" id="d-caret"></span>
+      </div>
+      <div class="demo-line demo-fade" id="d-scan">
+        <span class="demo-status st-scan">⚠ AWS access key detected — rule AWS_ACCESS_KEY · risk 92/100</span>
+      </div>
+      <div class="demo-line demo-fade" id="d-sent">
+        <span class="demo-label">Sent to AI provider</span>
+        <span class="demo-prompt">Fix my deploy script, key = <span class="tok-safe">&lt;&lt;VM_TOKEN_API_KEY_1_a3f8&gt;&gt;</span> keeps failing</span>
+      </div>
+      <div class="demo-line demo-fade" id="d-ok">
+        <span class="demo-status st-ok">✓ 0 raw secrets left your device — token restored locally on reply</span>
+      </div>
+    </div>
+    <div class="demo-glow"></div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="reveal">
+      <span class="stat-num" data-count="127">0</span>
+      <div class="stat-label">detection rules across 10 categories</div>
+    </div>
+    <div class="reveal">
+      <span class="stat-num" data-count="0">0</span>
+      <div class="stat-label">raw secrets ever sent to AI</div>
+    </div>
+    <div class="reveal">
+      <span class="stat-num" data-count="20" data-suffix="+">0</span>
+      <div class="stat-label">AI providers supported</div>
+    </div>
+    <div class="reveal">
+      <span class="stat-num" data-count="100" data-suffix="%">0</span>
+      <div class="stat-label">on-device processing, no cloud</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="section-label">// how it works</div>
+  <h2 class="reveal">Your secrets stay on your machine. Always.</h2>
+  <p class="reveal">Every message you type passes through a local detection and tokenization pipeline before reaching any AI provider. Raw secrets are never sent.</p>
+
+  <div class="pipeline reveal">
+    <div class="pipeline-row">
+      <span class="pill pill-red">Raw prompt</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-gray">Detect (127 rules)</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-blue">&lt;&lt;VM_TOKEN_API_KEY_1_a3f8&gt;&gt;</span>
+      <span class="pipeline-label">tokenized in memory</span>
+    </div>
+    <div class="pipeline-row">
+      <span class="pill pill-blue">Sanitized prompt</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-gray">AI provider</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-blue">AI response (with tokens)</span>
+    </div>
+    <div class="pipeline-row">
+      <span class="pill pill-blue">Response with tokens</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-gray">Restore locally</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-green">Response with real values</span>
+      <span class="pipeline-label">never left your device</span>
+    </div>
+  </div>
+  <div class="info-box reveal">
+    Token maps are in-memory only and never written to disk. If you close the session, the map is gone. Each token includes a BLAKE3 hash of the original value — restoration is cryptographically verified, not a naive string replacement.
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-label">// features</div>
+  <h2 class="reveal">Everything you need. Nothing that phones home.</h2>
+  <p class="reveal">AI Shield Chatbot is a native desktop chat client — not a wrapper. Every capability is built in, from conversation history to a full SAST pipeline.</p>
+
+  <div class="feature-grid">
+    <div class="feature-card reveal">
+      <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <h3>127-Rule Detection Engine v2.1.0</h3>
+      <p>10 categories: API keys (79 patterns, 70+ providers), private keys, credentials, database URIs, PII, financial data, India PII (PAN/Aadhaar/UPI), infrastructure identifiers. CVSS-like risk scoring 0–100.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+      <h3>Full-featured AI Chat</h3>
+      <p>Projects, conversation history, system prompt, @-mention any previous conversation as context (Interchat), stop/retry, streaming response with live token restoration.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+      <h3>20+ Providers Supported</h3>
+      <p>OpenAI, Anthropic, Gemini, Mistral, Groq, NVIDIA NIM, Together AI, DeepSeek, Perplexity, OpenRouter, Azure OpenAI, Portkey, Bifrost, local Ollama/LM Studio, Claude Code subscription.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg></span>
+      <h3>MCP Servers</h3>
+      <p>HTTP (loopback) and stdio (local process) transports. Explicit consent gate before any stdio server is launched — you approve the exact resolved command line. Tool output is sanitized too.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/><circle cx="6" cy="6.5" r="0.5"/><circle cx="9" cy="6.5" r="0.5"/></svg></span>
+      <h3>Browser Extension</h3>
+      <p>Chrome/Edge extension for ChatGPT, Claude.ai, Gemini, and Copilot. Same tokenization pipeline, entirely in-browser — no request leaves your browser to VaultMorph servers.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+      <h3>Knowledge Base (RAG)</h3>
+      <p>Index your own documents. On-device chunking and embeddings, AES-256-GCM encrypted SQLite storage. Semantic retrieval prepends context to your prompts — never uploaded anywhere.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
+      <h3>Voice Input</h3>
+      <p>Local Whisper (ggml models). No audio or transcript leaves your device. Import any ggml-*.bin model — the app never downloads one automatically.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+      <h3>Document Generation</h3>
+      <p>Ask the AI to create Excel, Word, or PowerPoint files. A structured DocGenSpec (tokens only) is sent to the AI; local JS renders the real file. No AI-generated code is executed on your device.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></span>
+      <h3>30+ Attachment Formats</h3>
+      <p>Attach PDFs, Word docs, spreadsheets, images, code files. Every attachment is scanned through the detection pipeline before its content is included in the prompt.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+      <h3>OS Keychain Storage</h3>
+      <p>API keys are AES-256-GCM encrypted and stored in Windows Credential Manager or macOS Keychain. Never written to plain text config files.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+      <h3>Compliance Reports</h3>
+      <p>De-identified HTML and CSV audit exports of Security Workspace findings. No raw secrets — SHA-256 hashes only. Date range filter. SIEM-ready CSV.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+      <h3>Sandboxed Artifacts</h3>
+      <p>AI-generated HTML/JS responses rendered in an isolated WebView with a typed postMessage protocol. Sandboxed code cannot access your sessions, API keys, or file system.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- DETECTION COVERAGE -->
+<section class="section" id="detection">
+  <div class="section-label">// detection coverage</div>
+  <h2 class="reveal">127 rules. 10 categories. Signed and verified.</h2>
+  <p class="reveal">Rule packs are signed with Ed25519 and cryptographically verified before import. Only VaultMorph-signed packs are accepted. 110 rules are available in Community; 17 additional pro-only rules in Pro Trial / Enterprise.</p>
+
+  <div class="detect-grid">
+    <div class="detect-item reveal"><strong class="detect-count">79</strong> API Keys (70+ providers)</div>
+    <div class="detect-item reveal"><strong class="detect-count">6</strong> Authentication Tokens</div>
+    <div class="detect-item reveal"><strong class="detect-count">4</strong> Private Keys (RSA/EC/PGP/SSH)</div>
+    <div class="detect-item reveal"><strong class="detect-count">5</strong> Credentials &amp; .env Secrets</div>
+    <div class="detect-item reveal"><strong class="detect-count">2</strong> Financial (Cards, IBAN)</div>
+    <div class="detect-item reveal"><strong class="detect-count">6</strong> PII (Email, Phone, SSN)</div>
+    <div class="detect-item reveal"><strong class="detect-count">8</strong> Database Connection Strings</div>
+    <div class="detect-item reveal"><strong class="detect-count">8</strong> India PII (PAN, Aadhaar, UPI)</div>
+    <div class="detect-item reveal"><strong class="detect-count">8</strong> Infrastructure (IPs, MAC)</div>
+    <div class="detect-item reveal"><strong class="detect-count">1</strong> Network Addresses</div>
+  </div>
+  <div class="info-box reveal" style="margin-top:1.5rem">
+    Risk scores use a CVSS-inspired 0–100 numeric scale: Critical ≥75 · High ≥50 · Medium ≥25 · Low &lt;25. Scores account for finding count with diminishing returns, so a single AWS key hit scores differently from a file full of minor findings.
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- SECURITY WORKSPACE -->
+<section class="section" id="workspace">
+  <div class="section-label">// security workspace</div>
+  <h2 class="reveal">SAST + Secrets Scanning + AI Review. All local.</h2>
+  <p class="reveal">Scan folders or remote repositories for hardcoded secrets and vulnerabilities. Gitleaks and Semgrep run as local sidecar binaries — no finding leaves your machine. AI verdicts review each finding and classify it.</p>
+
+  <div class="workspace-steps">
+    <div class="ws-step reveal">
+      <div class="ws-num">01 — Scan</div>
+      <h4>Gitleaks (Secrets)</h4>
+      <p>Bundled sidecar binary scans for 127 secret patterns across your entire codebase. Finds keys in history, not just the working tree.</p>
+    </div>
+    <div class="ws-step reveal">
+      <div class="ws-num">02 — Analyse</div>
+      <h4>Semgrep (SAST)</h4>
+      <p>Static analysis across 7 pinned rule sets: injection, XSS, auth, crypto, deserialization, path traversal, and misconfiguration. Vendored rules — no internet needed.</p>
+    </div>
+    <div class="ws-step reveal">
+      <div class="ws-num">03 — Review</div>
+      <h4>AI Verdicts</h4>
+      <p>Each finding is sanitized (secrets tokenized) then sent to your AI provider for structured review. Verdict: <code>confirmed</code> · <code>false_positive</code> · <code>needs_review</code>.</p>
+    </div>
+    <div class="ws-step reveal">
+      <div class="ws-num">04 — Export</div>
+      <h4>HTML Report</h4>
+      <p>Export a full report with findings, verdicts, risk scores, and remediation actions. De-identified — no raw secrets in the export.</p>
+    </div>
+  </div>
+
+  <div class="info-box reveal" style="margin-top:1.5rem">
+    <strong>DLP-safe AI review:</strong> File contents, diff hunks, matched snippets, and even file paths pass through the detect→tokenize→sanitize gate before reaching the AI provider. The AI reviews your code without ever seeing the real secret values it found.
+  </div>
+
+  <div class="workspace-steps" style="margin-top:1.25rem">
+    <div class="ws-step reveal">
+      <div class="ws-num">Folder Scan</div>
+      <h4>Local paths</h4>
+      <p>Select any folder on your machine. Supports file extension filters and .gitignore patterns.</p>
+    </div>
+    <div class="ws-step reveal">
+      <div class="ws-num">Remote Repo Scan</div>
+      <h4>HTTPS + PAT</h4>
+      <p>Clone via HTTPS with a PAT stored in the encrypted PAT vault (AES-256-GCM, masked on readback). Branch/tag selection, 10 MB file cap, cleanup prompt after scan.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="section-label">// pricing</div>
+  <h2 class="reveal">Free for individuals. Enterprise for teams.</h2>
+  <p class="reveal">Community is free forever with no time limit. Pro Trial gives you everything for 6 months — no credit card required.</p>
+
+  <div class="pricing-grid">
+    <div class="pricing-card reveal">
+      <div class="plan-name">Community</div>
+      <div class="plan-price">Free</div>
+      <div class="plan-sub">Forever · Auto-generated offline license · No account needed</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> 110 detection rules (all 10 categories)</li>
+        <li><span class="check">✓</span> Up to 3 concurrent sessions</li>
+        <li><span class="check">✓</span> Core AI chat with all provider support</li>
+        <li><span class="check">✓</span> Basic risk reports</li>
+        <li><span class="check">✓</span> Security Workspace (folder scan)</li>
+        <li><span class="check">✓</span> Browser extension</li>
+        <li><span class="dash">—</span> MCP Servers</li>
+        <li><span class="dash">—</span> Remote repository scan</li>
+        <li><span class="dash">—</span> Compliance reports (HTML/CSV)</li>
+        <li><span class="dash">—</span> Knowledge Base (RAG)</li>
+        <li><span class="dash">—</span> 17 pro-only detection rules</li>
+      </ul>
+      <a href="#download" class="plan-cta plan-cta-outline">Download Free</a>
+    </div>
+
+    <div class="pricing-card featured reveal">
+      <div class="featured-badge">⭐ Recommended</div>
+      <div class="plan-name">Pro Trial</div>
+      <div class="plan-price">Free</div>
+      <div class="plan-sub">6 months · Email + device activation · No credit card</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> All 127 detection rules (17 pro-only)</li>
+        <li><span class="check">✓</span> Unlimited sessions</li>
+        <li><span class="check">✓</span> Full AI chat + all features</li>
+        <li><span class="check">✓</span> Full PDF &amp; compliance reports</li>
+        <li><span class="check">✓</span> Security Workspace (folder + remote repo)</li>
+        <li><span class="check">✓</span> MCP Servers (HTTP + stdio)</li>
+        <li><span class="check">✓</span> Compliance reports (HTML/CSV)</li>
+        <li><span class="check">✓</span> Knowledge Base (RAG)</li>
+        <li><span class="check">✓</span> Future rule pack updates</li>
+        <li><span class="check">✓</span> Session export/import</li>
+      </ul>
+      <a href="#download" class="plan-cta plan-cta-primary">Download &amp; Activate Trial</a>
+    </div>
+
+    <div class="pricing-card reveal">
+      <div class="plan-name">Enterprise</div>
+      <div class="plan-price" style="font-size:1.2rem;padding-top:0.2rem">Contact us</div>
+      <div class="plan-sub">Offline .vml license · Air-gapped environments · Custom seats</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> All Pro Trial features</li>
+        <li><span class="check">✓</span> Signed .vml offline license (Ed25519)</li>
+        <li><span class="check">✓</span> Device fingerprint locking</li>
+        <li><span class="check">✓</span> Custom seat count</li>
+        <li><span class="check">✓</span> Air-gapped deployment</li>
+        <li><span class="check">✓</span> Custom rule packs (signed)</li>
+        <li><span class="check">✓</span> Control plane compliance upload</li>
+        <li><span class="check">✓</span> Priority support</li>
+      </ul>
+      <a href="mailto:contact@vaultmorph.org?subject=Enterprise License Inquiry — AI Shield Chatbot" class="plan-cta plan-cta-outline">Contact for Enterprise</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- DOWNLOAD -->
+<section class="section" id="download">
+  <div class="section-label">// download</div>
+
+  <div class="download-box reveal">
+    <img class="dl-icon" src="../assets/icon-128.png" alt="AI Shield app icon" width="64" height="64" />
+    <h2>Ready to shield your AI sessions?</h2>
+    <p>Free community build — no sign-up, no account, no cloud. Just install and your secrets stay yours.</p>
+
+    <div class="download-platforms">
+      <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases/download/v1.0.0/VaultMorph.AI.Shield_0.1.0_x64-setup.exe" class="dl-btn dl-btn-windows">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M3 5.5l7.5-1v7H3v-6zm0 13l7.5 1v-7H3v6zm8.5 1.2L21 21V12.5h-9.5v7.2zm0-15.4v7.2H21V3l-9.5 1.3z"/></svg>
+        Windows 10 / 11
+      </a>
+      <span class="dl-btn dl-btn-soon">🍎 macOS — coming soon</span>
+      <span class="dl-btn dl-btn-soon">🐧 Linux — coming soon</span>
+    </div>
+
+    <div class="dl-meta">
+      <span>Windows 10 / 11 64-bit</span>
+      <span>4 GB RAM minimum</span>
+      <span>No admin rights required</span>
+      <span>Internet optional (Pro Trial activation only)</span>
+    </div>
+
+    <div class="sha-box">
+      <div class="sha-label">SHA-256 checksum (Windows installer) — verify before installing</div>
+      <span id="sha">00d85a2f61a8674ad73ed46439f03be001c5981e7cb575cd76a0eb4630c3708d</span>
+    </div>
+
+    <div style="margin-top:0.5rem;font-size:0.82rem;color:var(--text-muted)">
+      Prefer MSI? <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases/download/v1.0.0/VaultMorph.AI.Shield_0.1.0_x64_en-US.msi" style="color:var(--accent)">Download VaultMorph.AI.Shield_0.1.0_x64_en-US.msi</a> — SHA-256: <code style="font-size:0.78rem;color:var(--text-muted)">8655159637b02f546e773d7e62d6a507bb967b8b4650db35a627fcbed881a8ac</code>
+    </div>
+    <div style="margin-top:1rem;font-size:0.82rem;color:var(--text-muted)">
+      <a href="https://vaultmorph.org/verify/" style="color:var(--accent)">→ How to verify your download (SHA-256 + Ed25519)</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-brand-logo">
+        <img src="../assets/icon-128.png" alt="VaultMorph AI Shield logo" width="30" height="30" />
+        <span><b>VaultMorph</b> <span>AI Shield Chatbot</span></span>
+      </div>
+      <p>Privacy-first AI chat for developers who refuse to leak their secrets to AI systems.</p>
+      <div style="margin-top:0.75rem;font-size:0.82rem;color:var(--text-muted)">contact@vaultmorph.org</div>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="#features">Features</a>
+      <a href="#workspace">Security Workspace</a>
+      <a href="#detection">Detection Rules</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#download">Download</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="docs/">Documentation</a>
+      <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://vaultmorph.org/verify/">Verify Download</a>
+      <a href="https://vaultmorph.org/attributions/">Attributions</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="https://vaultmorph.org/privacy/">Privacy Policy</a>
+      <a href="https://vaultmorph.org/terms/">Terms of Use</a>
+      <a href="https://vaultmorph.org/security/">Security Policy</a>
+      <a href="mailto:contact@vaultmorph.org">Support</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 VaultMorph. All rights reserved. Proprietary software — not for redistribution.</span>
+    <span><a href="https://vaultmorph.org" style="color:var(--accent)">vaultmorph.org</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ── scroll reveal ── */
+  var revealEls = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window && !reduced) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add("visible"); });
+  }
+
+  /* ── stat count-up ── */
+  function countUp(el) {
+    var target = parseInt(el.getAttribute("data-count"), 10);
+    var suffix = el.getAttribute("data-suffix") || "";
+    if (reduced || target === 0) { el.textContent = target + suffix; return; }
+    var dur = 1100, t0 = null;
+    function step(t) {
+      if (!t0) t0 = t;
+      var p = Math.min((t - t0) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var stats = document.querySelectorAll(".stat-num[data-count]");
+  if ("IntersectionObserver" in window) {
+    var sio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { countUp(e.target); sio.unobserve(e.target); }
+      });
+    }, { threshold: 0.4 });
+    stats.forEach(function (el) { sio.observe(el); });
+  } else {
+    stats.forEach(countUp);
+  }
+
+  /* ── feature card cursor glow ── */
+  document.querySelectorAll(".feature-card").forEach(function (card) {
+    card.addEventListener("mousemove", function (ev) {
+      var r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", (ev.clientX - r.left) + "px");
+      card.style.setProperty("--my", (ev.clientY - r.top) + "px");
+    });
+  });
+
+  /* ── hero live-tokenization demo ── */
+  var typedEl = document.getElementById("d-typed");
+  var caret = document.getElementById("d-caret");
+  var scanEl = document.getElementById("d-scan");
+  var sentEl = document.getElementById("d-sent");
+  var okEl = document.getElementById("d-ok");
+  if (!typedEl) return;
+
+  var pre = "Fix my deploy script, key = ";
+  var secret = "AKIAIOSFODNN7EXAMPLE";
+  var post = " keeps failing";
+
+  function setStatic() {
+    typedEl.innerHTML = pre + '<span class="tok-danger">' + secret + "</span>" + post;
+    caret.style.display = "none";
+    [scanEl, sentEl, okEl].forEach(function (el) { el.classList.add("on"); });
+  }
+  if (reduced) { setStatic(); return; }
+
+  function typeText(text, asDanger, done) {
+    var i = 0;
+    var span = null;
+    if (asDanger) {
+      span = document.createElement("span");
+      span.className = "tok-danger";
+      typedEl.appendChild(span);
+    }
+    (function tick() {
+      if (i < text.length) {
+        (asDanger ? span : typedEl).append(text[i]);
+        i++;
+        setTimeout(tick, asDanger ? 26 : 34);
+      } else {
+        done(span);
+      }
+    })();
+  }
+
+  function runDemo() {
+    typedEl.innerHTML = "";
+    caret.style.display = "inline-block";
+    [scanEl, sentEl, okEl].forEach(function (el) { el.classList.remove("on"); });
+
+    typeText(pre, false, function () {
+      typeText(secret, true, function (span) {
+        typeText(post, false, function () {
+          caret.style.display = "none";
+          setTimeout(function () {
+            span.classList.add("flash");
+            scanEl.classList.add("on");
+            setTimeout(function () {
+              sentEl.classList.add("on");
+              setTimeout(function () {
+                okEl.classList.add("on");
+                setTimeout(runDemo, 6000);
+              }, 900);
+            }, 1300);
+          }, 450);
+        });
+      });
+    });
+  }
+  setTimeout(runDemo, 700);
+})();
+</script>
+
+</body>
+</html>
