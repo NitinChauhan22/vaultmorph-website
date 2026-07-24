@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /_reference_not_deployed/
+
+Sitemap: https://vaultmorph.org/sitemap.xml
