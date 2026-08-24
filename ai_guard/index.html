@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VaultMorph Guard — an MCP server that redacts secrets and PII before an AI coding agent (Claude Code, Cursor, Codex) ever reads them into its context. Free, offline, no account." />
+  <meta property="og:title" content="VaultMorph Guard — Your AI Coding Agent Should Never Read Your Secrets" />
+  <meta property="og:description" content="Guard sits between your AI coding agent and your filesystem. A .env, an SSH key, or a customer export never reaches the agent's cloud LLM in real form." />
+  <meta property="og:url" content="https://vaultmorph.org/ai_guard/" />
+  <meta property="og:image" content="https://vaultmorph.org/assets/icon-256.png" />
+  <meta name="theme-color" content="#0b0d13" />
+  <link rel="canonical" href="https://vaultmorph.org/ai_guard/" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+  <link rel="apple-touch-icon" href="../assets/icon-128.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <title>VaultMorph Guard — Your AI Coding Agent Should Never Read Your Secrets</title>
+  <style>
+    :root {
+      --bg: #0b0d13;
+      --bg2: #0f1117;
+      --surface: rgba(24, 28, 36, 0.72);
+      --surface-solid: #171b24;
+      --surface2: #1e2330;
+      --border: #262c3a;
+      --border-hi: #35405a;
+      --accent: #4f8ef7;
+      --accent2: #7db2ff;
+      --accent-dim: #1e3a6e;
+      --accent-glow: rgba(79, 142, 247, 0.16);
+      --text: #e8edf5;
+      --text-muted: #94a3b8;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --purple: #a78bfa;
+      --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-display: "Space Grotesk", "Inter", sans-serif;
+      --font-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--accent-dim); color: #fff; }
+
+    .bg-fx {
+      position: fixed; inset: 0; z-index: -2; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 45% at 70% -5%, rgba(79,142,247,0.13), transparent 60%),
+        radial-gradient(ellipse 45% 35% at 12% 20%, rgba(167,139,250,0.07), transparent 60%),
+        var(--bg);
+    }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.5;
+      background-image:
+        linear-gradient(rgba(148,163,184,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,0.045) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 640px);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 640px);
+    }
+
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ── NAV ── */
+    header {
+      background: rgba(11, 13, 19, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.8rem 2rem;
+      display: flex; align-items: center; gap: 1.25rem;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-logo {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-family: var(--font-display);
+      font-weight: 700; font-size: 1.02rem; color: var(--text);
+      text-decoration: none; white-space: nowrap; letter-spacing: -0.01em;
+    }
+    .nav-logo img { width: 28px; height: 28px; display: block; }
+    .nav-logo b { color: var(--accent); font-weight: 700; }
+    .nav-logo span { color: var(--text-muted); font-weight: 500; }
+    header nav { margin-left: auto; display: flex; gap: 1.4rem; align-items: center; flex-wrap: wrap; }
+    header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.15s; }
+    header nav a:hover { color: var(--text); }
+    .nav-cta {
+      background: linear-gradient(135deg, #3b7de8, #5b9bff);
+      color: #fff !important; padding: 0.45rem 1.1rem; border-radius: 8px;
+      font-weight: 600; font-size: 0.85rem !important;
+      box-shadow: 0 0 18px rgba(79,142,247,0.35);
+      transition: box-shadow 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { box-shadow: 0 0 28px rgba(79,142,247,0.55); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 1120px; margin: 0 auto;
+      padding: 4.5rem 2rem 4rem;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(79,142,247,0.08);
+      color: var(--accent2);
+      border: 1px solid rgba(79,142,247,0.28);
+      border-radius: 100px;
+      font-size: 0.76rem; font-weight: 600;
+      padding: 0.32em 1em; letter-spacing: 0.04em;
+      margin-bottom: 1.4rem;
+      font-family: var(--font-mono);
+    }
+    .hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2.2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 4.6vw, 3.35rem);
+      font-weight: 700; line-height: 1.1;
+      margin-bottom: 1.3rem; letter-spacing: -0.03em;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(100deg, var(--accent) 10%, var(--accent2) 55%, var(--purple) 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+    }
+    .hero p { font-size: 1.08rem; color: var(--text-muted); max-width: 640px; margin: 0 auto 2rem; }
+    .hero-ctas { display: flex; gap: 0.9rem; flex-wrap: wrap; margin-bottom: 1.8rem; justify-content: center; }
+    .btn-primary {
+      background: linear-gradient(135deg, #3b7de8, #5b9bff);
+      color: #fff; padding: 0.8rem 1.7rem; border-radius: 10px;
+      text-decoration: none; font-weight: 700; font-size: 0.95rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      box-shadow: 0 4px 24px rgba(79,142,247,0.35);
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 34px rgba(79,142,247,0.5); }
+    .btn-secondary {
+      background: rgba(24,28,36,0.6); color: var(--text);
+      border: 1px solid var(--border-hi);
+      padding: 0.8rem 1.7rem; border-radius: 10px;
+      text-decoration: none; font-weight: 600; font-size: 0.95rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: border-color 0.15s, color 0.15s, transform 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent2); transform: translateY(-2px); }
+    .hero-meta { color: var(--text-muted); font-size: 0.82rem; display: flex; gap: 0.5rem 1.4rem; flex-wrap: wrap; justify-content: center; }
+    .hero-meta span { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .hero-meta svg { width: 14px; height: 14px; color: var(--green); flex-shrink: 0; }
+
+    .install-snippet {
+      max-width: 560px; margin: 0 auto 2.2rem; text-align: left;
+      background: rgba(15,17,23,0.85); border: 1px solid var(--border-hi);
+      border-radius: 12px; padding: 1.1rem 1.3rem;
+      font-family: var(--font-mono); font-size: 0.85rem; color: #cfe0ff;
+    }
+    .install-snippet .c1 { color: var(--text-muted); }
+    .install-snippet .c2::before { content: "$ "; color: var(--text-muted); }
+
+    /* ── STATS ── */
+    .stats-bar {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(24,28,36,0.55), rgba(15,17,23,0.4));
+      padding: 2rem;
+    }
+    .stats-inner {
+      max-width: 960px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 2rem; text-align: center;
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.4rem; font-weight: 700; display: block;
+      background: linear-gradient(120deg, var(--accent2), var(--accent));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+    .stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.1rem; }
+
+    /* ── SECTIONS ── */
+    .section { max-width: 1040px; margin: 0 auto; padding: 4.5rem 2rem; }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); font-weight: 600; margin-bottom: 0.8rem;
+    }
+    .section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+      font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.02em; line-height: 1.2;
+    }
+    .section > p { color: var(--text-muted); max-width: 660px; margin-bottom: 2.4rem; font-size: 1rem; }
+    .divider { border: none; border-top: 1px solid var(--border); max-width: 1040px; margin: 0 auto; }
+
+    /* ── PIPELINE (redact/restore flow) ── */
+    .pipeline {
+      background: var(--surface);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem; margin-top: 2rem;
+      font-family: var(--font-mono);
+      position: relative; overflow: hidden;
+    }
+    .pipeline::after {
+      content: ""; position: absolute; top: 0; left: -60%; width: 45%; height: 100%;
+      background: linear-gradient(105deg, transparent, rgba(79,142,247,0.05), transparent);
+      animation: sweep 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes sweep { 0% { left: -60%; } 60%, 100% { left: 120%; } }
+    .pipeline-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.85rem; }
+    .pipeline-row:last-child { margin-bottom: 0; }
+    .pill {
+      display: inline-block; padding: 0.32em 0.8em; border-radius: 100px;
+      font-size: 0.79rem; font-weight: 600; font-family: var(--font-mono);
+    }
+    .pill-red { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.32); }
+    .pill-blue { background: rgba(79,142,247,0.1); color: var(--accent2); border: 1px solid rgba(79,142,247,0.32); }
+    .pill-green { background: rgba(34,197,94,0.1); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+    .pill-gray { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
+    .arrow { color: var(--border-hi); font-size: 0.85rem; }
+    .pipeline-label { font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-body); margin-left: 0.25rem; }
+
+    /* ── GAP COMPARISON ── */
+    .gap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; margin-top: 2rem; }
+    @media (max-width: 760px) { .gap-grid { grid-template-columns: 1fr; } }
+    .gap-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; }
+    .gap-card h3 { font-size: 0.97rem; margin-bottom: 0.5rem; }
+    .gap-card.old { opacity: 0.75; }
+    .gap-card.old h3::before { content: "✕ "; color: var(--red); }
+    .gap-card.new h3::before { content: "✓ "; color: var(--green); }
+    .gap-card p { color: var(--text-muted); font-size: 0.88rem; margin: 0; }
+
+    /* ── LAYER TABLE ── */
+    .layer-table { width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: 0.88rem; }
+    .layer-table th, .layer-table td { text-align: left; padding: 0.9rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .layer-table th { color: var(--text-muted); font-weight: 600; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .layer-table td { color: var(--text-muted); }
+    .layer-table td.strong { color: var(--text); font-weight: 600; }
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 0.4rem 1rem; overflow-x: auto; }
+    .table-wrap .layer-table { margin: 0; }
+
+    /* ── FEATURE / BENEFIT GRID ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.1rem; margin-top: 2rem;
+    }
+    .feature-card {
+      background: var(--surface);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease;
+    }
+    .feature-card:hover { transform: translateY(-3px); border-color: var(--border-hi); box-shadow: 0 14px 40px rgba(0,0,0,0.35); }
+    .feature-card h3 { font-size: 0.97rem; font-weight: 700; margin-bottom: 0.45rem; color: var(--text); letter-spacing: -0.01em; }
+    .feature-card p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
+    .benefit-heading { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin: 2.2rem 0 0.3rem; }
+    .benefit-heading:first-of-type { margin-top: 0; }
+    .benefit-tag { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block; }
+
+    /* ── DEVELOPER GUIDE STEPS ── */
+    .workspace-steps {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem; margin-top: 1.5rem;
+    }
+    .ws-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.3rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .ws-step:hover { border-color: var(--border-hi); transform: translateY(-3px); }
+    .ws-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem; font-weight: 600; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 0.5rem;
+    }
+    .ws-step h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .ws-step p { font-size: 0.82rem; color: var(--text-muted); margin: 0 0 0.6rem; line-height: 1.55; }
+    .ws-step p:last-child { margin-bottom: 0; }
+    .ws-step code { font-family: var(--font-mono); font-size: 0.78em; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; padding: 0.08em 0.35em; color: var(--accent2); }
+    .ws-step pre {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.7rem 0.85rem; overflow-x: auto; font-size: 0.78rem; color: #cfe0ff;
+      font-family: var(--font-mono); margin: 0 0 0.6rem; line-height: 1.5;
+    }
+
+    /* ── INFO BOXES ── */
+    .info-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 1rem 1.3rem; margin: 1.4rem 0;
+      font-size: 0.9rem; color: var(--text-muted);
+    }
+    .info-box strong { color: var(--text); }
+    .info-box code { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; padding: 0.08em 0.35em; color: var(--accent2); }
+
+    /* ── HONESTY LIST ── */
+    .honesty-list { list-style: none; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.9rem; }
+    .honesty-list li { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; font-size: 0.88rem; color: var(--text-muted); }
+    .honesty-list strong { color: var(--text); }
+
+    /* ── INSTALL BOX (final CTA) ── */
+    .install-box {
+      background:
+        radial-gradient(ellipse 70% 90% at 50% -10%, rgba(79,142,247,0.14), transparent 60%),
+        var(--surface-solid);
+      border: 1px solid var(--border-hi);
+      border-radius: 20px;
+      padding: 3rem 2.5rem; text-align: center; margin-top: 2rem;
+    }
+    .install-box img { width: 56px; height: 56px; margin: 0 auto 1.1rem; display: block; filter: drop-shadow(0 6px 22px rgba(79,142,247,0.45)); }
+    .install-box h2 { font-family: var(--font-display); font-size: 1.65rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+    .install-box > p { color: var(--text-muted); margin-bottom: 1.9rem; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 3rem 2rem 2.5rem; }
+    .footer-inner {
+      max-width: 1040px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem;
+    }
+    .footer-brand-logo { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--font-display); font-weight: 700; font-size: 1rem; }
+    .footer-brand-logo img { width: 30px; height: 30px; }
+    .footer-brand-logo b { color: var(--accent); }
+    .footer-brand-logo span { color: var(--text-muted); font-weight: 500; }
+    .footer-brand p { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.7rem; line-height: 1.6; max-width: 300px; }
+    .footer-col h4 { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.8rem; font-weight: 600; }
+    .footer-col a { display: block; font-size: 0.875rem; color: var(--text-muted); text-decoration: none; margin-bottom: 0.45rem; transition: color 0.15s; }
+    .footer-col a:hover { color: var(--accent2); }
+    .footer-bottom {
+      max-width: 1040px; margin: 2.2rem auto 0; padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem; font-size: 0.8rem; color: var(--text-muted);
+    }
+    @media (max-width: 640px) {
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: 1 / -1; }
+      header { padding: 0.8rem 1.1rem; }
+      header nav { gap: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-fx"></div>
+<div class="bg-grid"></div>
+
+<!-- NAV -->
+<header>
+  <a class="nav-logo" href="https://vaultmorph.org">
+    <img src="../assets/icon-128.png" alt="VaultMorph Guard logo" width="28" height="28" />
+    <b>VaultMorph</b>&nbsp;<span>Guard</span>
+  </a>
+  <nav>
+    <a href="#how">How it works</a>
+    <a href="#benefits">Benefits</a>
+    <a href="#guide">Developer Guide</a>
+    <a href="#install" class="nav-cta">Install</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge"><span class="dot"></span> v0.3.0 &nbsp;·&nbsp; Early Access &nbsp;·&nbsp; Free</div>
+  <h1>Your AI coding agent should<br><em>never read your secrets in the clear.</em></h1>
+  <p>Guard is an MCP server that sits between Claude Code, Cursor, or Codex and your filesystem. The agent reads and writes through Guard instead of directly — so a <code style="font-family:var(--font-mono);color:var(--accent2);">.env</code>, an SSH key, or a customer export never reaches the agent's cloud LLM in real form.</p>
+  <div class="install-snippet">
+    <div class="c1">// npm install -g vaultmorph-guard</div>
+    <div class="c2">claude mcp add vaultmorph-guard -- vaultmorph-guard</div>
+  </div>
+  <div class="hero-ctas">
+    <a href="#install" class="btn-primary">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Install Guard — Free
+    </a>
+    <a href="#guide" class="btn-secondary">Read the Developer Guide →</a>
+  </div>
+  <div class="hero-meta">
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>No account, offline activation</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Claude Code · Cursor · Codex</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Free to use</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="reveal">
+      <span class="stat-num">127+</span>
+      <div class="stat-label">detection patterns</div>
+    </div>
+    <div class="reveal">
+      <span class="stat-num">0</span>
+      <div class="stat-label">raw secrets sent to the model</div>
+    </div>
+    <div class="reveal">
+      <span class="stat-num">3</span>
+      <div class="stat-label">agents supported today</div>
+    </div>
+    <div class="reveal">
+      <span class="stat-num">Free</span>
+      <div class="stat-label">no account, offline activation</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS / THE GAP -->
+<section class="section" id="how">
+  <div class="section-label">// the gap this fills</div>
+  <h2 class="reveal">Chat-box privacy tools don't help here</h2>
+  <p class="reveal">Browser extensions that scan what you paste into ChatGPT assume a human types or pastes something. Coding agents read files, run commands, and call the model's API on their own — there's no paste step to scan.</p>
+
+  <div class="gap-grid">
+    <div class="gap-card old reveal">
+      <h3>What existing tools catch</h3>
+      <p>A human copies a config value into a chat box, and a browser extension scans the field before it's sent. Useful — but it only covers content a person deliberately typed or pasted.</p>
+    </div>
+    <div class="gap-card new reveal">
+      <h3>What Guard catches</h3>
+      <p>An agent debugging a deploy issue opens <code style="font-family:var(--font-mono);color:var(--accent2);">.env</code>, greps a customer export, or catches an SSH key in a <code style="font-family:var(--font-mono);color:var(--accent2);">find</code> output — mid-task, autonomously. Guard redacts it before the agent ever sees it.</p>
+    </div>
+  </div>
+
+  <div class="pipeline reveal" style="margin-top:2rem;">
+    <div class="pipeline-row">
+      <span class="pill pill-red">Agent reads .env</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-gray">Detect (127 rules)</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-blue">&lt;&lt;VM_KEY_2_F1&gt;&gt;</span>
+      <span class="pipeline-label">tokenized before it reaches the model</span>
+    </div>
+    <div class="pipeline-row">
+      <span class="pill pill-blue">Agent reasons about token</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-gray">Suggests a fix</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-blue">Writes back through Guard</span>
+    </div>
+    <div class="pipeline-row">
+      <span class="pill pill-blue">Write verified against session</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-gray">Restore locally</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-green">Real values back on disk</span>
+      <span class="pipeline-label">never touched the network</span>
+    </div>
+  </div>
+
+  <div class="info-box reveal">
+    A write referencing a token the current session doesn't recognize is <strong>blocked</strong>, not warned about — a stale or forged token can't silently corrupt a file.
+  </div>
+
+  <div class="table-wrap reveal" style="margin-top:2rem;">
+    <table class="layer-table">
+      <thead><tr><th>Layer</th><th>What it catches</th><th>Guarantee</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="strong"><code style="font-family:var(--font-mono);color:var(--accent2);">safe_read</code> / <code style="font-family:var(--font-mono);color:var(--accent2);">safe_write</code></td>
+          <td>Any file the agent chooses to read through Guard</td>
+          <td>Real values never enter the agent's context — the redaction layer</td>
+        </tr>
+        <tr>
+          <td class="strong">Claude Code <code style="font-family:var(--font-mono);color:var(--accent2);">PreToolUse</code> hook</td>
+          <td>A raw Read/Edit/Write/Bash call bypassing Guard entirely</td>
+          <td>Model can't reason around it — runs outside the model. Best-effort only for Bash</td>
+        </tr>
+        <tr>
+          <td class="strong">Git pre-commit scanner</td>
+          <td>A secret that made it into a file anyway, about to be committed</td>
+          <td>Courtesy layer — <code style="font-family:var(--font-mono);color:var(--accent2);">--no-verify</code> bypasses it by design</td>
+        </tr>
+        <tr>
+          <td class="strong">Org policy (opt-in)</td>
+          <td>A developer disabling the hook locally</td>
+          <td>Centrally managed via <code style="font-family:var(--font-mono);color:var(--accent2);">managed-settings.json</code> — a developer genuinely can't turn it off</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- BENEFITS -->
+<section class="section" id="benefits">
+  <div class="section-label">// why teams adopt it</div>
+  <h2 class="reveal">Built for both sides of the AI-agent rollout conversation</h2>
+  <p class="reveal">Security and compliance owners need a control they can point to. Developers need a tool that doesn't get in the way of the agent actually being useful.</p>
+
+  <div class="benefit-heading reveal">Business &amp; compliance benefits</div>
+  <span class="benefit-tag">For security leads, engineering managers, and org admins</span>
+  <div class="feature-grid">
+    <div class="feature-card reveal">
+      <h3>Closes an unmonitored leak surface</h3>
+      <p>AI coding agents already have filesystem and network access — Guard is the control that was missing between them.</p>
+    </div>
+    <div class="feature-card reveal">
+      <h3>An enforcement guarantee, not a policy on paper</h3>
+      <p>On Claude Code, the hook can be centrally managed so no individual developer can disable it — "one policy, not per-developer configuration."</p>
+    </div>
+    <div class="feature-card reveal">
+      <h3>Audit evidence on demand</h3>
+      <p>A locally-logged, AES-256-GCM encrypted event history (metadata only) an admin can review for compliance purposes.</p>
+    </div>
+    <div class="feature-card reveal">
+      <h3>Extends coverage to your own risk profile</h3>
+      <p>Custom rule packs let you detect internal ticket formats, hostnames, or token shapes the bundled 127-rule set doesn't know about — without waiting on a vendor update.</p>
+    </div>
+    <div class="feature-card reveal">
+      <h3>Adopt AI coding tools without freezing them out</h3>
+      <p>Instead of banning agent access to sensitive files, Guard makes it safe to allow — agents stay useful, sensitive data stays off the wire.</p>
+    </div>
+    <div class="feature-card reveal">
+      <h3>No new infrastructure to run</h3>
+      <p>No server to host, no account required — it activates itself, fully offline, on the developer's machine, free to use.</p>
+    </div>
+  </div>
+
+  <div class="benefit-heading reveal">Developer benefits</div>
+  <span class="benefit-tag">For the person actually running the agent</span>
+  <div class="feature-grid">
+    <div class="feature-card reveal">
+      <h3>Doesn't break your workflow</h3>
+      <p>The agent still reads and edits the file — it just sees tokens instead of raw values, and real values are restored automatically on write.</p>
+    </div>
+    <div class="feature-card reveal">
+      <h3>Two-minute setup, zero accounts</h3>
+      <p><code style="font-family:var(--font-mono);color:var(--accent2);">npm install</code> plus one registration command; a Community license generates itself offline on first run.</p>
+    </div>
+    <div class="feature-card reveal">
+      <h3>Works with the tools you already use</h3>
+      <p>Standard MCP server — attaches to Claude Code, Cursor, and Codex the same way any other MCP server does.</p>
+    </div>
+    <div class="feature-card reveal">
+      <h3>Free where it matters</h3>
+      <p>The redact-on-read/restore-on-write round trip is free, indefinitely — no tier to navigate.</p>
+    </div>
+    <div class="feature-card reveal">
+      <h3>Honest about its own limits</h3>
+      <p>The docs state plainly where the guarantee is strong (Claude Code's hook) versus best-effort (Bash coverage, Cursor/Codex today) — no surprises when you rely on it.</p>
+    </div>
+    <div class="feature-card reveal">
+      <h3>A safety net for your own mistakes, too</h3>
+      <p>The git pre-commit scanner and audit log tail catch what slips through, without waiting for someone else to notice.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- DEVELOPER GUIDE -->
+<section class="section" id="guide">
+  <div class="section-label">// developer guide</div>
+  <h2 class="reveal">Install, administer, and use Guard</h2>
+  <p class="reveal">Guard is a small tool by design — installation, admin setup, and day-to-day usage are covered together here rather than split across separate manuals.</p>
+
+  <div class="workspace-steps">
+    <div class="ws-step reveal">
+      <div class="ws-num">01 — Quick install</div>
+      <h4>Per project</h4>
+      <pre>npm install -g vaultmorph-guard
+claude mcp add vaultmorph-guard -- vaultmorph-guard</pre>
+      <p>No account, no API key. A Community license generates itself automatically, fully offline, on first run.</p>
+    </div>
+    <div class="ws-step reveal">
+      <div class="ws-num">02 — Global setup</div>
+      <h4>Protect every project</h4>
+      <pre>npm install -g vaultmorph-guard
+vaultmorph-guard-setup</pre>
+      <p>Registers Guard at <code>--scope user</code>, installs the <code>PreToolUse</code> hook into <code>~/.claude/settings.json</code>, and points git's global <code>core.hooksPath</code> at Guard's pre-commit scanner. Safe to re-run any time.</p>
+    </div>
+    <div class="ws-step reveal">
+      <div class="ws-num">03 — Cursor &amp; Codex</div>
+      <h4>Attaching to other agents</h4>
+      <p>Guard is a standard MCP server (stdio transport). Cursor: add it to <code>.cursor/mcp.json</code>. Codex: <code>codex mcp add vaultmorph-guard -- node /path/to/server.mjs</code>.</p>
+      <p>Neither has Claude Code's model-independent <code>PreToolUse</code> hook today — both rely on the model choosing to call <code>safe_read</code>/<code>safe_write</code>, which is meaningfully weaker.</p>
+    </div>
+    <div class="ws-step reveal">
+      <div class="ws-num">04 — Admin</div>
+      <h4>Org-wide enforcement</h4>
+      <p>Deploy via Claude Code's <code>managed-settings.json</code> with <code>allowManagedHooksOnly: true</code> — Claude Code then only runs hooks from the managed config; a developer's own project settings are silently ignored.</p>
+      <p>Rollback: delete or rename the managed-settings.json at the system path — the same host/admin access a developer doesn't have.</p>
+    </div>
+    <div class="ws-step reveal">
+      <div class="ws-num">05 — Custom rule packs</div>
+      <h4>Extend detection</h4>
+      <pre>{
+  "pack_name": "acme-internal",
+  "rules": [{
+    "name": "Acme Ticket ID",
+    "regex": "\\bACME-[0-9]{6}\\b",
+    "type": "token",
+    "severity": "Medium"
+  }]
+}</pre>
+      <p>Default location: <code>~/.vaultmorph/guard/custom-rules.json</code>, loaded automatically at startup if present. Always additive — never removes or weakens a bundled rule.</p>
+    </div>
+    <div class="ws-step reveal">
+      <div class="ws-num">06 — Tools exposed</div>
+      <h4>Day-to-day use</h4>
+      <p><code>safe_read</code> / <code>safe_write</code> — the core round trip. <code>safe_search</code> — grep with tokenized matches. <code>guard_status</code> — tier, rules version, session count. <code>update_rules</code> — signed rule updates. <code>audit_log_tail</code> — encrypted local event history.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- SECURITY MODEL -->
+<section class="section" id="security">
+  <div class="section-label">// security model</div>
+  <h2 class="reveal">Stated honestly, not oversold</h2>
+  <ul class="honesty-list">
+    <li class="reveal"><strong>Detection has an inherent false-negative rate.</strong> Regex + entropy matching is the day-to-day layer, not a guarantee of catching everything — no pattern-matching approach is.</li>
+    <li class="reveal"><strong>The Claude Code hook is a real, model-can't-override guarantee</strong> for file tools on Claude Code specifically. Cursor and Codex don't have an equivalent mechanism today.</li>
+    <li class="reveal"><strong>This is not a full corporate DLP suite</strong> and it doesn't police model output — only what goes into the model from local files.</li>
+  </ul>
+</section>
+
+<hr class="divider" />
+
+<!-- INSTALL -->
+<section class="section" id="install">
+  <div class="section-label">// install</div>
+  <div class="install-box reveal">
+    <img src="../assets/icon-128.png" alt="VaultMorph Guard icon" />
+    <h2>Protect your first project in under two minutes</h2>
+    <p>No account, no API key, no infrastructure to stand up — free to use.</p>
+    <div class="install-snippet" style="margin:0 auto 1.6rem;">
+      <div class="c1">// npm install -g vaultmorph-guard</div>
+      <div class="c2">claude mcp add vaultmorph-guard -- vaultmorph-guard</div>
+    </div>
+    <div class="hero-ctas">
+      <a href="https://www.npmjs.com/package/vaultmorph-guard" target="_blank" rel="noopener" class="btn-primary">View on npm</a>
+      <a href="#guide" class="btn-secondary">Back to the Developer Guide</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-brand-logo">
+        <img src="../assets/icon-128.png" alt="VaultMorph Guard logo" width="30" height="30" />
+        <span><b>VaultMorph</b> <span>Guard</span></span>
+      </div>
+      <p>Privacy-first tools that keep your secrets, passwords, and AI conversations on your own device.</p>
+      <div style="margin-top:0.75rem;font-size:0.82rem;color:var(--text-muted)">contact@vaultmorph.org</div>
+    </div>
+    <div class="footer-col">
+      <h4>Guard</h4>
+      <a href="#how">How it works</a>
+      <a href="#benefits">Benefits</a>
+      <a href="#guide">Developer Guide</a>
+      <a href="#install">Install</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="https://www.npmjs.com/package/vaultmorph-guard" target="_blank" rel="noopener">npm package</a>
+      <a href="https://vaultmorph.org/verify/">Verify Download</a>
+      <a href="https://vaultmorph.org/attributions/">Attributions</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="https://vaultmorph.org/privacy/">Privacy Policy</a>
+      <a href="https://vaultmorph.org/terms/">Terms of Use</a>
+      <a href="https://vaultmorph.org/security/">Security Policy</a>
+      <a href="mailto:contact@vaultmorph.org">Support</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 VaultMorph. All rights reserved.</span>
+    <span><a href="https://vaultmorph.org" style="color:var(--accent)">vaultmorph.org</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var revealEls = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window && !reduced) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add("visible"); });
+  }
+})();
+</script>
+
+</body>
+</html>
