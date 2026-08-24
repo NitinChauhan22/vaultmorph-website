@@ -11,15 +11,15 @@
   
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="VaultMorph — privacy-first security suite. An offline password manager and an AI chat client with built-in DLP. Your secrets never touch the cloud." />
+  <meta name="description" content="VaultMorph — privacy-first security suite. An offline password manager, an AI chat client with built-in DLP, and an MCP server that redacts secrets from your AI coding agent. Your secrets never touch the cloud." />
   <meta property="og:title" content="VaultMorph — Privacy-First Security Suite" />
-  <meta property="og:description" content="An offline password manager and an AI chat client with built-in DLP. 100% on-device. Zero telemetry." />
+  <meta property="og:description" content="A password manager, an AI chat client, and an AI coding agent guard — all built with built-in DLP. 100% on-device. Zero telemetry." />
   <meta property="og:url" content="https://vaultmorph.org/" />
   <meta property="og:image" content="https://vaultmorph.org/assets/icon-256.png" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="VaultMorph — Privacy-First Security Suite" />
-    <meta name="twitter:description" content="An offline password manager and an AI chat client with built-in DLP. 100% on-device. Zero telemetry." />
+    <meta name="twitter:description" content="A password manager, an AI chat client, and an AI coding agent guard — all built with built-in DLP. 100% on-device. Zero telemetry." />
     <meta name="twitter:image" content="https://vaultmorph.org/assets/icon-256.png" />
   <meta name="theme-color" content="#0b0d13" />
   <link rel="canonical" href="https://vaultmorph.org/" />
@@ -43,6 +43,8 @@
       --blue2: #7db2ff;
       --teal: #00e2b8;
       --teal2: #5ff0d4;
+      --purple: #8b5cf6;
+      --purple2: #c4b5fd;
       --text: #e8edf5;
       --text-muted: #94a3b8;
       --green: #22c55e;
@@ -158,11 +160,21 @@
       transition: transform 0.15s, box-shadow 0.2s;
     }
     .btn-shield:hover { transform: translateY(-2px); box-shadow: 0 8px 34px rgba(79,142,247,0.5); }
+    .btn-guard {
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      color: #fff; padding: 0.8rem 1.7rem; border-radius: 10px;
+      text-decoration: none; font-weight: 700; font-size: 0.95rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      box-shadow: 0 4px 24px rgba(139,92,246,0.32);
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-guard:hover { transform: translateY(-2px); box-shadow: 0 8px 34px rgba(139,92,246,0.5); }
 
     /* ── PRODUCT CARDS ── */
-    .products { max-width: 1040px; margin: 0 auto; padding: 1rem 2rem 4.5rem; }
-    .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    @media (max-width: 860px) { .products-grid { grid-template-columns: 1fr; } }
+    .products { max-width: 1280px; margin: 0 auto; padding: 1rem 2rem 4.5rem; }
+    .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    @media (max-width: 1080px) { .products-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px) { .products-grid { grid-template-columns: 1fr; } }
     .product-card {
       background: var(--surface);
       backdrop-filter: blur(6px);
@@ -176,11 +188,13 @@
     .product-card:hover { transform: translateY(-4px); box-shadow: 0 18px 50px rgba(0,0,0,0.4); }
     .product-card.vault:hover { border-color: rgba(0,226,184,0.5); }
     .product-card.shield:hover { border-color: rgba(79,142,247,0.55); }
+    .product-card.guard:hover { border-color: rgba(139,92,246,0.55); }
     .product-card::before {
       content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
     }
     .product-card.vault::before { background: linear-gradient(90deg, var(--teal), transparent 80%); }
     .product-card.shield::before { background: linear-gradient(90deg, var(--blue), transparent 80%); }
+    .product-card.guard::before { background: linear-gradient(90deg, var(--purple), transparent 80%); }
     .product-topline { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 1.2rem; }
     .product-icon {
       width: 52px; height: 52px; border-radius: 13px; flex-shrink: 0;
@@ -188,9 +202,10 @@
     }
     .product-card.vault .product-icon { background: linear-gradient(145deg, rgba(0,226,184,0.16), rgba(0,226,184,0.04)); border: 1px solid rgba(0,226,184,0.3); }
     .product-card.shield .product-icon { background: linear-gradient(145deg, rgba(79,142,247,0.16), rgba(79,142,247,0.04)); border: 1px solid rgba(79,142,247,0.3); }
+    .product-card.guard .product-icon { background: linear-gradient(145deg, rgba(139,92,246,0.16), rgba(139,92,246,0.04)); border: 1px solid rgba(139,92,246,0.3); }
     .product-icon svg { width: 26px; height: 26px; }
     .product-card.vault .product-icon svg { color: var(--teal); }
-    .product-card.shield .product-icon img { width: 30px; height: 30px; }
+    .product-card.shield .product-icon img, .product-card.guard .product-icon img { width: 30px; height: 30px; }
     .product-badge {
       font-family: var(--font-mono);
       font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em;
@@ -199,6 +214,7 @@
     }
     .product-card.vault .product-badge { background: rgba(0,226,184,0.1); border: 1px solid rgba(0,226,184,0.3); color: var(--teal); }
     .product-card.shield .product-badge { background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.32); color: var(--blue2); }
+    .product-card.guard .product-badge { background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.32); color: var(--purple2); }
     .product-card h2 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.6rem; }
     .product-card > p { font-size: 0.94rem; color: var(--text-muted); margin-bottom: 1.4rem; }
     .product-points { list-style: none; margin-bottom: 1.6rem; flex: 1; }
@@ -209,6 +225,7 @@
     .product-points .pt { flex-shrink: 0; font-weight: 700; margin-top: 0.05em; }
     .product-card.vault .pt { color: var(--teal); }
     .product-card.shield .pt { color: var(--blue2); }
+    .product-card.guard .pt { color: var(--purple2); }
     .product-points strong { color: var(--text); font-weight: 600; }
     .product-actions { display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; }
     .p-cta {
@@ -219,9 +236,11 @@
     .p-cta:hover { transform: translateY(-1px); }
     .p-cta-vault { background: linear-gradient(135deg, #00b892, #00e2b8); color: #04211a; box-shadow: 0 3px 16px rgba(0,226,184,0.25); }
     .p-cta-shield { background: linear-gradient(135deg, #3b7de8, #5b9bff); color: #fff; box-shadow: 0 3px 16px rgba(79,142,247,0.3); }
+    .p-cta-guard { background: linear-gradient(135deg, #7c3aed, #a78bfa); color: #fff; box-shadow: 0 3px 16px rgba(139,92,246,0.28); }
     .p-ghost { color: var(--text-muted); text-decoration: none; font-size: 0.86rem; font-weight: 600; transition: color 0.15s; }
     .product-card.vault .p-ghost:hover { color: var(--teal); }
     .product-card.shield .p-ghost:hover { color: var(--blue2); }
+    .product-card.guard .p-ghost:hover { color: var(--purple2); }
     .platform-note { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.9rem; font-family: var(--font-mono); }
 
     /* ── PRINCIPLES ── */
@@ -291,10 +310,10 @@
     }
   </style>
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"Organization","name":"VaultMorph","url":"https://vaultmorph.org/","logo":"https://vaultmorph.org/assets/icon-256.png","email":"contact@vaultmorph.org","sameAs":["https://github.com/NitinChauhan22"],"description":"VaultMorph builds privacy-first security tools: an offline password manager and an AI chat client with built-in data-leak prevention."}
+    {"@context":"https://schema.org","@type":"Organization","name":"VaultMorph","url":"https://vaultmorph.org/","logo":"https://vaultmorph.org/assets/icon-256.png","email":"contact@vaultmorph.org","sameAs":["https://github.com/NitinChauhan22"],"description":"VaultMorph builds privacy-first security tools: an offline password manager, an AI chat client with built-in data-leak prevention, and an MCP server that redacts secrets for AI coding agents."}
   </script>
   <script type="application/ld+json">
-    {"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"VaultMorph Vault","url":"https://vaultmorph.org/password_manager/","applicationCategory":"SecurityApplication","operatingSystem":"Android, Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A fully offline password manager with AES-256-GCM per-field encryption, Argon2id key derivation, and TOTP 2FA."},{"@type":"SoftwareApplication","name":"VaultMorph AI Shield","url":"https://vaultmorph.org/ai_shield_chat/","applicationCategory":"SecurityApplication","operatingSystem":"Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"An AI chat client with a built-in data-leak-prevention engine that detects and tokenizes secrets locally before any AI provider sees them."}]}
+    {"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"VaultMorph Vault","url":"https://vaultmorph.org/password_manager/","applicationCategory":"SecurityApplication","operatingSystem":"Android, Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A fully offline password manager with AES-256-GCM per-field encryption, Argon2id key derivation, and TOTP 2FA."},{"@type":"SoftwareApplication","name":"VaultMorph AI Shield","url":"https://vaultmorph.org/ai_shield_chat/","applicationCategory":"SecurityApplication","operatingSystem":"Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"An AI chat client with a built-in data-leak-prevention engine that detects and tokenizes secrets locally before any AI provider sees them."},{"@type":"SoftwareApplication","name":"VaultMorph Guard","url":"https://vaultmorph.org/ai_guard/","applicationCategory":"DeveloperApplication","operatingSystem":"Cross-platform (Node.js)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"An MCP server that redacts secrets and PII from files before an AI coding agent (Claude Code, Cursor, Codex) reads them into its context."}]}
   </script>
 
 </head>
@@ -312,6 +331,7 @@
   <nav>
     <a href="/password_manager/">Vault</a>
     <a href="/ai_shield_chat/">AI Shield</a>
+    <a href="/ai_guard/">Guard</a>
     <a href="/ai_shield_chat/docs/">Docs</a>
     <a href="https://github.com/NitinChauhan22" target="_blank" rel="noopener">GitHub</a>
     <a href="#products" class="nav-cta">Get Started</a>
@@ -322,7 +342,7 @@
 <div class="hero">
   <div class="hero-badge"><span class="dot"></span> 100% offline · zero telemetry · no cloud</div>
   <h1>Your secrets should<br><em>never touch the cloud.</em></h1>
-  <p>VaultMorph builds privacy-first security tools for developers and security-conscious users. Two products, one principle: everything is encrypted and processed on your device.</p>
+  <p>VaultMorph builds privacy-first security tools for developers and security-conscious users. Three products, one principle: everything is encrypted and processed on your device.</p>
   <div class="hero-ctas">
     <a href="/password_manager/" class="btn-vault">
       <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -331,6 +351,10 @@
     <a href="/ai_shield_chat/" class="btn-shield">
       <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       AI Shield Chatbot
+    </a>
+    <a href="/ai_guard/" class="btn-guard">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
+      VaultMorph Guard
     </a>
   </div>
 </div>
@@ -389,6 +413,30 @@
       <div class="platform-note">Windows 10/11 · macOS &amp; Linux soon · Community free</div>
     </div>
 
+    <div class="product-card guard reveal">
+      <div class="product-topline">
+        <span class="product-icon">
+          <img src="assets/icon-128.png" alt="VaultMorph Guard icon" width="30" height="30" />
+        </span>
+        <div>
+          <span class="product-badge">MCP Server · Early Access</span>
+        </div>
+      </div>
+      <h2>VaultMorph Guard</h2>
+      <p>An MCP server that sits between your AI coding agent and your filesystem. Claude Code, Cursor, and Codex read and write through Guard instead of directly — real secrets never reach the model.</p>
+      <ul class="product-points">
+        <li><span class="pt">✓</span><span><strong>Redact-on-read, restore-on-write</strong> — the agent works with tokens, never raw values</span></li>
+        <li><span class="pt">✓</span><span><strong>127+ detection patterns</strong> — same engine that powers AI Shield</span></li>
+        <li><span class="pt">✓</span><span><strong>Claude Code <code style="font-family:var(--font-mono);font-size:0.85em;">PreToolUse</code> hook</strong> — a model-can't-override guarantee</span></li>
+        <li><span class="pt">✓</span><span><strong>Free, offline activation</strong> — no account, install in two minutes</span></li>
+      </ul>
+      <div class="product-actions">
+        <a href="/ai_guard/" class="p-cta p-cta-guard">Explore Guard →</a>
+        <a href="/ai_guard/#guide" class="p-ghost">Developer Guide ↓</a>
+      </div>
+      <div class="platform-note">Claude Code · Cursor · Codex · npm install</div>
+    </div>
+
   </div>
 </section>
 
@@ -400,7 +448,7 @@
     <div class="principles-grid">
       <div class="principle reveal">
         <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l22 22"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.58 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>Offline by default</h3>
-        <p>Vault blocks all network traffic at the OS level. AI Shield's detection engine runs fully offline — only sanitized prompts reach providers you choose.</p>
+        <p>Vault blocks all network traffic at the OS level. AI Shield's detection engine runs fully offline, and Guard's redaction runs locally in your agent's own process — only sanitized content ever leaves the machine.</p>
       </div>
       <div class="principle reveal">
         <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>Zero telemetry</h3>
@@ -423,7 +471,7 @@
   <div class="stats-inner">
     <div class="reveal">
       <span class="stat-num">AES-256</span>
-      <div class="stat-label">GCM encryption in both products</div>
+      <div class="stat-label">GCM encryption across our products</div>
     </div>
     <div class="reveal">
       <span class="stat-num">127</span>
@@ -455,6 +503,7 @@
       <h4>Products</h4>
       <a href="/password_manager/">Vault — Password Manager</a>
       <a href="/ai_shield_chat/">AI Shield Chatbot</a>
+      <a href="/ai_guard/">Guard — AI Agent MCP Server</a>
       <a href="/ai_shield_chat/docs/">AI Shield Docs</a>
       <a href="/downloads/">All Downloads</a>
     </div>
