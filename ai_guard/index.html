@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="VaultMorph Guard — an MCP server that redacts secrets and PII before an AI coding agent (Claude Code, Cursor, Codex) ever reads them into its context. Free, offline, no account." />
+  <meta name="description" content="VaultMorph Guard — an MCP server that redacts secrets and PII before an AI coding agent (Claude Code CLI, Codex CLI) ever reads them into its context. Free, offline, no account." />
   <meta property="og:title" content="VaultMorph Guard — Your AI Coding Agent Should Never Read Your Secrets" />
   <meta property="og:description" content="Guard sits between your AI coding agent and your filesystem. A .env, an SSH key, or a customer export never reaches the agent's cloud LLM in real form." />
   <meta property="og:url" content="https://vaultmorph.org/ai_guard/" />
@@ -386,7 +386,7 @@
 <div class="hero">
   <div class="hero-badge"><span class="dot"></span> v0.3.0 &nbsp;·&nbsp; Early Access &nbsp;·&nbsp; Free</div>
   <h1>Your AI coding agent should<br><em>never read your secrets in the clear.</em></h1>
-  <p>Guard is an MCP server that sits between Claude Code, Cursor, or Codex and your filesystem. The agent reads and writes through Guard instead of directly — so a <code style="font-family:var(--font-mono);color:var(--accent2);">.env</code>, an SSH key, or a customer export never reaches the agent's cloud LLM in real form.</p>
+  <p>Guard is an MCP server that sits between Claude Code CLI or Codex CLI and your filesystem. The agent reads and writes through Guard instead of directly — so a <code style="font-family:var(--font-mono);color:var(--accent2);">.env</code>, an SSH key, or a customer export never reaches the agent's cloud LLM in real form.</p>
   <div class="install-snippet">
     <div class="c1">// npm install -g vaultmorph-guard</div>
     <div class="c2">claude mcp add vaultmorph-guard -- vaultmorph-guard</div>
@@ -400,7 +400,7 @@
   </div>
   <div class="hero-meta">
     <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>No account, offline activation</span>
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Claude Code · Cursor · Codex</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Claude Code CLI · Codex CLI</span>
     <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Free to use</span>
   </div>
 </div>
@@ -417,7 +417,7 @@
       <div class="stat-label">raw secrets sent to the model</div>
     </div>
     <div class="reveal">
-      <span class="stat-num">3</span>
+      <span class="stat-num">2</span>
       <div class="stat-label">agents supported today</div>
     </div>
     <div class="reveal">
@@ -489,6 +489,11 @@
           <td>Model can't reason around it — runs outside the model. Best-effort only for Bash</td>
         </tr>
         <tr>
+          <td class="strong">Codex CLI <code style="font-family:var(--font-mono);color:var(--accent2);">PreToolUse</code> hook</td>
+          <td>A raw shell/<code style="font-family:var(--font-mono);color:var(--accent2);">apply_patch</code>/Edit/Write call bypassing Guard on the Codex CLI terminal</td>
+          <td>Real enforcement once installed and trusted via <code style="font-family:var(--font-mono);color:var(--accent2);">/hooks</code> — schema-tolerant rather than an exact-field guarantee like Claude Code's. Doesn't cover the desktop app's run-command feature</td>
+        </tr>
+        <tr>
           <td class="strong">Git pre-commit scanner</td>
           <td>A secret that made it into a file anyway, about to be committed</td>
           <td>Courtesy layer — <code style="font-family:var(--font-mono);color:var(--accent2);">--no-verify</code> bypasses it by design</td>
@@ -553,7 +558,7 @@
     </div>
     <div class="feature-card reveal">
       <h3>Works with the tools you already use</h3>
-      <p>Standard MCP server — attaches to Claude Code, Cursor, and Codex the same way any other MCP server does.</p>
+      <p>Standard MCP server — attaches to Claude Code CLI and Codex CLI the same way any other MCP server does.</p>
     </div>
     <div class="feature-card reveal">
       <h3>Free where it matters</h3>
@@ -561,7 +566,7 @@
     </div>
     <div class="feature-card reveal">
       <h3>Honest about its own limits</h3>
-      <p>The docs state plainly where the guarantee is strong (Claude Code's hook) versus best-effort (Bash coverage, Cursor/Codex today) — no surprises when you rely on it.</p>
+      <p>The docs state plainly where the guarantee is strong (Claude Code's hook) versus best-effort (Bash coverage, and Codex CLI's schema-tolerant hook) — no surprises when you rely on it.</p>
     </div>
     <div class="feature-card reveal">
       <h3>A safety net for your own mistakes, too</h3>
@@ -594,10 +599,12 @@ vaultmorph-guard-setup</pre>
       <p>Registers Guard at <code>--scope user</code>, installs the <code>PreToolUse</code> hook into <code>~/.claude/settings.json</code>, and points git's global <code>core.hooksPath</code> at Guard's pre-commit scanner. Safe to re-run any time.</p>
     </div>
     <div class="ws-step reveal">
-      <div class="ws-num">03 — Cursor &amp; Codex</div>
-      <h4>Attaching to other agents</h4>
-      <p>Guard is a standard MCP server (stdio transport). Cursor: add it to <code>.cursor/mcp.json</code>. Codex: <code>codex mcp add vaultmorph-guard -- node /path/to/server.mjs</code>.</p>
-      <p>Neither has Claude Code's model-independent <code>PreToolUse</code> hook today — both rely on the model choosing to call <code>safe_read</code>/<code>safe_write</code>, which is meaningfully weaker.</p>
+      <div class="ws-num">03 — Codex CLI</div>
+      <h4>Attaching to Codex, with real enforcement</h4>
+      <p>Guard is a standard MCP server (stdio transport): <code>codex mcp add vaultmorph-guard -- node /path/to/server.mjs</code>.</p>
+      <pre>node scripts/install-codex-hook.mjs /path/to/your/project</pre>
+      <p>That registers Codex's own <code>PreToolUse</code> hook and sets <code>[features] hooks = true</code> in <code>config.toml</code> — then run <code>/hooks</code> inside a Codex CLI session to trust it. Codex won't execute an untrusted hook at all.</p>
+      <p>Once trusted, it's real enforcement on shell/exec, <code>apply_patch</code>, and file-tool calls — but schema-tolerant rather than an exact-field match, so treat it as a solid backstop, not an identical guarantee to Claude Code's hook. It only covers the CLI terminal: the Codex desktop app's built-in run-command feature doesn't route through it, so for now Guard's publicized support stops at the Codex CLI terminal.</p>
     </div>
     <div class="ws-step reveal">
       <div class="ws-num">04 — Admin</div>
@@ -635,7 +642,7 @@ vaultmorph-guard-setup</pre>
   <h2 class="reveal">Stated honestly, not oversold</h2>
   <ul class="honesty-list">
     <li class="reveal"><strong>Detection has an inherent false-negative rate.</strong> Regex + entropy matching is the day-to-day layer, not a guarantee of catching everything — no pattern-matching approach is.</li>
-    <li class="reveal"><strong>The Claude Code hook is a real, model-can't-override guarantee</strong> for file tools on Claude Code specifically. Cursor and Codex don't have an equivalent mechanism today.</li>
+    <li class="reveal"><strong>The Claude Code hook is a real, model-can't-override guarantee</strong> for file tools on Claude Code specifically. Codex CLI has a comparable <code>PreToolUse</code> hook once you install and trust it — but it's schema-tolerant rather than an exact-field match, so call it a real backstop, not an identical guarantee. Guard's publicized support is scoped to these two CLIs — GUI/desktop run-command features (including Codex's own desktop app) aren't covered by either hook.</li>
     <li class="reveal"><strong>This is not a full corporate DLP suite</strong> and it doesn't police model output — only what goes into the model from local files.</li>
   </ul>
 </section>

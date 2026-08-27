@@ -313,7 +313,7 @@
     {"@context":"https://schema.org","@type":"Organization","name":"VaultMorph","url":"https://vaultmorph.org/","logo":"https://vaultmorph.org/assets/icon-256.png","email":"contact@vaultmorph.org","sameAs":["https://github.com/NitinChauhan22"],"description":"VaultMorph builds privacy-first security tools: an offline password manager, an AI chat client with built-in data-leak prevention, and an MCP server that redacts secrets for AI coding agents."}
   </script>
   <script type="application/ld+json">
-    {"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"VaultMorph Vault","url":"https://vaultmorph.org/password_manager/","applicationCategory":"SecurityApplication","operatingSystem":"Android, Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A fully offline password manager with AES-256-GCM per-field encryption, Argon2id key derivation, and TOTP 2FA."},{"@type":"SoftwareApplication","name":"VaultMorph AI Shield","url":"https://vaultmorph.org/ai_shield_chat/","applicationCategory":"SecurityApplication","operatingSystem":"Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"An AI chat client with a built-in data-leak-prevention engine that detects and tokenizes secrets locally before any AI provider sees them."},{"@type":"SoftwareApplication","name":"VaultMorph Guard","url":"https://vaultmorph.org/ai_guard/","applicationCategory":"DeveloperApplication","operatingSystem":"Cross-platform (Node.js)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"An MCP server that redacts secrets and PII from files before an AI coding agent (Claude Code, Cursor, Codex) reads them into its context."}]}
+    {"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"VaultMorph Vault","url":"https://vaultmorph.org/password_manager/","applicationCategory":"SecurityApplication","operatingSystem":"Android, Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A fully offline password manager with AES-256-GCM per-field encryption, Argon2id key derivation, and TOTP 2FA."},{"@type":"SoftwareApplication","name":"VaultMorph AI Shield","url":"https://vaultmorph.org/ai_shield_chat/","applicationCategory":"SecurityApplication","operatingSystem":"Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"An AI chat client with a built-in data-leak-prevention engine that detects and tokenizes secrets locally before any AI provider sees them."},{"@type":"SoftwareApplication","name":"VaultMorph Guard","url":"https://vaultmorph.org/ai_guard/","applicationCategory":"DeveloperApplication","operatingSystem":"Cross-platform (Node.js)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"An MCP server that redacts secrets and PII from files before an AI coding agent (Claude Code CLI, Codex CLI) reads them into its context."}]}
   </script>
 
 </head>
@@ -423,18 +423,18 @@
         </div>
       </div>
       <h2>VaultMorph Guard</h2>
-      <p>An MCP server that sits between your AI coding agent and your filesystem. Claude Code, Cursor, and Codex read and write through Guard instead of directly — real secrets never reach the model.</p>
+      <p>An MCP server that sits between your AI coding agent and your filesystem. Claude Code CLI and Codex CLI read and write through Guard instead of directly — real secrets never reach the model.</p>
       <ul class="product-points">
         <li><span class="pt">✓</span><span><strong>Redact-on-read, restore-on-write</strong> — the agent works with tokens, never raw values</span></li>
         <li><span class="pt">✓</span><span><strong>127+ detection patterns</strong> — same engine that powers AI Shield</span></li>
-        <li><span class="pt">✓</span><span><strong>Claude Code <code style="font-family:var(--font-mono);font-size:0.85em;">PreToolUse</code> hook</strong> — a model-can't-override guarantee</span></li>
+        <li><span class="pt">✓</span><span><strong><code style="font-family:var(--font-mono);font-size:0.85em;">PreToolUse</code> hooks on both CLIs</strong> — a model-can't-override guarantee on Claude Code, a schema-tolerant backstop on Codex CLI</span></li>
         <li><span class="pt">✓</span><span><strong>Free, offline activation</strong> — no account, install in two minutes</span></li>
       </ul>
       <div class="product-actions">
         <a href="/ai_guard/" class="p-cta p-cta-guard">Explore Guard →</a>
         <a href="/ai_guard/#guide" class="p-ghost">Developer Guide ↓</a>
       </div>
-      <div class="platform-note">Claude Code · Cursor · Codex · npm install</div>
+      <div class="platform-note">Claude Code CLI · Codex CLI · npm install</div>
     </div>
 
   </div>
