@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentation — SecureGraph AI</title>
+  <style>
+    :root {
+      --bg: #0f1117; --surface: #181c24; --border: #2a2f3d;
+      --accent: #22d3ee; --accent-dim: #0e4a54;
+      --text: #e2e8f0; --text-muted: #94a3b8;
+      --green: #22c55e; --yellow: #f59e0b; --red: #ef4444; --orange: #f97316;
+      --sidebar-w: 250px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+    header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; }
+    header .logo { font-weight: 700; font-size: 1.1rem; color: var(--accent); text-decoration: none; }
+    header .logo span { color: var(--text); font-weight: 400; }
+    header nav { margin-left: auto; display: flex; gap: 1.5rem; align-items: center; }
+    header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
+    header nav a:hover { color: var(--text); }
+    .layout { display: flex; min-height: calc(100vh - 57px); }
+    .sidebar { width: var(--sidebar-w); background: var(--surface); border-right: 1px solid var(--border); padding: 2rem 0; flex-shrink: 0; position: sticky; top: 57px; height: calc(100vh - 57px); overflow-y: auto; }
+    .sidebar-section { margin-bottom: 1.6rem; }
+    .sidebar-heading { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 0 1.5rem; margin-bottom: 0.5rem; }
+    .sidebar a { display: block; padding: 0.3rem 1.5rem; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; border-left: 2px solid transparent; transition: all 0.15s; }
+    .sidebar a:hover { color: var(--text); background: rgba(34,211,238,0.06); border-left-color: var(--accent-dim); }
+    .main { flex: 1; padding: 3rem 3rem 4rem; max-width: 900px; }
+    .badge { display: inline-block; background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-dim); border-radius: 4px; font-size: 0.75rem; font-weight: 600; padding: 0.2em 0.6em; margin-bottom: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .meta { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 2.5rem; }
+    section { margin-bottom: 3rem; scroll-margin-top: 80px; }
+    h2 { font-size: 1.3rem; font-weight: 600; color: var(--text); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 0.6rem; color: var(--text); }
+    p { margin-bottom: 0.9rem; color: var(--text-muted); }
+    p strong, li strong { color: var(--text); }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.9rem; }
+    li { color: var(--text-muted); margin-bottom: 0.4rem; }
+    code { font-family: "Cascadia Code","Fira Code","Consolas",monospace; font-size: 0.85em; background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 0.1em 0.35em; color: #a5d6ff; }
+    .info-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+    .info-box p { margin: 0; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.85rem; }
+    th { background: var(--surface); border: 1px solid var(--border); padding: 0.55rem 0.8rem; text-align: left; font-weight: 600; color: var(--text); }
+    td { border: 1px solid var(--border); padding: 0.55rem 0.8rem; color: var(--text-muted); vertical-align: top; }
+    a { color: var(--accent); }
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 768px) { .sidebar { display: none; } .main { padding: 2rem 1.25rem; } }
+  </style>
+</head>
+<body>
+<header>
+  <a class="logo" href="../">VaultMorph <span>SecureGraph AI</span></a>
+  <nav>
+    <a href="../">Home</a>
+    <a href="#user-guide">User Guide</a>
+    <a href="#admin-guide">Admin Guide</a>
+  </nav>
+</header>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-heading">User Guide</div>
+      <a href="#what-is">1. What is SecureGraph AI?</a>
+      <a href="#scan-vs-observation">2. Scan vs. Observation</a>
+      <a href="#engines">3. The engines</a>
+      <a href="#engine-deps">4. Engine dependencies</a>
+      <a href="#running-a-scan">5. Running a scan</a>
+      <a href="#graph-correlation">6. Graph, Correlation &amp; Attack Paths</a>
+      <a href="#dashboards">7. Dashboards</a>
+      <a href="#findings">8. Findings lifecycle</a>
+      <a href="#reports">9. The ten report types</a>
+      <a href="#reading-report">10. Reading a report</a>
+      <a href="#what-to-expect">11. What to expect</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Admin Guide</div>
+      <a href="#install-license">Installation &amp; licensing</a>
+      <a href="#install-deps">Installing scanner engines</a>
+      <a href="#configuring-scans">Configuring scans</a>
+      <a href="#troubleshooting">Troubleshooting</a>
+      <a href="#ai-firewall">AI Context Firewall &amp; Audit</a>
+      <a href="#secrets-validation">Secrets validation policy</a>
+      <a href="#reports-admin">Reports — admin notes</a>
+      <a href="#privacy-consent">Privacy &amp; consent</a>
+      <a href="#siem-enterprise">SIEM &amp; Enterprise</a>
+      <a href="#data-storage">Data &amp; storage</a>
+      <a href="#support">Support</a>
+    </div>
+  </aside>
+  <main class="main">
+    <span class="badge">Documentation</span>
+    <h1>SecureGraph AI</h1>
+    <p class="meta">User Guide &amp; Admin Guide — GUI-first SSDLC security platform</p>
+
+    <section id="user-guide">
+      <h2 id="what-is">1. What is SecureGraph AI?</h2>
+      <p>SecureGraph AI is a GUI-first desktop security platform for developers and AppSec teams. It runs a set of security engines against your codebase and infrastructure, correlates every finding into one security graph, and shows you which issues are actually reachable and exploitable — not just a long, undifferentiated list of alerts. The desktop app is the primary interface; a CLI exists for automation and CI/CD.</p>
+
+      <h2 id="scan-vs-observation">2. Core concepts: Scan vs. Observation</h2>
+      <p><strong>Scan</strong> is an active check you run on demand (or in CI). It executes one or more engines against your codebase or artifact and produces raw findings for that run.</p>
+      <div class="info-box"><p><strong>Why it's needed:</strong> a scan is your evidence-gathering step. Without it you're guessing whether a library, endpoint, config file, or container image has a known weakness.</p></div>
+      <p><strong>Observation</strong> is what SecureGraph AI builds <em>from</em> your scans over time — the Security Graph and everything layered on it (Correlation, Attack Paths, the risk score, the Living Threat Model). It links findings across engines onto your real application structure and tracks how your risk posture changes scan over scan.</p>
+      <div class="info-box"><p><strong>Why it's needed:</strong> raw scanners each work in isolation and re-report the same root cause several different ways. Observation removes duplication, ranks by real exploitability, and gives you a durable, evolving picture instead of a one-off snapshot.</p></div>
+
+      <h2 id="engines">3. The engines — what each one does</h2>
+      <table>
+        <tr><th>Engine</th><th>What it checks</th><th>Nav location</th></tr>
+        <tr><td>SAST (Static Analysis)</td><td>Code-level flaws via rule-based pattern matching</td><td>Developer Workflow → Static Analysis</td></tr>
+        <tr><td>Taint Analysis (Advanced SAST)</td><td>Data-flow tracing from untrusted input to a dangerous operation across boundaries</td><td>Developer Workflow → Taint Analysis</td></tr>
+        <tr><td>SCA (Dependencies)</td><td>Known-vulnerable open-source dependencies, by version, against CVE data</td><td>Developer Workflow → Dependencies</td></tr>
+        <tr><td>Secrets Scanning</td><td>Hardcoded credentials/keys/tokens; optional live validation for several providers</td><td>Developer Workflow → Secrets Scanning</td></tr>
+        <tr><td>IaC Security</td><td>Misconfigurations in Terraform/CloudFormation/Kubernetes manifests</td><td>Developer Workflow → Infrastructure as Code</td></tr>
+        <tr><td>Container Security</td><td>Base-image vulnerabilities and registry drift</td><td>Developer Workflow → Container Security</td></tr>
+        <tr><td>DAST (Dynamic Testing)</td><td>Runtime, black-box testing against a live, consent-gated target</td><td>Security &amp; Risk → Dynamic Testing</td></tr>
+        <tr><td>Threat Model (API Security)</td><td>API surface mapping and threat modeling</td><td>Security &amp; Risk → Threat Model</td></tr>
+        <tr><td>AI &amp; MCP Security</td><td>Security posture of AI/LLM integrations and MCP servers</td><td>Security &amp; Risk → AI &amp; MCP Security</td></tr>
+        <tr><td>CBOM (Cryptographic Inventory)</td><td>Every cryptographic asset and whether it's weak, deprecated, or strong</td><td>Security &amp; Risk → Cryptographic Inventory</td></tr>
+      </table>
+
+      <h2 id="engine-deps">4. Before your first scan: engine dependencies</h2>
+      <p>Most engines above drive a separate command-line tool that has to be installed on your machine first — SecureGraph AI does not silently bundle or auto-install these (Taint Analysis is the one exception; it's fully built in). If you run a scan before its tool is installed, that engine's result shows an error like <code>"&lt;tool&gt; binary not usable on PATH: ..."</code> instead of findings — the other engines you do have installed still run normally.</p>
+      <table>
+        <tr><th>Engine</th><th>Needs</th></tr>
+        <tr><td>SAST</td><td>Semgrep — <code>pip install semgrep</code></td></tr>
+        <tr><td>SAST (second engine)</td><td>OpenGrep — standalone binary download</td></tr>
+        <tr><td>SCA</td><td>OSV-Scanner — standalone binary + one-time database download</td></tr>
+        <tr><td>Secrets Scanning</td><td>Gitleaks — standalone binary</td></tr>
+        <tr><td>IaC Security</td><td>Checkov — <code>pip install checkov</code></td></tr>
+        <tr><td>Container Security</td><td>Trivy — standalone binary + one-time database download</td></tr>
+        <tr><td>DAST</td><td>OWASP ZAP — separate download, not auto-installed</td></tr>
+      </table>
+      <p>Full install commands and a troubleshooting table are in the Admin Guide below. Settings → Scanner Tool Locations shows exactly which path the app found for each tool, with an Auto-detect button.</p>
+
+      <h2 id="running-a-scan">5. Running a scan — how to</h2>
+      <ol>
+        <li>Open SecureGraph AI and select or add your project/repository.</li>
+        <li>Go to Scan and choose scope: full workspace, a specific path, or a specific engine subset.</li>
+        <li>Click <strong>Run Scan</strong>. Progress and per-engine status show live.</li>
+        <li>When complete, findings land in the Findings view, deduplicated and enriched with CWE/CVE metadata.</li>
+      </ol>
+      <p>Command-line equivalent (CI/automation): the <code>securegraph</code> CLI supports the same scope flags and report fields as the GUI.</p>
+
+      <h2 id="graph-correlation">6. The Security Graph, Correlation &amp; Attack Paths</h2>
+      <ul>
+        <li><strong>Security Graph</strong> — a navigable graph of your application's components, data flows, and findings.</li>
+        <li><strong>Correlation</strong> — groups findings that share a root cause or are duplicates reported by different engines.</li>
+        <li><strong>Attack Paths</strong> — chains correlated findings into candidate exploit paths.</li>
+      </ul>
+
+      <h2 id="dashboards">7. Dashboards — which one is for whom</h2>
+      <table>
+        <tr><th>Dashboard</th><th>Audience</th><th>What it shows</th></tr>
+        <tr><td>Executive</td><td>Leadership</td><td>Overall posture, trend, top risks in plain language</td></tr>
+        <tr><td>Security</td><td>Security team</td><td>Aggregate findings, coverage, and risk across the portfolio</td></tr>
+        <tr><td>Repository Risk</td><td>AppSec / engineering leads</td><td>Per-repository risk scoring across everything you scan</td></tr>
+        <tr><td>Application Dashboard</td><td>Engineering leads / developers</td><td>Deep dive into one specific application/repository</td></tr>
+      </table>
+
+      <h2 id="findings">8. Findings &amp; their lifecycle</h2>
+      <p>Each finding carries severity, CWE/CVE identifiers where applicable, exact file/line location (or an honest "not provided by &lt;scanner&gt;" label), and remediation guidance. Findings have an explicit lifecycle (open, triaged, resolved) that persists across re-scans. Secret validation can optionally live-check whether a discovered credential is actually active, opt-in per provider.</p>
+
+      <h2 id="reports">9. Reports — the ten report types</h2>
+      <table>
+        <tr><th>Report type</th><th>What it covers</th><th>Who it's for</th></tr>
+        <tr><td>Executive</td><td>Overall security score, trend, top risks in plain language</td><td>Leadership, auditors</td></tr>
+        <tr><td>Application</td><td>Full inventory: services, components, findings by severity, remediation plan</td><td>Engineering leads, AppSec</td></tr>
+        <tr><td>Security</td><td>Aggregate cross-portfolio security posture</td><td>Security team</td></tr>
+        <tr><td>Scan</td><td>Per-engine results for one specific scan run</td><td>Developers fixing that run's issues</td></tr>
+        <tr><td>Developer</td><td>Developer-focused view of open findings for a repository</td><td>Developers</td></tr>
+        <tr><td>Vulnerability</td><td>Deep dive on a specific finding/vulnerability</td><td>Developers, AppSec</td></tr>
+        <tr><td>SBOM</td><td>Full software bill of materials</td><td>Compliance, supply-chain review</td></tr>
+        <tr><td>CBOM</td><td>Full cryptographic bill of materials, weak/deprecated/strong classification</td><td>Compliance, crypto review</td></tr>
+        <tr><td>Audit</td><td>Audit trail of actions taken in the app</td><td>Security officers, compliance</td></tr>
+        <tr><td>AI Governance</td><td>What AI features were used and under what policy</td><td>Security officers, compliance</td></tr>
+      </table>
+      <p>Export formats: HTML (print-ready CSS), JSON, CSV, SARIF, CycloneDX, and SPDX.</p>
+
+      <h2 id="reading-report">10. Reading a report — conventions to know</h2>
+      <ul>
+        <li><strong>"Not provided by &lt;scanner&gt;"</strong> — the underlying engine genuinely didn't report that field. Not an error.</li>
+        <li><strong>"Stale"</strong> — an open critical/high finding still open more than 30 days after first detection.</li>
+        <li><strong>Application security score</strong> — 100, minus 18 pts/open critical, minus 7 pts/open high, minus up to 20 pts total for everything else, floored at 0.</li>
+        <li><strong>Score bands</strong> — Strong 90–100, Managed 75–89, Needs attention 60–74, High risk below 60.</li>
+      </ul>
+
+      <h2 id="what-to-expect">11. What to expect</h2>
+      <ul>
+        <li>First scan on a large codebase takes longer; subsequent scans are faster due to caching.</li>
+        <li>Not every finding is exploitable — use Correlation/Attack Paths to prioritize.</li>
+        <li>Your source code is not silently sent to external AI providers by default.</li>
+        <li>Registering is free and optional; it unlocks governance-dashboard extras only.</li>
+      </ul>
+    </section>
+
+    <section id="admin-guide">
+      <h2 id="install-license">12. Installation &amp; licensing</h2>
+      <ul>
+        <li>Desktop Community edition: single binary/installer (MSI and NSIS), one edition, binary registered/unregistered state.</li>
+        <li>Registration (Settings → License → Register) is free, non-expiring, email only — sends email + a one-way device fingerprint to api.vaultmorph.org.</li>
+        <li>Registration unlocks governance-dashboard extras only — scanning, reports, exports all work unregistered.</li>
+        <li>Uninstalling: Start Menu or Control Panel both call the same uninstaller. Per-user app data is not removed on uninstall by design. A locked running process is the most common cause of a silent NSIS uninstall failure.</li>
+      </ul>
+
+      <h2 id="install-deps">13. Installing the scanner engines &amp; their dependencies</h2>
+      <p>SecureGraph AI itself is one self-contained installer, but most scan engines drive a <strong>separate
+      external command-line tool</strong> that has to be installed on the machine independently — the app does
+      not silently bundle or auto-install these (Taint Analysis is the one exception, fully built in). This is
+      the most common source of first-setup confusion — start with the quick-reference table to find exactly
+      where each tool's path is configured, then follow the per-tool steps below it.</p>
+
+      <h3>Quick reference — where does each path go?</h3>
+      <table>
+        <tr><th>Tool</th><th>Recommended install</th><th>Where you set its path</th></tr>
+        <tr><td>Semgrep</td><td><code>pip install semgrep</code></td><td>Settings → Scanner Tool Locations → Auto-detect (usually not needed)</td></tr>
+        <tr><td>Checkov</td><td><code>pip install checkov</code></td><td>Settings → Scanner Tool Locations → Auto-detect (usually not needed)</td></tr>
+        <tr><td>OSV-Scanner</td><td><code>winget install --id Google.OSVScanner -e</code></td><td>Settings → Scanner Tool Locations → OSV-Scanner</td></tr>
+        <tr><td>Gitleaks</td><td><code>winget install --id Gitleaks.Gitleaks -e</code></td><td>Settings → Scanner Tool Locations → Gitleaks</td></tr>
+        <tr><td>Trivy</td><td><code>winget install --id AquaSecurity.Trivy -e</code></td><td>Settings → Scanner Tool Locations → Trivy</td></tr>
+        <tr><td>OpenGrep</td><td>Manual download only (no winget/pip package)</td><td>Settings → Scanner Tool Locations → OpenGrep (almost always required)</td></tr>
+        <tr><td>OWASP ZAP</td><td><code>winget install --id ZAP.ZAP -e</code></td><td>Settings → Scanner Tool Locations → ZAP, or the DAST screen's own Auto-detect</td></tr>
+      </table>
+      <p>If a row shows blank/not-found in Settings after installing, that tool did not land on your system
+      <code>PATH</code> — normal for manual downloads. Paste the full path to the <code>.exe</code> into the
+      matching field and it resolves immediately, no restart needed.</p>
+
+      <h3>Semgrep (SAST — primary engine)</h3>
+      <ol>
+        <li>Install Python 3 from <a href="https://python.org/downloads">python.org/downloads</a> — tick "Add python.exe to PATH" on the first setup screen. Skip if Python is already installed.</li>
+        <li>Open PowerShell or Command Prompt: <code>pip install semgrep</code></li>
+        <li>Verify: <code>semgrep --version</code> should print a version number.</li>
+        <li>Usually no further step — Settings → Scanner Tool Locations → Auto-detect finds pip-installed tools via Python itself, not just PATH.</li>
+      </ol>
+
+      <h3>Checkov (IaC Security)</h3>
+      <p>Same pattern as Semgrep: <code>pip install checkov</code>, verify with <code>checkov --version</code>, Auto-detect finds it the same way.</p>
+
+      <h3>OSV-Scanner (SCA / Dependencies)</h3>
+      <ul>
+        <li>Recommended: <code>winget install --id Google.OSVScanner -e</code></li>
+        <li>Fallback (no winget, or air-gapped): download the Windows binary from <a href="https://github.com/google/osv-scanner/releases">github.com/google/osv-scanner/releases</a> and keep it somewhere permanent, e.g. <code>C:\Tools\osv-scanner\osv-scanner.exe</code>.</li>
+        <li>Verify: <code>osv-scanner --version</code></li>
+        <li>winget installs resolve on PATH automatically; manual downloads need the full path pasted into Settings → Scanner Tool Locations → OSV-Scanner.</li>
+        <li>Run the one-time database bootstrap below before your first real scan.</li>
+      </ul>
+
+      <h3>Gitleaks (Secrets Scanning)</h3>
+      <ul>
+        <li>Recommended: <code>winget install --id Gitleaks.Gitleaks -e</code></li>
+        <li>Fallback: download <code>gitleaks_&lt;version&gt;_windows_x64.zip</code> from <a href="https://github.com/gitleaks/gitleaks/releases">github.com/gitleaks/gitleaks/releases</a>, extract it, keep <code>gitleaks.exe</code> somewhere permanent.</li>
+        <li>Verify: <code>gitleaks version</code></li>
+        <li>Set the path in Settings → Scanner Tool Locations → Gitleaks if it isn't found automatically.</li>
+      </ul>
+
+      <h3>Trivy (Container Security)</h3>
+      <ul>
+        <li>Recommended: <code>winget install --id AquaSecurity.Trivy -e</code></li>
+        <li>Fallback: download <code>trivy_&lt;version&gt;_windows-64bit.zip</code> from <a href="https://github.com/aquasecurity/trivy/releases">github.com/aquasecurity/trivy/releases</a>, unzip, keep <code>trivy.exe</code> somewhere permanent.</li>
+        <li>Verify: <code>trivy --version</code></li>
+        <li>Set the path in Settings if needed, then run the one-time database bootstrap below.</li>
+      </ul>
+
+      <h3>OpenGrep (SAST — second engine)</h3>
+      <ul>
+        <li>No winget or pip package exists — download <code>opengrep_windows_x86.exe</code> directly from <a href="https://github.com/opengrep/opengrep/releases">github.com/opengrep/opengrep/releases</a> and move it somewhere permanent, e.g. <code>C:\Tools\opengrep\opengrep.exe</code>.</li>
+        <li>Windows SmartScreen will very likely warn on first run of a freshly downloaded .exe — click "More info" then "Run anyway" only after confirming the download came from the official opengrep/opengrep GitHub repo.</li>
+        <li>Verify: run it once from its folder — <code>.\opengrep.exe --version</code></li>
+        <li>Because OpenGrep is never Python-auto-detected and rarely lands on PATH, you will almost always need to paste its exact path into Settings → Scanner Tool Locations → OpenGrep — this is expected, not a sign something is broken.</li>
+      </ul>
+
+      <h3>OWASP ZAP (DAST)</h3>
+      <ul>
+        <li>Recommended: <code>winget install --id ZAP.ZAP -e</code></li>
+        <li>Fallback: download the Windows installer from <a href="https://www.zaproxy.org/download/">zaproxy.org/download</a> and run it.</li>
+        <li>Some ZAP versions bundle their own Java runtime, some need a separate JRE — check the download page for the version you're installing.</li>
+        <li>Known false positive: some ZAP installer builds have been flagged by Microsoft Defender/SmartScreen (tracked upstream as zaproxy/zaproxy#8491). Confirm the download came from zaproxy.org and check the file hash on the download page before proceeding.</li>
+        <li>After install, point Settings → Scanner Tool Locations → ZAP at it if not found automatically (the DAST screen also has its own Auto-detect for ZAP specifically).</li>
+      </ul>
+
+      <h3>General Windows install notes</h3>
+      <ul>
+        <li><strong>Admin rights:</strong> pip installs use --user and need no admin rights. winget can install per-user or machine-wide; manual downloads need no admin rights either as long as you can write to where you put the binary.</li>
+        <li><strong>"winget" not recognized:</strong> it ships as the "App Installer" component, preinstalled on most current Windows 10/11 machines. If your terminal doesn't recognize it, install "App Installer" from the Microsoft Store, or use the manual-download fallback.</li>
+        <li><strong>SmartScreen warnings are expected</strong>, not necessarily a red flag: most of these are open-source CLI tools without a paid code-signing certificate, so a freshly downloaded .exe/.zip from GitHub Releases routinely triggers "Windows protected your PC." Confirm the URL is the project's official GitHub repo before clicking through.</li>
+        <li><strong>Corporate network/proxy:</strong> winget, pip, and GitHub downloads all need outbound HTTPS. If your organization blocks these, download the binaries on a machine that does have access and copy them over, then set the explicit path for each in Settings.</li>
+      </ul>
+
+      <h3>One-time database bootstrap (OSV-Scanner &amp; Trivy)</h3>
+      <p>Both need a local vulnerability database before their first real scan — separate from installing the
+      binary, and the one network-touching step in an otherwise offline pipeline. OSV-Scanner:
+      <code>osv-scanner scan source --offline-vulnerabilities --download-offline-databases -r &lt;dir&gt;</code>
+      with <code>OSV_SCANNER_LOCAL_DB_CACHE_DIRECTORY</code> set to your cache location. Trivy:
+      <code>trivy image --download-db-only --cache-dir &lt;dir&gt;</code>. Settings shows a DB status panel for
+      both (with the exact command shown next to each), flags staleness after 14 days (advisory only, never
+      blocks a scan), and has a "Download/Update DB now" button (capped at 15 minutes) that runs it for you.</p>
+
+      <h3>Verifying everything worked</h3>
+      <ul>
+        <li>Settings → Scanner Tool Locations shows, per tool: any override you've set, the path the app actually resolved, and whether it fell through to the bare-PATH fallback (worth fixing with an explicit path if so — see Troubleshooting below).</li>
+        <li>The most reliable end-to-end check: enable every engine and run one scan. Each engine should report findings (or "no findings") rather than a "binary not usable on PATH" error.</li>
+      </ul>
+
+      <h3>How the app finds each tool (resolution order)</h3>
+      <ol>
+        <li>An explicit path set in Settings → Scanner Tool Locations, if configured.</li>
+        <li>For Semgrep/Checkov only: the app asks Python where it puts console scripts (the Auto-detect button) — never automatic.</li>
+        <li>The bare tool name on your system PATH — today's fallback.</li>
+      </ol>
+      <p>A Repair button (Semgrep/Checkov only) runs <code>pip install --force-reinstall --user &lt;tool&gt;</code> (capped at 6 minutes) and needs Python on PATH.</p>
+
+      <h2 id="configuring-scans">14. Configuring scans</h2>
+      <ul>
+        <li>Engine selection/scope: Settings → Scan Engines, per project.</li>
+        <li>CI/CD: the <code>securegraph</code> CLI mirrors the GUI's scope flags and report fields.</li>
+        <li>Custom SAST rules via Rule Management: enable/disable, pin, roll back, import/export.</li>
+      </ul>
+
+      <h2 id="troubleshooting">15. Troubleshooting scan/engine failures</h2>
+      <table>
+        <tr><th>Symptom</th><th>What it means</th><th>Fix</th></tr>
+        <tr><td>"&lt;tool&gt; binary not usable on PATH: ..."</td><td>The app tried its resolved path and the process failed to launch or run</td><td>Confirm the tool works in a terminal (<code>&lt;tool&gt; --version</code>); if so, set an explicit path in Settings → Scanner Tool Locations rather than relying on PATH</td></tr>
+        <tr><td>Semgrep/Checkov fail from the app but work in a terminal (esp. after <code>npx tauri dev</code>)</td><td>A pip <code>--user</code> install's console-script launcher can land in a per-user Scripts directory not on every shell's PATH</td><td>Click Auto-detect in Settings, or set the exact path manually</td></tr>
+        <tr><td>OSV-Scanner/Trivy: database-missing message</td><td>The binary is found, but its offline vulnerability DB hasn't been bootstrapped</td><td>Run the one-time command from §13, or click "Download/Update DB now" in Settings</td></tr>
+        <tr><td>OpenGrep: "rule pack not found at ..."</td><td>A packaging defect in the app itself, not a missing external tool</td><td>Reinstall/repair SecureGraph AI itself — reinstalling OpenGrep won't fix this</td></tr>
+        <tr><td>DAST/ZAP not detected</td><td>ZAP is never auto-installed — expected until installed</td><td>Install from zaproxy.org/download (or Docker), set its path in Settings, or use DAST's own Auto-detect</td></tr>
+        <tr><td>Repair/Reinstall does nothing or times out</td><td>Only supports Semgrep/Checkov, needs Python on PATH, capped at 6 minutes</td><td>Verify Python installs and runs on its own first</td></tr>
+        <tr><td>NSIS installer/uninstaller issue</td><td>Usually a locked running process or a non-elevated attempt</td><td>Close all SecureGraph AI processes first; run the (un)installer as Administrator</td></tr>
+      </table>
+
+      <h2 id="ai-firewall">16. AI Context Firewall &amp; AI Audit</h2>
+      <ul>
+        <li>Local-only mode is the default — nothing leaves the machine unless you enable an external provider.</li>
+        <li>Providers: OpenAI, Anthropic, generic OpenAI-compatible/local LLM, or a CLI provider (which itself typically calls a remote cloud API under its own credentials).</li>
+        <li>AI Audit Engine mode: 0 = metadata only, 1 = security context, 2 = full sanitized content.</li>
+      </ul>
+
+      <h2 id="secrets-validation">17. Secrets validation policy</h2>
+      <p>Opt in, per provider, to live-validate a discovered credential. Off by default; enabling discloses exactly where the check is sent.</p>
+
+      <h2 id="reports-admin">18. Reports — admin-level notes</h2>
+      <ul>
+        <li>HTML reports use print-ready CSS — use your browser's Print to PDF.</li>
+        <li>Report branding (logo, etc.) is a persisted default set in Settings.</li>
+        <li>The score formula/bands and the 30-day Stale threshold are documented in each report's own Definitions section.</li>
+      </ul>
+
+      <h2 id="privacy-consent">19. Privacy &amp; consent</h2>
+      <p>A first-run, non-dismissible Privacy Notice must be accepted before registration is possible. See the full <a href="https://vaultmorph.org/securegraph/privacy">Privacy Policy</a> (GDPR, India DPDP Act 2023, CCPA).</p>
+
+      <h2 id="siem-enterprise">20. SIEM integration &amp; Enterprise deployment</h2>
+      <p>SIEM Integration streams findings/events to an external SIEM. Enterprise Deployment covers multi-seat/organization settings, separate from free Desktop Community registration.</p>
+
+      <h2 id="data-storage">21. Data &amp; storage</h2>
+      <p>Findings, scan history, and the graph are stored locally in SQLite. SBOM/CBOM exports follow CycloneDX 1.6. Config file: <code>&lt;config_dir&gt;\securegraph.toml</code>.</p>
+
+      <h2 id="support">22. Support</h2>
+      <p>Product homepage: vaultmorph.org. License/registration issues: api.vaultmorph.org admin tooling. Privacy requests: <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a>.</p>
+    </section>
+  </main>
+</div>
+<footer>
+  <p>&copy; VaultMorph — SecureGraph AI</p>
+</footer>
+</body>
+</html>
