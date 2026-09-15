@@ -8,18 +8,18 @@
       gtag('js', new Date());
       gtag('config', 'G-SHSZHWX319');
   </script>
-  
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="VaultMorph — privacy-first security suite. An offline password manager, an AI chat client with built-in DLP, and an MCP server that redacts secrets from your AI coding agent. Your secrets never touch the cloud." />
+  <meta name="description" content="VaultMorph — privacy-first security suite: an offline password manager, an AI chat client with built-in DLP, AI-agent guardrails, and a full application security scanning platform. Your secrets never touch the cloud." />
   <meta property="og:title" content="VaultMorph — Privacy-First Security Suite" />
-  <meta property="og:description" content="A password manager, an AI chat client, and an AI coding agent guard — all built with built-in DLP. 100% on-device. Zero telemetry." />
+  <meta property="og:description" content="Password management, AI chat with built-in DLP, AI-agent guardrails, and application security scanning — all processed on your device. Zero telemetry." />
   <meta property="og:url" content="https://vaultmorph.org/" />
   <meta property="og:image" content="https://vaultmorph.org/assets/icon-256.png" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="VaultMorph — Privacy-First Security Suite" />
-    <meta name="twitter:description" content="A password manager, an AI chat client, and an AI coding agent guard — all built with built-in DLP. 100% on-device. Zero telemetry." />
+    <meta name="twitter:description" content="Password management, AI chat with built-in DLP, AI-agent guardrails, and application security scanning — all processed on your device. Zero telemetry." />
     <meta name="twitter:image" content="https://vaultmorph.org/assets/icon-256.png" />
   <meta name="theme-color" content="#0b0d13" />
   <link rel="canonical" href="https://vaultmorph.org/" />
@@ -45,6 +45,8 @@
       --teal2: #5ff0d4;
       --purple: #8b5cf6;
       --purple2: #c4b5fd;
+      --cyan: #22d3ee;
+      --cyan2: #67e8f9;
       --text: #e8edf5;
       --text-muted: #94a3b8;
       --green: #22c55e;
@@ -104,6 +106,36 @@
     header nav { margin-left: auto; display: flex; gap: 1.4rem; align-items: center; flex-wrap: wrap; }
     header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.15s; }
     header nav a:hover { color: var(--text); }
+
+    /* Products dropdown (native <details>, no JS — scales to any number of apps) */
+    .nav-products { position: relative; }
+    .nav-products summary {
+      list-style: none; cursor: pointer;
+      color: var(--text-muted); font-size: 0.88rem; font-weight: 500;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      transition: color 0.15s;
+    }
+    .nav-products summary::-webkit-details-marker { display: none; }
+    .nav-products summary:hover { color: var(--text); }
+    .nav-products summary .chev { width: 10px; height: 10px; transition: transform 0.15s; }
+    .nav-products[open] summary .chev { transform: rotate(180deg); }
+    .nav-products .dropdown {
+      position: absolute; top: calc(100% + 0.7rem); left: 50%; transform: translateX(-50%);
+      background: var(--surface-solid); border: 1px solid var(--border-hi);
+      border-radius: 12px; padding: 0.5rem; min-width: 210px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+      display: flex; flex-direction: column; gap: 0.1rem;
+    }
+    .nav-products .dropdown a {
+      padding: 0.55rem 0.8rem; border-radius: 8px; font-size: 0.87rem;
+      color: var(--text); white-space: nowrap;
+    }
+    .nav-products .dropdown a:hover { background: rgba(148,163,184,0.08); }
+    .nav-products .dropdown a span { display: block; font-size: 0.72rem; color: var(--text-muted); margin-top: 0.1rem; font-weight: 400; }
+    @media (max-width: 640px) {
+      .nav-products .dropdown { left: 0; transform: none; }
+    }
+
     .nav-cta {
       background: linear-gradient(135deg, #3b7de8, #5b9bff);
       color: #fff !important; padding: 0.45rem 1.1rem; border-radius: 8px;
@@ -142,106 +174,99 @@
     }
     .hero p { font-size: 1.12rem; color: var(--text-muted); max-width: 620px; margin: 0 auto 2.2rem; }
     .hero-ctas { display: flex; gap: 0.9rem; justify-content: center; flex-wrap: wrap; }
-    .btn-vault {
-      background: linear-gradient(135deg, #00b892, #00e2b8);
-      color: #04211a; padding: 0.8rem 1.7rem; border-radius: 10px;
-      text-decoration: none; font-weight: 700; font-size: 0.95rem;
+    .btn-hero {
+      background: linear-gradient(135deg, #00b892, #3b7de8);
+      color: #fff; padding: 0.85rem 1.9rem; border-radius: 10px;
+      text-decoration: none; font-weight: 700; font-size: 0.98rem;
       display: inline-flex; align-items: center; gap: 0.5rem;
-      box-shadow: 0 4px 24px rgba(0,226,184,0.28);
+      box-shadow: 0 4px 24px rgba(79,142,247,0.32);
       transition: transform 0.15s, box-shadow 0.2s;
     }
-    .btn-vault:hover { transform: translateY(-2px); box-shadow: 0 8px 34px rgba(0,226,184,0.45); }
-    .btn-shield {
-      background: linear-gradient(135deg, #3b7de8, #5b9bff);
-      color: #fff; padding: 0.8rem 1.7rem; border-radius: 10px;
-      text-decoration: none; font-weight: 700; font-size: 0.95rem;
+    .btn-hero:hover { transform: translateY(-2px); box-shadow: 0 8px 34px rgba(79,142,247,0.48); }
+    .btn-hero-ghost {
+      background: rgba(24,28,36,0.6); color: var(--text);
+      border: 1px solid var(--border-hi);
+      padding: 0.85rem 1.9rem; border-radius: 10px;
+      text-decoration: none; font-weight: 600; font-size: 0.98rem;
       display: inline-flex; align-items: center; gap: 0.5rem;
-      box-shadow: 0 4px 24px rgba(79,142,247,0.35);
-      transition: transform 0.15s, box-shadow 0.2s;
+      transition: border-color 0.15s, transform 0.15s;
     }
-    .btn-shield:hover { transform: translateY(-2px); box-shadow: 0 8px 34px rgba(79,142,247,0.5); }
-    .btn-guard {
-      background: linear-gradient(135deg, #7c3aed, #a78bfa);
-      color: #fff; padding: 0.8rem 1.7rem; border-radius: 10px;
-      text-decoration: none; font-weight: 700; font-size: 0.95rem;
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      box-shadow: 0 4px 24px rgba(139,92,246,0.32);
-      transition: transform 0.15s, box-shadow 0.2s;
-    }
-    .btn-guard:hover { transform: translateY(-2px); box-shadow: 0 8px 34px rgba(139,92,246,0.5); }
+    .btn-hero-ghost:hover { border-color: var(--border-hi); transform: translateY(-2px); }
 
-    /* ── PRODUCT CARDS ── */
-    .products { max-width: 1280px; margin: 0 auto; padding: 1rem 2rem 4.5rem; }
-    .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    @media (max-width: 1080px) { .products-grid { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 640px) { .products-grid { grid-template-columns: 1fr; } }
+    /* ── PRODUCT CARDS (compact, scales by category) ── */
+    .products { max-width: 1160px; margin: 0 auto; padding: 1rem 2rem 4.5rem; }
+    .product-group { margin-bottom: 2.6rem; }
+    .product-group:last-child { margin-bottom: 0; }
+    .product-group-label {
+      font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted); font-weight: 600;
+      margin-bottom: 1rem; padding-bottom: 0.7rem; border-bottom: 1px solid var(--border);
+    }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.1rem; }
     .product-card {
       background: var(--surface);
       backdrop-filter: blur(6px);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 2.2rem;
+      border-radius: 16px;
+      padding: 1.5rem;
       position: relative; overflow: hidden;
-      display: flex; flex-direction: column;
+      display: flex; flex-direction: column; gap: 0.7rem;
       transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease;
     }
-    .product-card:hover { transform: translateY(-4px); box-shadow: 0 18px 50px rgba(0,0,0,0.4); }
+    .product-card:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(0,0,0,0.35); }
     .product-card.vault:hover { border-color: rgba(0,226,184,0.5); }
     .product-card.shield:hover { border-color: rgba(79,142,247,0.55); }
     .product-card.guard:hover { border-color: rgba(139,92,246,0.55); }
+    .product-card.securegraph:hover { border-color: rgba(34,211,238,0.55); }
     .product-card::before {
       content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
     }
     .product-card.vault::before { background: linear-gradient(90deg, var(--teal), transparent 80%); }
     .product-card.shield::before { background: linear-gradient(90deg, var(--blue), transparent 80%); }
     .product-card.guard::before { background: linear-gradient(90deg, var(--purple), transparent 80%); }
-    .product-topline { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 1.2rem; }
+    .product-card.securegraph::before { background: linear-gradient(90deg, var(--cyan), transparent 80%); }
+    .product-topline { display: flex; align-items: flex-start; gap: 0.8rem; }
     .product-icon {
-      width: 52px; height: 52px; border-radius: 13px; flex-shrink: 0;
+      width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
       display: inline-flex; align-items: center; justify-content: center;
     }
     .product-card.vault .product-icon { background: linear-gradient(145deg, rgba(0,226,184,0.16), rgba(0,226,184,0.04)); border: 1px solid rgba(0,226,184,0.3); }
     .product-card.shield .product-icon { background: linear-gradient(145deg, rgba(79,142,247,0.16), rgba(79,142,247,0.04)); border: 1px solid rgba(79,142,247,0.3); }
     .product-card.guard .product-icon { background: linear-gradient(145deg, rgba(139,92,246,0.16), rgba(139,92,246,0.04)); border: 1px solid rgba(139,92,246,0.3); }
-    .product-icon svg { width: 26px; height: 26px; }
+    .product-card.securegraph .product-icon { background: linear-gradient(145deg, rgba(34,211,238,0.16), rgba(34,211,238,0.04)); border: 1px solid rgba(34,211,238,0.3); }
+    .product-icon svg { width: 20px; height: 20px; }
     .product-card.vault .product-icon svg { color: var(--teal); }
-    .product-card.shield .product-icon img, .product-card.guard .product-icon img { width: 30px; height: 30px; }
+    .product-icon img { width: 22px; height: 22px; }
+    .product-head h3 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; }
     .product-badge {
       font-family: var(--font-mono);
-      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em;
+      font-size: 0.64rem; font-weight: 600; letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 0.25em 0.8em; border-radius: 100px;
+      padding: 0.2em 0.7em; border-radius: 100px;
+      display: inline-block; margin-top: 0.3rem;
     }
     .product-card.vault .product-badge { background: rgba(0,226,184,0.1); border: 1px solid rgba(0,226,184,0.3); color: var(--teal); }
     .product-card.shield .product-badge { background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.32); color: var(--blue2); }
     .product-card.guard .product-badge { background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.32); color: var(--purple2); }
-    .product-card h2 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.6rem; }
-    .product-card > p { font-size: 0.94rem; color: var(--text-muted); margin-bottom: 1.4rem; }
-    .product-points { list-style: none; margin-bottom: 1.6rem; flex: 1; }
-    .product-points li {
-      font-size: 0.86rem; color: var(--text-muted);
-      padding: 0.32rem 0; display: flex; gap: 0.55rem; align-items: flex-start;
-    }
-    .product-points .pt { flex-shrink: 0; font-weight: 700; margin-top: 0.05em; }
-    .product-card.vault .pt { color: var(--teal); }
-    .product-card.shield .pt { color: var(--blue2); }
-    .product-card.guard .pt { color: var(--purple2); }
-    .product-points strong { color: var(--text); font-weight: 600; }
-    .product-actions { display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; }
+    .product-card.securegraph .product-badge { background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.32); color: var(--cyan2); }
+    .product-card > p { font-size: 0.85rem; color: var(--text-muted); flex: 1; }
+    .product-actions { display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; padding-top: 0.3rem; border-top: 1px solid var(--border); margin-top: 0.2rem; }
     .p-cta {
-      padding: 0.65rem 1.3rem; border-radius: 9px; text-decoration: none;
-      font-weight: 700; font-size: 0.87rem;
+      padding: 0.5rem 1.05rem; border-radius: 8px; text-decoration: none;
+      font-weight: 700; font-size: 0.82rem;
       transition: transform 0.15s, box-shadow 0.2s;
     }
     .p-cta:hover { transform: translateY(-1px); }
     .p-cta-vault { background: linear-gradient(135deg, #00b892, #00e2b8); color: #04211a; box-shadow: 0 3px 16px rgba(0,226,184,0.25); }
     .p-cta-shield { background: linear-gradient(135deg, #3b7de8, #5b9bff); color: #fff; box-shadow: 0 3px 16px rgba(79,142,247,0.3); }
     .p-cta-guard { background: linear-gradient(135deg, #7c3aed, #a78bfa); color: #fff; box-shadow: 0 3px 16px rgba(139,92,246,0.28); }
-    .p-ghost { color: var(--text-muted); text-decoration: none; font-size: 0.86rem; font-weight: 600; transition: color 0.15s; }
+    .p-cta-securegraph { background: linear-gradient(135deg, #0e7490, #22d3ee); color: #04252b; box-shadow: 0 3px 16px rgba(34,211,238,0.3); }
+    .p-ghost { color: var(--text-muted); text-decoration: none; font-size: 0.8rem; font-weight: 600; transition: color 0.15s; }
     .product-card.vault .p-ghost:hover { color: var(--teal); }
     .product-card.shield .p-ghost:hover { color: var(--blue2); }
     .product-card.guard .p-ghost:hover { color: var(--purple2); }
-    .platform-note { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.9rem; font-family: var(--font-mono); }
+    .product-card.securegraph .p-ghost:hover { color: var(--cyan2); }
+    .platform-note { font-size: 0.7rem; color: var(--text-muted); margin-left: auto; font-family: var(--font-mono); }
 
     /* ── PRINCIPLES ── */
     .principles {
@@ -307,13 +332,14 @@
       .footer-brand { grid-column: 1 / -1; }
       header { padding: 0.8rem 1.1rem; }
       header nav { gap: 0.9rem; }
+      .platform-note { margin-left: 0; width: 100%; }
     }
   </style>
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"Organization","name":"VaultMorph","url":"https://vaultmorph.org/","logo":"https://vaultmorph.org/assets/icon-256.png","email":"contact@vaultmorph.org","sameAs":["https://github.com/NitinChauhan22"],"description":"VaultMorph builds privacy-first security tools: an offline password manager, an AI chat client with built-in data-leak prevention, and an MCP server that redacts secrets for AI coding agents."}
+    {"@context":"https://schema.org","@type":"Organization","name":"VaultMorph","url":"https://vaultmorph.org/","logo":"https://vaultmorph.org/assets/icon-256.png","email":"contact@vaultmorph.org","sameAs":["https://github.com/NitinChauhan22"],"description":"VaultMorph builds privacy-first security tools, from an offline password manager and AI-chat data-leak prevention to AI-coding-agent guardrails and a full application security scanning platform."}
   </script>
   <script type="application/ld+json">
-    {"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"VaultMorph Vault","url":"https://vaultmorph.org/password_manager/","applicationCategory":"SecurityApplication","operatingSystem":"Android, Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A fully offline password manager with AES-256-GCM per-field encryption, Argon2id key derivation, and TOTP 2FA."},{"@type":"SoftwareApplication","name":"VaultMorph AI Shield","url":"https://vaultmorph.org/ai_shield_chat/","applicationCategory":"SecurityApplication","operatingSystem":"Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"An AI chat client with a built-in data-leak-prevention engine that detects and tokenizes secrets locally before any AI provider sees them."},{"@type":"SoftwareApplication","name":"VaultMorph Guard","url":"https://vaultmorph.org/ai_guard/","applicationCategory":"DeveloperApplication","operatingSystem":"Cross-platform (Node.js)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"An MCP server that redacts secrets and PII from files before an AI coding agent (Claude Code CLI, Codex CLI) reads them into its context."}]}
+    {"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"VaultMorph Vault","url":"https://vaultmorph.org/password_manager/","applicationCategory":"SecurityApplication","operatingSystem":"Android, Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A fully offline password manager with AES-256-GCM per-field encryption, Argon2id key derivation, and TOTP 2FA."},{"@type":"SoftwareApplication","name":"VaultMorph AI Shield","url":"https://vaultmorph.org/ai_shield_chat/","applicationCategory":"SecurityApplication","operatingSystem":"Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"An AI chat client with a built-in data-leak-prevention engine that detects and tokenizes secrets locally before any AI provider sees them."},{"@type":"SoftwareApplication","name":"VaultMorph Guard","url":"https://vaultmorph.org/ai_guard/","applicationCategory":"DeveloperApplication","operatingSystem":"Cross-platform (Node.js)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"An MCP server that redacts secrets and PII from files before an AI coding agent (Claude Code CLI, Codex CLI) reads them into its context."},{"@type":"SoftwareApplication","name":"SecureGraph AI","url":"https://vaultmorph.org/securegraph/","applicationCategory":"SecurityApplication","operatingSystem":"Windows","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A GUI-first application security platform combining SAST, SCA, secrets, IaC, container, DAST and cryptographic-inventory scanning, correlated onto one Security Graph with attack-path analysis."}]}
   </script>
 
 </head>
@@ -329,10 +355,17 @@
     <b>VaultMorph</b>
   </a>
   <nav>
-    <a href="/password_manager/">Vault</a>
-    <a href="/ai_shield_chat/">AI Shield</a>
-    <a href="/ai_guard/">Guard</a>
-    <a href="/ai_shield_chat/docs/">Docs</a>
+    <details class="nav-products">
+      <summary>Products
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <div class="dropdown">
+        <a href="/password_manager/">Vault<span>Password manager</span></a>
+        <a href="/ai_shield_chat/">AI Shield<span>AI chat + DLP</span></a>
+        <a href="/ai_guard/">Guard<span>AI-agent MCP server</span></a>
+        <a href="/securegraph/">SecureGraph AI<span>AppSec platform</span></a>
+      </div>
+    </details>
     <a href="https://github.com/NitinChauhan22" target="_blank" rel="noopener">GitHub</a>
     <a href="#products" class="nav-cta">Get Started</a>
   </nav>
@@ -342,102 +375,105 @@
 <div class="hero">
   <div class="hero-badge"><span class="dot"></span> 100% offline · zero telemetry · no cloud</div>
   <h1>Your secrets should<br><em>never touch the cloud.</em></h1>
-  <p>VaultMorph builds privacy-first security tools for developers and security-conscious users. Three products, one principle: everything is encrypted and processed on your device.</p>
+  <p>VaultMorph builds privacy-first security tools for developers and security-conscious users — from an offline password manager to a full application security platform. One principle behind all of them: everything is encrypted and processed on your device.</p>
   <div class="hero-ctas">
-    <a href="/password_manager/" class="btn-vault">
-      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      VaultMorph Vault
+    <a href="#products" class="btn-hero">
+      Explore our tools
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
     </a>
-    <a href="/ai_shield_chat/" class="btn-shield">
-      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      AI Shield Chatbot
-    </a>
-    <a href="/ai_guard/" class="btn-guard">
-      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
-      VaultMorph Guard
-    </a>
+    <a href="/downloads/" class="btn-hero-ghost">All Downloads</a>
   </div>
 </div>
 
 <!-- PRODUCTS -->
 <section class="products" id="products">
-  <div class="products-grid">
 
-    <div class="product-card vault reveal">
-      <div class="product-topline">
-        <span class="product-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1.5"/></svg>
-        </span>
-        <div>
-          <span class="product-badge">Password Manager</span>
+  <div class="product-group reveal">
+    <div class="product-group-label">Everyday Privacy</div>
+    <div class="products-grid">
+
+      <div class="product-card vault">
+        <div class="product-topline">
+          <span class="product-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1.5"/></svg>
+          </span>
+          <div class="product-head">
+            <h3>VaultMorph Vault</h3>
+            <span class="product-badge">Password Manager</span>
+          </div>
+        </div>
+        <p>A fully offline password manager — AES-256-GCM per field, Argon2id key derivation, TOTP 2FA. The app can't reach the internet even if it wanted to.</p>
+        <div class="product-actions">
+          <a href="/password_manager/" class="p-cta p-cta-vault">Explore →</a>
+          <a href="https://vaultmorph.org/downloads/" class="p-ghost">Download</a>
+          <span class="platform-note">Android · Windows</span>
         </div>
       </div>
-      <h2>VaultMorph Vault</h2>
-      <p>A fully offline password manager. Every credential, note, and TOTP secret is encrypted at rest on your device — the app cannot reach the internet even if it wanted to.</p>
-      <ul class="product-points">
-        <li><span class="pt">✓</span><span><strong>AES-256-GCM per field</strong> — unique nonce on every write</span></li>
-        <li><span class="pt">✓</span><span><strong>Argon2id key derivation</strong> — 128 MB, GPU/ASIC resistant</span></li>
-        <li><span class="pt">✓</span><span><strong>TOTP 2FA + biometric unlock</strong> — RFC 6238, replay-protected</span></li>
-        <li><span class="pt">✓</span><span><strong>100% offline by design</strong> — no cloud, no sync, nothing to phone home</span></li>
-        <li><span class="pt">✓</span><span><strong>Encrypted .vmb backups</strong> + CSV import from 5 managers</span></li>
-      </ul>
-      <div class="product-actions">
-        <a href="/password_manager/" class="p-cta p-cta-vault">Explore Vault →</a>
-        <a href="https://vaultmorph.org/downloads/" class="p-ghost">Download ↓</a>
-      </div>
-      <div class="platform-note">Android 8+ · Windows 10/11 · Community free</div>
-    </div>
 
-    <div class="product-card shield reveal">
-      <div class="product-topline">
-        <span class="product-icon">
-          <img src="assets/icon-128.png" alt="AI Shield icon" width="30" height="30" />
-        </span>
-        <div>
-          <span class="product-badge">AI Chat Client + DLP</span>
+      <div class="product-card shield">
+        <div class="product-topline">
+          <span class="product-icon">
+            <img src="assets/icon-128.png" alt="AI Shield icon" />
+          </span>
+          <div class="product-head">
+            <h3>VaultMorph AI Shield</h3>
+            <span class="product-badge">AI Chat + DLP</span>
+          </div>
+        </div>
+        <p>A full AI chat client with a built-in data-leak-prevention engine. Secrets in your prompts are detected and tokenized locally before any AI provider sees them.</p>
+        <div class="product-actions">
+          <a href="/ai_shield_chat/" class="p-cta p-cta-shield">Explore →</a>
+          <a href="https://vaultmorph.org/downloads/" class="p-ghost">Download</a>
+          <span class="platform-note">Windows</span>
         </div>
       </div>
-      <h2>VaultMorph AI Shield</h2>
-      <p>A full AI chat client with a built-in data-leak-prevention engine. Secrets in your prompts are detected and tokenized locally before any AI provider ever sees them.</p>
-      <ul class="product-points">
-        <li><span class="pt">✓</span><span><strong>127-rule detection engine</strong> — API keys, PII, credentials, DB URIs</span></li>
-        <li><span class="pt">✓</span><span><strong>Security Workspace</strong> — Gitleaks + Semgrep + AI review, all local</span></li>
-        <li><span class="pt">✓</span><span><strong>20+ AI providers</strong> — OpenAI, Anthropic, Gemini, local Ollama…</span></li>
-        <li><span class="pt">✓</span><span><strong>MCP servers &amp; browser extension</strong> — same pipeline everywhere</span></li>
-        <li><span class="pt">✓</span><span><strong>Knowledge Base (RAG) &amp; voice input</strong> — encrypted, on-device</span></li>
-      </ul>
-      <div class="product-actions">
-        <a href="/ai_shield_chat/" class="p-cta p-cta-shield">Explore AI Shield →</a>
-        <a href="https://vaultmorph.org/downloads/" class="p-ghost">Download ↓</a>
-      </div>
-      <div class="platform-note">Windows 10/11 · macOS &amp; Linux soon · Community free</div>
-    </div>
 
-    <div class="product-card guard reveal">
-      <div class="product-topline">
-        <span class="product-icon">
-          <img src="assets/icon-128.png" alt="VaultMorph Guard icon" width="30" height="30" />
-        </span>
-        <div>
-          <span class="product-badge">MCP Server · Early Access</span>
-        </div>
-      </div>
-      <h2>VaultMorph Guard</h2>
-      <p>An MCP server that sits between your AI coding agent and your filesystem. Claude Code CLI and Codex CLI read and write through Guard instead of directly — real secrets never reach the model.</p>
-      <ul class="product-points">
-        <li><span class="pt">✓</span><span><strong>Redact-on-read, restore-on-write</strong> — the agent works with tokens, never raw values</span></li>
-        <li><span class="pt">✓</span><span><strong>127+ detection patterns</strong> — same engine that powers AI Shield</span></li>
-        <li><span class="pt">✓</span><span><strong><code style="font-family:var(--font-mono);font-size:0.85em;">PreToolUse</code> hooks on both CLIs</strong> — a model-can't-override guarantee on Claude Code, a schema-tolerant backstop on Codex CLI</span></li>
-        <li><span class="pt">✓</span><span><strong>Free, offline activation</strong> — no account, install in two minutes</span></li>
-      </ul>
-      <div class="product-actions">
-        <a href="/ai_guard/" class="p-cta p-cta-guard">Explore Guard →</a>
-        <a href="/ai_guard/#guide" class="p-ghost">Developer Guide ↓</a>
-      </div>
-      <div class="platform-note">Claude Code CLI · Codex CLI · npm install</div>
     </div>
-
   </div>
+
+  <div class="product-group reveal">
+    <div class="product-group-label">Developer &amp; AppSec Tools</div>
+    <div class="products-grid">
+
+      <div class="product-card guard">
+        <div class="product-topline">
+          <span class="product-icon">
+            <img src="assets/icon-128.png" alt="VaultMorph Guard icon" />
+          </span>
+          <div class="product-head">
+            <h3>VaultMorph Guard</h3>
+            <span class="product-badge">MCP Server · Early Access</span>
+          </div>
+        </div>
+        <p>Sits between your AI coding agent and your filesystem. Claude Code CLI and Codex CLI read and write through Guard — real secrets never reach the model.</p>
+        <div class="product-actions">
+          <a href="/ai_guard/" class="p-cta p-cta-guard">Explore →</a>
+          <a href="/ai_guard/#guide" class="p-ghost">Dev Guide</a>
+          <span class="platform-note">npm install</span>
+        </div>
+      </div>
+
+      <div class="product-card securegraph">
+        <div class="product-topline">
+          <span class="product-icon">
+            <img src="assets/icon-128.png" alt="SecureGraph AI icon" />
+          </span>
+          <div class="product-head">
+            <h3>SecureGraph AI</h3>
+            <span class="product-badge">AppSec Platform</span>
+          </div>
+        </div>
+        <p>SAST, SCA, secrets, IaC, container &amp; DAST scanning — correlated onto one Security Graph, so you see what's actually reachable, not just a pile of alerts.</p>
+        <div class="product-actions">
+          <a href="/securegraph/" class="p-cta p-cta-securegraph">Explore →</a>
+          <a href="/securegraph/docs/" class="p-ghost">Docs</a>
+          <span class="platform-note">Windows · Free</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </section>
 
 <!-- PRINCIPLES -->
@@ -504,15 +540,16 @@
       <a href="/password_manager/">Vault — Password Manager</a>
       <a href="/ai_shield_chat/">AI Shield Chatbot</a>
       <a href="/ai_guard/">Guard — AI Agent MCP Server</a>
-      <a href="/ai_shield_chat/docs/">AI Shield Docs</a>
+      <a href="/securegraph/">SecureGraph AI — AppSec Platform</a>
       <a href="/downloads/">All Downloads</a>
     </div>
     <div class="footer-col">
       <h4>Resources</h4>
+      <a href="/ai_shield_chat/docs/">AI Shield Docs</a>
+      <a href="/securegraph/docs/">SecureGraph AI Docs</a>
       <a href="https://github.com/NitinChauhan22" target="_blank" rel="noopener">GitHub</a>
       <a href="/verify/">Verify Downloads</a>
       <a href="/attributions/">Attributions</a>
-      <a href="mailto:contact@vaultmorph.org">Support</a>
     </div>
     <div class="footer-col">
       <h4>Legal</h4>
@@ -542,6 +579,13 @@
   } else {
     els.forEach(function (el) { el.classList.add("visible"); });
   }
+
+  // Close the Products dropdown when clicking outside it
+  document.addEventListener("click", function (e) {
+    document.querySelectorAll(".nav-products[open]").forEach(function (d) {
+      if (!d.contains(e.target)) d.removeAttribute("open");
+    });
+  });
 })();
 </script>
 
