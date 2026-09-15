@@ -8,10 +8,9 @@
       gtag('js', new Date());
       gtag('config', 'G-SHSZHWX319');
   </script>
-  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Verify Your Download — VaultMorph AI Shield</title>
+  <title>Verify Your Download — VaultMorph</title>
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
   <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
   <link rel="apple-touch-icon" href="../assets/icon-128.png" />
@@ -36,7 +35,7 @@
     .container { max-width: 820px; margin: 0 auto; padding: 3rem 2rem; }
     .badge { display: inline-block; background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-dim); border-radius: 4px; font-size: 0.75rem; font-weight: 600; padding: 0.2em 0.6em; margin-bottom: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
     h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .meta { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 2.5rem; }
+    .meta { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 2rem; }
     section { margin-bottom: 3rem; }
     h2 { font-size: 1.2rem; font-weight: 600; color: var(--text); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
     h3 { font-size: 1rem; font-weight: 600; margin: 1.25rem 0 0.5rem; color: var(--text); }
@@ -53,6 +52,13 @@
     .highlight-box p { margin: 0; }
     .warning-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--yellow); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
     .warning-box p { margin: 0; }
+    /* Product switcher */
+    .product-tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    .product-tab { background: none; border: none; color: var(--text-muted); font-size: 0.95rem; font-weight: 600; padding: 0.75rem 1.1rem; cursor: pointer; border-bottom: 2px solid transparent; font-family: inherit; }
+    .product-tab:hover { color: var(--text); }
+    .product-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .product-panel { display: none; }
+    .product-panel.active { display: block; }
     /* Online checker UI */
     .checker { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 2rem; margin-bottom: 2rem; }
     .checker h3 { margin-top: 0; margin-bottom: 1rem; }
@@ -89,10 +95,10 @@
 <body>
 
 <header>
-  <a class="logo" href="https://vaultmorph.org"><img src="../assets/icon-128.png" alt="VaultMorph AI Shield logo" width="26" height="26" />VaultMorph <span>AI Shield</span></a>
+  <a class="logo" href="https://vaultmorph.org"><img src="../assets/icon-128.png" alt="VaultMorph logo" width="26" height="26" />VaultMorph</a>
   <nav>
-    <a href="https://vaultmorph.org/ai_shield_chat/docs/">Docs</a>
-    <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases" target="_blank">Releases</a>
+    <a href="https://vaultmorph.org/ai_shield_chat/docs/">AI Shield Docs</a>
+    <a href="https://vaultmorph.org/securegraph/docs/">SecureGraph AI Docs</a>
     <a href="https://vaultmorph.org">Home</a>
   </nav>
 </header>
@@ -103,16 +109,23 @@
   <p class="meta">Ensure your installer has not been tampered with — takes 30 seconds.</p>
 
   <div class="highlight-box">
-    <p><strong>Why verify?</strong> File verification confirms the installer came directly from VaultMorph and was not modified in transit or by a third-party site. We sign every release with an Ed25519 key whose public key is listed below.</p>
+    <p><strong>Why verify?</strong> File verification confirms the installer came directly from VaultMorph and was not modified in transit or by a third-party site. Pick your product below.</p>
   </div>
 
-  <!-- Online checker -->
+  <div class="product-tabs">
+    <button class="product-tab active" data-product="ai_shield" onclick="showProduct('ai_shield')">AI Shield</button>
+    <button class="product-tab" data-product="securegraph" onclick="showProduct('securegraph')">SecureGraph AI</button>
+  </div>
+
+  <!-- ============================= AI SHIELD ============================= -->
+  <div class="product-panel active" id="panel-ai_shield">
+
   <section>
     <h2>Check a file online</h2>
     <div class="checker">
       <h3>SHA-256 hash checker</h3>
-      <label for="file-select">Select the release file you downloaded:</label>
-      <select id="file-select">
+      <label for="file-select-ai_shield">Select the release file you downloaded:</label>
+      <select id="file-select-ai_shield">
         <option value="">-- Select a file --</option>
         <option value="win-x64-exe">VaultMorph.AI.Shield_0.1.0_x64-setup.exe (Windows x64 installer)</option>
         <option value="win-x64-msi">VaultMorph.AI.Shield_0.1.0_x64_en-US.msi (Windows x64 MSI)</option>
@@ -121,35 +134,33 @@
         <option value="linux-deb">ai-shield-amd64.deb (Linux Debian/Ubuntu)</option>
         <option value="linux-rpm">ai-shield-x86_64.rpm (Linux RHEL/Fedora)</option>
       </select>
-      <label for="hash-input">Paste your file's SHA-256 hash:</label>
-      <input type="text" id="hash-input" placeholder="e.g. a3f9d2c1..." spellcheck="false" />
-      <button onclick="checkHash()">Verify</button>
-      <div class="result-box" id="result-box">
-        <div class="result-msg" id="result-msg"></div>
-        <div class="result-detail" id="result-detail"></div>
+      <label for="hash-input-ai_shield">Paste your file's SHA-256 hash:</label>
+      <input type="text" id="hash-input-ai_shield" placeholder="e.g. a3f9d2c1..." spellcheck="false" />
+      <button onclick="checkHash('ai_shield')">Verify</button>
+      <div class="result-box" id="result-box-ai_shield">
+        <div class="result-msg" id="result-msg-ai_shield"></div>
+        <div class="result-detail" id="result-detail-ai_shield"></div>
       </div>
     </div>
   </section>
 
-  <!-- SHA-256 checksums table -->
   <section>
     <h2>SHA-256 checksums — v1.0.0</h2>
     <p>These checksums are published at release time and are also available in <code>SHA256SUMS.txt</code> in each GitHub release.</p>
     <table>
       <thead><tr><th>File</th><th>SHA-256</th></tr></thead>
-      <tbody id="checksum-table">
-        <tr><td>VaultMorph.AI.Shield_0.1.0_x64-setup.exe</td><td id="h-win-x64-exe">00d85a2f61a8674ad73ed46439f03be001c5981e7cb575cd76a0eb4630c3708d</td></tr>
-        <tr><td>VaultMorph.AI.Shield_0.1.0_x64_en-US.msi</td><td id="h-win-x64-msi">8655159637b02f546e773d7e62d6a507bb967b8b4650db35a627fcbed881a8ac</td></tr>
-        <tr><td>ai-shield-aarch64.dmg</td><td id="h-mac-arm">— published at release —</td></tr>
-        <tr><td>ai-shield-x64.dmg</td><td id="h-mac-x64">— published at release —</td></tr>
-        <tr><td>ai-shield-amd64.deb</td><td id="h-linux-deb">— published at release —</td></tr>
-        <tr><td>ai-shield-x86_64.rpm</td><td id="h-linux-rpm">— published at release —</td></tr>
+      <tbody>
+        <tr><td>VaultMorph.AI.Shield_0.1.0_x64-setup.exe</td><td>00d85a2f61a8674ad73ed46439f03be001c5981e7cb575cd76a0eb4630c3708d</td></tr>
+        <tr><td>VaultMorph.AI.Shield_0.1.0_x64_en-US.msi</td><td>8655159637b02f546e773d7e62d6a507bb967b8b4650db35a627fcbed881a8ac</td></tr>
+        <tr><td>ai-shield-aarch64.dmg</td><td>— published at release —</td></tr>
+        <tr><td>ai-shield-x64.dmg</td><td>— published at release —</td></tr>
+        <tr><td>ai-shield-amd64.deb</td><td>— published at release —</td></tr>
+        <tr><td>ai-shield-x86_64.rpm</td><td>— published at release —</td></tr>
       </tbody>
     </table>
     <p>The authoritative <code>SHA256SUMS.txt</code> is attached to every release at <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases" target="_blank">github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases</a>.</p>
   </section>
 
-  <!-- Manual verification -->
   <section>
     <h2>Manual verification (command line)</h2>
     <p>If you prefer to verify locally without using the form above:</p>
@@ -166,13 +177,12 @@
 sha256sum --check SHA256SUMS.txt</code></pre>
   </section>
 
-  <!-- Ed25519 signature -->
   <section>
     <h2>Ed25519 signature verification</h2>
     <p>Each release is signed with our Ed25519 release key. The signature file (<code>.sig</code>) is published alongside each installer on GitHub Releases.</p>
 
     <h3>VaultMorph release signing public key</h3>
-    <pre><code id="pubkey">— Ed25519 public key published at first stable release —</code></pre>
+    <pre><code>— Ed25519 public key published at first stable release —</code></pre>
     <p>This key is also pinned in the <code>README.md</code> at <a href="https://github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public" target="_blank">github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public</a>. If the key shown here and the key in the README differ, do not trust either — contact <a href="mailto:contact@vaultmorph.org">contact@vaultmorph.org</a> immediately.</p>
 
     <h3>Verify with minisign (recommended)</h3>
@@ -186,7 +196,6 @@ minisign -V -p vaultmorph-release.pub -m VaultMorph.AI.Shield_0.1.0_x64-setup.ex
   -in VaultMorph.AI.Shield_0.1.0_x64-setup.exe</code></pre>
   </section>
 
-  <!-- Trust -->
   <section>
     <h2>Trusted download sources</h2>
     <div class="warning-box">
@@ -198,26 +207,133 @@ minisign -V -p vaultmorph-release.pub -m VaultMorph.AI.Shield_0.1.0_x64-setup.ex
     </ul>
     <p>If you downloaded from anywhere else, delete the file and re-download from an official source.</p>
   </section>
+
+  </div>
+  <!-- =========================== END AI SHIELD =========================== -->
+
+  <!-- ============================ SECUREGRAPH AI ============================ -->
+  <div class="product-panel" id="panel-securegraph">
+
+  <section>
+    <h2>Check a file online</h2>
+    <div class="checker">
+      <h3>SHA-256 hash checker</h3>
+      <label for="file-select-securegraph">Select the release file you downloaded:</label>
+      <select id="file-select-securegraph">
+        <option value="">-- Select a file --</option>
+        <option value="win-x64-exe">SecureGraph.AI_1.0.0_x64-setup.exe (Windows x64 installer)</option>
+        <option value="win-x64-msi">SecureGraph.AI_1.0.0_x64_en-US.msi (Windows x64 MSI)</option>
+      </select>
+      <label for="hash-input-securegraph">Paste your file's SHA-256 hash:</label>
+      <input type="text" id="hash-input-securegraph" placeholder="e.g. 85e00337..." spellcheck="false" />
+      <button onclick="checkHash('securegraph')">Verify</button>
+      <div class="result-box" id="result-box-securegraph">
+        <div class="result-msg" id="result-msg-securegraph"></div>
+        <div class="result-detail" id="result-detail-securegraph"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>SHA-256 checksums — v1.0.0</h2>
+    <p>Also published in <a href="https://github.com/NitinChauhan22/VaultMorph_SecureGraph_AI/blob/main/CHECKSUMS.md" target="_blank">CHECKSUMS.md</a> in the SecureGraph AI repository.</p>
+    <table>
+      <thead><tr><th>File</th><th>SHA-256</th></tr></thead>
+      <tbody>
+        <tr><td>SecureGraph.AI_1.0.0_x64-setup.exe</td><td>85e0033706d0472ba03545fab31517eb39ef038b6bf3ac6c33b04c78afa3b16a</td></tr>
+        <tr><td>SecureGraph.AI_1.0.0_x64_en-US.msi</td><td>bcf38ce4460b378983bb8ef54bd954bd01f8bc963ec937d1ed5735f167858df6</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Manual verification (command line)</h2>
+    <p>If you prefer to verify locally without using the form above:</p>
+
+    <h3>Windows (PowerShell)</h3>
+    <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>Get-FileHash .\SecureGraph.AI_1.0.0_x64-setup.exe -Algorithm SHA256 | Select-Object Hash</code></pre>
+    <p>Compare the output to the SHA-256 in the table above.</p>
+
+    <h3>Windows (Command Prompt)</h3>
+    <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>certutil -hashfile SecureGraph.AI_1.0.0_x64-setup.exe SHA256</code></pre>
+  </section>
+
+  <section>
+    <h2>Authenticode (code-signing) verification</h2>
+    <p>Unlike AI Shield, SecureGraph AI is a Windows-only Tauri application and is signed with an
+    Authenticode code-signing certificate rather than an Ed25519/minisign signature.</p>
+    <div class="warning-box">
+      <p><strong>Note on trust:</strong> the certificate (<code>CN=VaultMorph</code>, thumbprint
+      <code>ED569AE15FE2290B01465695B0F09DE3EA8925BF</code>) is currently self-signed — issued by
+      VaultMorph, to VaultMorph — not by a public Certificate Authority. Windows will still show an
+      "Unknown Publisher" warning on first run even on a genuine, unmodified installer. The
+      signature below proves the file was not altered after VaultMorph signed it; it does not by
+      itself vouch for VaultMorph as a publisher the way a CA-issued certificate would.</p>
+    </div>
+
+    <h3>Verify the signature (PowerShell)</h3>
+    <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>Get-AuthenticodeSignature .\SecureGraph.AI_1.0.0_x64-setup.exe | Format-List Status,StatusMessage,SignerCertificate</code></pre>
+    <p>Expect <code>SignerCertificate</code> to show <code>CN=VaultMorph</code> with thumbprint
+    <code>ED569AE15FE2290B01465695B0F09DE3EA8925BF</code>, and a timestamp from DigiCert (so the
+    signature remains valid even after the certificate itself expires in 2031). A
+    <code>Status</code> of <code>UnknownError</code> with "chain terminated in a root certificate
+    which is not trusted" is expected for this self-signed certificate — that is not a sign of
+    tampering, and is different from a missing or invalid signature.</p>
+  </section>
+
+  <section>
+    <h2>Trusted download sources</h2>
+    <div class="warning-box">
+      <p><strong>Only download SecureGraph AI from these official sources.</strong> We do not distribute through any third-party app stores, torrent sites, or download portals.</p>
+    </div>
+    <ul>
+      <li><a href="https://vaultmorph.org" target="_blank">vaultmorph.org</a> — official website</li>
+      <li><a href="https://github.com/NitinChauhan22/VaultMorph_SecureGraph_AI/releases" target="_blank">github.com/NitinChauhan22/VaultMorph_SecureGraph_AI/releases</a> — GitHub Releases</li>
+    </ul>
+    <p>If you downloaded from anywhere else, delete the file and re-download from an official source.</p>
+  </section>
+
+  </div>
+  <!-- ========================== END SECUREGRAPH AI ========================== -->
+
 </div>
 
 <script>
-  // Checksums are populated from a JSON fetch at release time.
-  // In production, replace these with a fetch from /api/checksums or embed them at build time.
   const CHECKSUMS = {
-    "win-x64-exe": "00d85a2f61a8674ad73ed46439f03be001c5981e7cb575cd76a0eb4630c3708d",
-    "win-x64-msi": "8655159637b02f546e773d7e62d6a507bb967b8b4650db35a627fcbed881a8ac",
-    "mac-arm":    null,
-    "mac-x64":    null,
-    "linux-deb":  null,
-    "linux-rpm":  null,
+    ai_shield: {
+      "win-x64-exe": "00d85a2f61a8674ad73ed46439f03be001c5981e7cb575cd76a0eb4630c3708d",
+      "win-x64-msi": "8655159637b02f546e773d7e62d6a507bb967b8b4650db35a627fcbed881a8ac",
+      "mac-arm":    null,
+      "mac-x64":    null,
+      "linux-deb":  null,
+      "linux-rpm":  null,
+    },
+    securegraph: {
+      "win-x64-exe": "85e0033706d0472ba03545fab31517eb39ef038b6bf3ac6c33b04c78afa3b16a",
+      "win-x64-msi": "bcf38ce4460b378983bb8ef54bd954bd01f8bc963ec937d1ed5735f167858df6",
+    },
   };
 
-  function checkHash() {
-    const fileKey = document.getElementById('file-select').value;
-    const userHash = document.getElementById('hash-input').value.trim().toLowerCase();
-    const box = document.getElementById('result-box');
-    const msg = document.getElementById('result-msg');
-    const detail = document.getElementById('result-detail');
+  const RELEASES_URL = {
+    ai_shield: "github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases",
+    securegraph: "github.com/NitinChauhan22/VaultMorph_SecureGraph_AI/releases",
+  };
+
+  function showProduct(product) {
+    document.querySelectorAll('.product-tab').forEach(el => {
+      el.classList.toggle('active', el.dataset.product === product);
+    });
+    document.querySelectorAll('.product-panel').forEach(el => {
+      el.classList.toggle('active', el.id === 'panel-' + product);
+    });
+  }
+
+  function checkHash(product) {
+    const fileKey = document.getElementById('file-select-' + product).value;
+    const userHash = document.getElementById('hash-input-' + product).value.trim().toLowerCase();
+    const box = document.getElementById('result-box-' + product);
+    const msg = document.getElementById('result-msg-' + product);
+    const detail = document.getElementById('result-detail-' + product);
 
     box.style.display = 'block';
     box.className = 'result-box';
@@ -235,11 +351,11 @@ minisign -V -p vaultmorph-release.pub -m VaultMorph.AI.Shield_0.1.0_x64-setup.ex
       return;
     }
 
-    const expected = CHECKSUMS[fileKey];
+    const expected = CHECKSUMS[product][fileKey];
     if (!expected) {
       box.classList.add('result-fail');
       msg.textContent = '⚠ Checksums not yet published for this release.';
-      detail.textContent = 'Check github.com/NitinChauhan22/VaultMorph_AI_Shield_Chat_Public/releases for SHA256SUMS.txt';
+      detail.textContent = 'Check ' + RELEASES_URL[product] + ' for SHA256SUMS.txt';
       return;
     }
 
@@ -269,7 +385,8 @@ minisign -V -p vaultmorph-release.pub -m VaultMorph.AI.Shield_0.1.0_x64-setup.ex
     <a href="https://vaultmorph.org/terms">Terms of Use</a>
     <a href="https://vaultmorph.org/security">Security Policy</a>
     <a href="https://vaultmorph.org/attributions">Open-source Attributions</a>
-    <a href="https://vaultmorph.org/ai_shield_chat/docs/">Documentation</a>
+    <a href="https://vaultmorph.org/ai_shield_chat/docs/">AI Shield Docs</a>
+    <a href="https://vaultmorph.org/securegraph/docs/">SecureGraph AI Docs</a>
   </div>
   <p>© 2026 VaultMorph. All rights reserved.</p>
 </footer>
