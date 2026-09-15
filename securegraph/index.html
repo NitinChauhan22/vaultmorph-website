@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SecureGraph AI — a GUI-first desktop security platform that runs SAST, SCA, secrets, IaC, container, DAST and crypto scanning, then correlates every finding onto one living Security Graph so you see what's actually reachable." />
+  <meta property="og:title" content="SecureGraph AI — One Security Graph, Not a Pile of Disconnected Alerts" />
+  <meta property="og:description" content="SAST, SCA, secrets, IaC, container, DAST, API and crypto scanning — correlated onto one Security Graph with attack-path analysis. GUI-first, CLI for CI/CD. Free Community edition." />
+  <meta property="og:url" content="https://vaultmorph.org/securegraph/" />
+  <meta property="og:image" content="https://vaultmorph.org/assets/icon-256.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SecureGraph AI — One Security Graph, Not a Pile of Disconnected Alerts" />
+  <meta name="twitter:description" content="SAST, SCA, secrets, IaC, container, DAST, API and crypto scanning — correlated onto one Security Graph with attack-path analysis. Free Community edition." />
+  <meta name="theme-color" content="#0b0d13" />
+  <link rel="canonical" href="https://vaultmorph.org/securegraph/" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+  <link rel="apple-touch-icon" href="../assets/icon-128.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <title>SecureGraph AI — One Security Graph, Not a Pile of Disconnected Alerts</title>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"SecureGraph AI","url":"https://vaultmorph.org/securegraph/","applicationCategory":"SecurityApplication","operatingSystem":"Windows","softwareVersion":"1.0.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A GUI-first desktop application security platform that runs SAST, SCA, secrets, IaC, container, DAST and cryptographic-inventory scanning, correlates every finding onto one Security Graph, and ranks issues by real attack-path exploitability."}
+  </script>
+  <style>
+    :root {
+      --bg: #0b0d13;
+      --bg2: #0f1117;
+      --surface: rgba(24, 28, 36, 0.72);
+      --surface-solid: #171b24;
+      --surface2: #1e2330;
+      --border: #262c3a;
+      --border-hi: #35405a;
+      --accent: #22d3ee;
+      --accent2: #67e8f9;
+      --accent-dim: #0e4a54;
+      --accent-glow: rgba(34, 211, 238, 0.16);
+      --purple: #a78bfa;
+      --text: #e8edf5;
+      --text-muted: #94a3b8;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --blue: #4f8ef7;
+      --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-display: "Space Grotesk", "Inter", sans-serif;
+      --font-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.7; overflow-x: hidden; }
+    ::selection { background: var(--accent-dim); color: #fff; }
+
+    .bg-fx {
+      position: fixed; inset: 0; z-index: -2; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 45% at 70% -5%, rgba(34,211,238,0.12), transparent 60%),
+        radial-gradient(ellipse 45% 35% at 12% 20%, rgba(167,139,250,0.07), transparent 60%),
+        var(--bg);
+    }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.5;
+      background-image:
+        linear-gradient(rgba(148,163,184,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,0.045) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 640px);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 640px);
+    }
+
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* NAV */
+    header {
+      background: rgba(11, 13, 19, 0.78);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.8rem 2rem;
+      display: flex; align-items: center; gap: 1.25rem;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-logo {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-family: var(--font-display); font-weight: 700; font-size: 1.02rem; color: var(--text);
+      text-decoration: none; white-space: nowrap; letter-spacing: -0.01em;
+    }
+    .nav-logo img { width: 28px; height: 28px; display: block; }
+    .nav-logo b { color: var(--accent); font-weight: 700; }
+    .nav-logo span { color: var(--text-muted); font-weight: 500; }
+    header nav { margin-left: auto; display: flex; gap: 1.4rem; align-items: center; flex-wrap: wrap; }
+    header nav a { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.15s; }
+    header nav a:hover { color: var(--text); }
+    .nav-cta {
+      background: linear-gradient(135deg, #0e7490, #22d3ee);
+      color: #04252b !important; padding: 0.45rem 1.1rem; border-radius: 8px;
+      font-weight: 700; font-size: 0.85rem !important;
+      box-shadow: 0 0 18px rgba(34,211,238,0.35);
+      transition: box-shadow 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { box-shadow: 0 0 28px rgba(34,211,238,0.55); transform: translateY(-1px); }
+
+    /* HERO */
+    .hero { max-width: 1120px; margin: 0 auto; padding: 4.5rem 2rem 4rem; text-align: center; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(34,211,238,0.08);
+      color: var(--accent2);
+      border: 1px solid rgba(34,211,238,0.28);
+      border-radius: 100px;
+      font-size: 0.76rem; font-weight: 600;
+      padding: 0.32em 1em; letter-spacing: 0.04em;
+      margin-bottom: 1.4rem;
+      font-family: var(--font-mono);
+    }
+    .hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2.2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 4.6vw, 3.35rem);
+      font-weight: 700; line-height: 1.1;
+      margin-bottom: 1.3rem; letter-spacing: -0.03em;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(100deg, var(--accent) 10%, var(--accent2) 55%, var(--purple) 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+    }
+    .hero p { font-size: 1.08rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 2rem; }
+    .hero-ctas { display: flex; gap: 0.9rem; flex-wrap: wrap; margin-bottom: 1.8rem; justify-content: center; }
+    .btn-primary {
+      background: linear-gradient(135deg, #0e7490, #22d3ee);
+      color: #04252b; padding: 0.8rem 1.7rem; border-radius: 10px;
+      text-decoration: none; font-weight: 700; font-size: 0.95rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      box-shadow: 0 4px 24px rgba(34,211,238,0.35);
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 34px rgba(34,211,238,0.5); }
+    .btn-primary.disabled-note { opacity: 0.55; cursor: not-allowed; }
+    .btn-secondary {
+      background: rgba(24,28,36,0.6); color: var(--text);
+      border: 1px solid var(--border-hi);
+      padding: 0.8rem 1.7rem; border-radius: 10px;
+      text-decoration: none; font-weight: 600; font-size: 0.95rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: border-color 0.15s, color 0.15s, transform 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent2); transform: translateY(-2px); }
+    .hero-meta { color: var(--text-muted); font-size: 0.82rem; display: flex; gap: 0.5rem 1.4rem; flex-wrap: wrap; justify-content: center; }
+    .hero-meta span { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .hero-meta svg { width: 14px; height: 14px; color: var(--green); flex-shrink: 0; }
+
+    /* STATS */
+    .stats-bar {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(24,28,36,0.55), rgba(15,17,23,0.4));
+      padding: 2rem;
+    }
+    .stats-inner {
+      max-width: 960px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 2rem; text-align: center;
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.4rem; font-weight: 700; display: block;
+      background: linear-gradient(120deg, var(--accent2), var(--accent));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+    .stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.1rem; }
+
+    /* SECTIONS */
+    .section { max-width: 1040px; margin: 0 auto; padding: 4.5rem 2rem; }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); font-weight: 600; margin-bottom: 0.8rem;
+    }
+    .section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+      font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.02em; line-height: 1.2;
+    }
+    .section > p { color: var(--text-muted); max-width: 680px; margin-bottom: 2.4rem; font-size: 1rem; }
+    .divider { border: none; border-top: 1px solid var(--border); max-width: 1040px; margin: 0 auto; }
+
+    /* GAP / SCAN-VS-OBSERVATION COMPARISON */
+    .gap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; margin-top: 2rem; }
+    @media (max-width: 760px) { .gap-grid { grid-template-columns: 1fr; } }
+    .gap-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; }
+    .gap-card h3 { font-size: 0.97rem; margin-bottom: 0.5rem; }
+    .gap-card p { color: var(--text-muted); font-size: 0.88rem; margin: 0; }
+
+    /* ENGINE / FEATURE GRID */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.1rem; margin-top: 2rem;
+    }
+    .feature-card {
+      background: var(--surface);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease;
+    }
+    .feature-card:hover { transform: translateY(-3px); border-color: var(--border-hi); box-shadow: 0 14px 40px rgba(0,0,0,0.35); }
+    .feature-card .fc-tag {
+      font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent2); margin-bottom: 0.4rem; display: block;
+    }
+    .feature-card h3 { font-size: 0.97rem; font-weight: 700; margin-bottom: 0.45rem; color: var(--text); letter-spacing: -0.01em; }
+    .feature-card p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
+    .note-inline { font-size: 0.86rem; color: var(--text-muted); margin-top: 1.6rem; background: var(--surface); border-left: 3px solid var(--accent); border-radius: 8px; padding: 0.9rem 1.2rem; }
+    .note-inline strong { color: var(--text); }
+
+    /* GRAPH PIPELINE */
+    .pipeline {
+      background: var(--surface);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem; margin-top: 2rem;
+      font-family: var(--font-mono);
+      position: relative; overflow: hidden;
+    }
+    .pipeline::after {
+      content: ""; position: absolute; top: 0; left: -60%; width: 45%; height: 100%;
+      background: linear-gradient(105deg, transparent, rgba(34,211,238,0.06), transparent);
+      animation: sweep 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes sweep { 0% { left: -60%; } 60%, 100% { left: 120%; } }
+    .pipeline-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.85rem; }
+    .pipeline-row:last-child { margin-bottom: 0; }
+    .pill {
+      display: inline-block; padding: 0.32em 0.8em; border-radius: 100px;
+      font-size: 0.79rem; font-weight: 600; font-family: var(--font-mono);
+    }
+    .pill-cyan { background: rgba(34,211,238,0.1); color: var(--accent2); border: 1px solid rgba(34,211,238,0.32); }
+    .pill-purple { background: rgba(167,139,250,0.1); color: var(--purple); border: 1px solid rgba(167,139,250,0.32); }
+    .pill-green { background: rgba(34,197,94,0.1); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+    .pill-gray { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
+    .arrow { color: var(--border-hi); font-size: 0.85rem; }
+    .pipeline-label { font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-body); margin-left: 0.25rem; }
+
+    /* TABLES */
+    .layer-table { width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: 0.88rem; }
+    .layer-table th, .layer-table td { text-align: left; padding: 0.9rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .layer-table th { color: var(--text-muted); font-weight: 600; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .layer-table td { color: var(--text-muted); }
+    .layer-table td.strong { color: var(--text); font-weight: 600; }
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 0.4rem 1rem; overflow-x: auto; }
+    .table-wrap .layer-table { margin: 0; }
+
+    /* LICENSING CARDS */
+    .lic-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1.5rem; margin-top: 2rem; }
+    @media (max-width: 760px) { .lic-grid { grid-template-columns: 1fr; } }
+    .lic-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.8rem; }
+    .lic-card.highlight { border-color: rgba(34,211,238,0.4); }
+    .lic-card h3 { font-family: var(--font-display); font-size: 1.15rem; margin-bottom: 0.3rem; }
+    .lic-price { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--accent2); margin-bottom: 0.9rem; }
+    .lic-card ul { list-style: none; }
+    .lic-card li { font-size: 0.87rem; color: var(--text-muted); padding: 0.3rem 0; display: flex; gap: 0.55rem; align-items: flex-start; }
+    .lic-card li .pt { flex-shrink: 0; color: var(--green); font-weight: 700; margin-top: 0.05em; }
+
+    /* HONESTY LIST */
+    .honesty-list { list-style: none; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.9rem; }
+    .honesty-list li { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; font-size: 0.88rem; color: var(--text-muted); }
+    .honesty-list strong { color: var(--text); }
+
+    /* INSTALL BOX */
+    .install-box {
+      background:
+        radial-gradient(ellipse 70% 90% at 50% -10%, rgba(34,211,238,0.14), transparent 60%),
+        var(--surface-solid);
+      border: 1px solid var(--border-hi);
+      border-radius: 20px;
+      padding: 3rem 2.5rem; text-align: center; margin-top: 2rem;
+    }
+    .install-box img { width: 56px; height: 56px; margin: 0 auto 1.1rem; display: block; filter: drop-shadow(0 6px 22px rgba(34,211,238,0.45)); }
+    .install-box h2 { font-family: var(--font-display); font-size: 1.65rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+    .install-box > p { color: var(--text-muted); margin-bottom: 1.9rem; }
+    .install-box .fineprint { font-size: 0.78rem; color: var(--text-muted); margin-top: 1.4rem; }
+
+    /* FOOTER */
+    footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 3rem 2rem 2.5rem; }
+    .footer-inner { max-width: 1040px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; }
+    .footer-brand-logo { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--font-display); font-weight: 700; font-size: 1rem; }
+    .footer-brand-logo img { width: 30px; height: 30px; }
+    .footer-brand-logo b { color: var(--accent); }
+    .footer-brand-logo span { color: var(--text-muted); font-weight: 500; }
+    .footer-brand p { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.7rem; line-height: 1.6; max-width: 300px; }
+    .footer-col h4 { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.8rem; font-weight: 600; }
+    .footer-col a { display: block; font-size: 0.875rem; color: var(--text-muted); text-decoration: none; margin-bottom: 0.45rem; transition: color 0.15s; }
+    .footer-col a:hover { color: var(--accent2); }
+    .footer-bottom {
+      max-width: 1040px; margin: 2.2rem auto 0; padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem; font-size: 0.8rem; color: var(--text-muted);
+    }
+    @media (max-width: 640px) {
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: 1 / -1; }
+      header { padding: 0.8rem 1.1rem; }
+      header nav { gap: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-fx"></div>
+<div class="bg-grid"></div>
+
+<!-- NAV -->
+<header>
+  <a class="nav-logo" href="https://vaultmorph.org">
+    <img src="../assets/icon-128.png" alt="SecureGraph AI logo" width="28" height="28" />
+    <b>VaultMorph</b>&nbsp;<span>SecureGraph AI</span>
+  </a>
+  <nav>
+    <a href="#engines">Engines</a>
+    <a href="#graph">Security Graph</a>
+    <a href="#dashboards">Dashboards</a>
+    <a href="#licensing">Licensing</a>
+    <a href="docs/">Docs</a>
+    <a href="#install" class="nav-cta">Get Started</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge"><span class="dot"></span> v1.0.0 &nbsp;·&nbsp; Community edition free &nbsp;·&nbsp; Windows 10/11</div>
+  <h1>Stop drowning in<br><em>disconnected security alerts.</em></h1>
+  <p>SecureGraph AI is a GUI-first desktop security platform. It runs SAST, taint analysis, SCA, secrets scanning, IaC, container, DAST, API threat modeling, AI/MCP security, and cryptographic-inventory (CBOM) checks — then correlates every finding onto one Security Graph, so you see what's actually reachable and exploitable instead of a long undifferentiated list.</p>
+  <div class="hero-ctas">
+    <a href="https://github.com/NitinChauhan22/VaultMorph_SecureGraph_AI/releases/download/v1.0.0/SecureGraph%20AI_1.0.0_x64-setup.exe" class="btn-primary">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download for Windows (v1.0.0)
+    </a>
+    <a href="docs/" class="btn-secondary">Read the Docs →</a>
+  </div>
+  <div class="hero-meta">
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>GUI-first, CLI for CI/CD</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Local-only AI option</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Free Community edition</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="reveal">
+      <span class="stat-num">10</span>
+      <div class="stat-label">security engines, one workflow</div>
+    </div>
+    <div class="reveal">
+      <span class="stat-num">1</span>
+      <div class="stat-label">Security Graph correlating every finding</div>
+    </div>
+    <div class="reveal">
+      <span class="stat-num">10</span>
+      <div class="stat-label">report types, incl. SARIF &amp; SBOM/CBOM</div>
+    </div>
+    <div class="reveal">
+      <span class="stat-num">Free</span>
+      <div class="stat-label">Community edition, non-expiring</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCAN VS OBSERVATION -->
+<section class="section" id="how">
+  <div class="section-label">// the core idea</div>
+  <h2 class="reveal">Scanning finds issues. Observation tells you which ones matter.</h2>
+  <p class="reveal">Every scanner produces a pile of findings. The hard part isn't running more scanners — it's knowing which findings are duplicates, which are connected, and which are actually reachable in your real application.</p>
+
+  <div class="gap-grid">
+    <div class="gap-card reveal">
+      <h3>Scan — evidence gathering</h3>
+      <p>An active check you run on demand or in CI. It executes one or more engines against your codebase or artifact and produces raw findings for that run — your evidence that a library, endpoint, config file, or image has a known weakness.</p>
+    </div>
+    <div class="gap-card reveal">
+      <h3>Observation — the durable picture</h3>
+      <p>What SecureGraph AI builds <em style="font-style:italic">from</em> your scans over time: the Security Graph, Correlation, Attack Paths, and a risk score that tracks how your posture changes scan over scan — not a one-off snapshot that goes stale the moment you close the report.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- ENGINES -->
+<section class="section" id="engines">
+  <div class="section-label">// what it scans</div>
+  <h2 class="reveal">Ten engines, one Findings view</h2>
+  <p class="reveal">Every engine's output rolls into one cross-cutting Findings view and into the Security Graph for correlation — you don't review ten separate tools' reports by hand.</p>
+
+  <div class="feature-grid">
+    <div class="feature-card reveal">
+      <span class="fc-tag">Developer Workflow</span>
+      <h3>SAST — Static Analysis</h3>
+      <p>Code-level flaws — injection, unsafe deserialization, hardcoded logic bugs, and more — via rule-based pattern matching.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="fc-tag">Developer Workflow</span>
+      <h3>Taint Analysis (advanced SAST)</h3>
+      <p>Data-flow tracing from untrusted input to a dangerous operation across function and file boundaries — catches what plain pattern-matching misses. Fully built in, no external tool required.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="fc-tag">Developer Workflow</span>
+      <h3>SCA — Dependencies</h3>
+      <p>Known-vulnerable open-source dependencies, checked by version against CVE data.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="fc-tag">Developer Workflow</span>
+      <h3>Secrets Scanning</h3>
+      <p>Hardcoded credentials, API keys, and tokens committed to the repo — several providers support live validation.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="fc-tag">Developer Workflow</span>
+      <h3>Infrastructure as Code</h3>
+      <p>Misconfigurations in Terraform, CloudFormation, Kubernetes manifests, and similar IaC.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="fc-tag">Developer Workflow</span>
+      <h3>Container Security</h3>
+      <p>Base-image vulnerabilities and registry drift for your container images.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="fc-tag">Security &amp; Risk</span>
+      <h3>DAST — Dynamic Testing</h3>
+      <p>Runtime, black-box testing against a live, consent-gated target — typically reviewer-initiated, not an everyday pre-commit check.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="fc-tag">Security &amp; Risk</span>
+      <h3>Threat Model (API Security)</h3>
+      <p>API surface mapping and threat modeling for your services.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="fc-tag">Security &amp; Risk</span>
+      <h3>AI &amp; MCP Security</h3>
+      <p>Security posture of AI/LLM integrations and the MCP (Model Context Protocol) servers your code talks to.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="fc-tag">Security &amp; Risk</span>
+      <h3>CBOM — Cryptographic Inventory</h3>
+      <p>Every cryptographic asset in use — algorithms, key sizes, padding modes — and whether it's weak, deprecated, or strong.</p>
+    </div>
+  </div>
+
+  <div class="note-inline reveal">
+    <strong>Stated honestly:</strong> most engines above drive a separate command-line tool (Semgrep, OpenGrep, OSV-Scanner, Gitleaks, Checkov, Trivy, OWASP ZAP) that has to be installed on your machine — SecureGraph AI does not silently bundle these. Taint Analysis is the one exception; it's fully built in. Settings → Scanner Tool Locations shows exactly which path was found for each tool, with an auto-detect button. If a tool isn't installed yet, that engine reports an error instead of findings — the engines you do have installed still run normally.
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- SECURITY GRAPH -->
+<section class="section" id="graph">
+  <div class="section-label">// the living threat model</div>
+  <h2 class="reveal">One Security Graph, built from your real scans</h2>
+  <p class="reveal">Once you have scans across multiple engines, three views build on top of them — and keep updating as you scan again.</p>
+
+  <div class="pipeline reveal">
+    <div class="pipeline-row">
+      <span class="pill pill-gray">10 engines</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-cyan">raw findings</span>
+      <span class="pipeline-label">deduplicated &amp; enriched with CWE/CVE where available</span>
+    </div>
+    <div class="pipeline-row">
+      <span class="pill pill-cyan">raw findings</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-purple">Security Graph</span>
+      <span class="pipeline-label">a navigable graph of components, data flows &amp; findings</span>
+    </div>
+    <div class="pipeline-row">
+      <span class="pill pill-purple">Security Graph</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-purple">Correlation</span>
+      <span class="pipeline-label">groups shared-root-cause &amp; duplicate findings into one issue</span>
+    </div>
+    <div class="pipeline-row">
+      <span class="pill pill-purple">Correlation</span>
+      <span class="arrow">→</span>
+      <span class="pill pill-green">Attack Paths</span>
+      <span class="pipeline-label">chains correlated findings into candidate exploit paths</span>
+    </div>
+  </div>
+
+  <div class="feature-grid" style="margin-top:1.5rem;">
+    <div class="feature-card reveal">
+      <h3>Security Graph</h3>
+      <p>A navigable graph of your application's components, data flows, and findings, with neighbor-relationship exploration.</p>
+    </div>
+    <div class="feature-card reveal">
+      <h3>Correlation</h3>
+      <p>Groups findings that share a root cause or are duplicates reported by different engines, so you review one grouped issue instead of five near-identical ones.</p>
+    </div>
+    <div class="feature-card reveal">
+      <h3>Attack Paths</h3>
+      <p>Chains correlated findings into candidate exploit paths, so you see which combinations of individually low/medium findings actually add up to something exploitable.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- DASHBOARDS -->
+<section class="section" id="dashboards">
+  <div class="section-label">// for every audience</div>
+  <h2 class="reveal">A dashboard for whoever's looking</h2>
+  <p class="reveal">The same underlying graph and findings, shown at the altitude each audience actually needs.</p>
+
+  <div class="table-wrap reveal">
+    <table class="layer-table">
+      <tr><th>Dashboard</th><th>Audience</th><th>What it shows</th></tr>
+      <tr><td class="strong">Executive</td><td>Leadership</td><td>Overall posture, trend, top risks in plain language</td></tr>
+      <tr><td class="strong">Security</td><td>Security team</td><td>Aggregate findings, coverage, and risk across the portfolio</td></tr>
+      <tr><td class="strong">Developer</td><td>Engineers</td><td>Per-repo findings, scan history, and remediation status</td></tr>
+      <tr><td class="strong">AI Governance</td><td>Security &amp; compliance</td><td>AI/LLM integration posture, MCP server risk, AI Context Firewall activity</td></tr>
+    </table>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- LICENSING -->
+<section class="section" id="licensing">
+  <div class="section-label">// pricing, stated plainly</div>
+  <h2 class="reveal">One free edition today</h2>
+  <p class="reveal">SecureGraph AI Desktop Community is the current edition: every scanner, every export, every finding, and every base report is available whether or not you register. Free email registration additionally unlocks the governance-level dashboards below — no expiry, no credit card.</p>
+
+  <div class="lic-grid">
+    <div class="lic-card highlight reveal">
+      <h3>Community</h3>
+      <div class="lic-price">Free</div>
+      <ul>
+        <li><span class="pt">✓</span><span>All 10 scanning engines, unregistered</span></li>
+        <li><span class="pt">✓</span><span>Security Graph, Correlation &amp; Attack Paths</span></li>
+        <li><span class="pt">✓</span><span>All findings, exports &amp; base reports (SARIF, SBOM/CBOM, CSV, HTML)</span></li>
+        <li><span class="pt">✓</span><span>CLI for CI/CD automation</span></li>
+        <li><span class="pt">✓</span><span>Free registration unlocks: Executive Dashboard, Portfolio Rollups, Governance Dashboard, AI Governance Dashboard, Policy views</span></li>
+      </ul>
+    </div>
+    <div class="lic-card reveal">
+      <h3>Pro &amp; Enterprise</h3>
+      <div class="lic-price" style="color:var(--text-muted);font-size:1.15rem;">Planned, not yet available</div>
+      <ul>
+        <li><span class="pt">✓</span><span>Server-managed licensing, trials, and multi-seat administration</span></li>
+        <li><span class="pt">✓</span><span>SIEM integration &amp; org-wide policy enforcement</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- HONESTY -->
+<section class="section" id="security">
+  <div class="section-label">// stated honestly, not oversold</div>
+  <h2 class="reveal">What to expect</h2>
+  <ul class="honesty-list">
+    <li class="reveal"><strong>Windows 10/11 today.</strong> The Rust/Tauri core is cross-platform, but the tested, shipped build is Windows only right now.</li>
+    <li class="reveal"><strong>Most engines need a separately installed tool.</strong> Semgrep, OpenGrep, OSV-Scanner, Gitleaks, Checkov, Trivy, and OWASP ZAP aren't silently bundled — Settings → Scanner Tool Locations auto-detects what's already on your machine and tells you what's missing.</li>
+    <li class="reveal"><strong>First scan on a large codebase takes longer.</strong> Subsequent scans are faster due to caching.</li>
+    <li class="reveal"><strong>Source code and secrets aren't sent to external AI by default.</strong> The AI Context Firewall controls what, if anything, reaches an external AI provider, and local-only operation is supported.</li>
+  </ul>
+</section>
+
+<!-- INSTALL -->
+<section class="section" id="install">
+  <div class="section-label">// get started</div>
+  <div class="install-box reveal">
+    <img src="../assets/icon-128.png" alt="SecureGraph AI icon" />
+    <h2>Bring every finding onto one graph</h2>
+    <p>Free Community edition. No credit card. Registration is optional and only unlocks governance dashboards.</p>
+    <div class="hero-ctas">
+      <a href="https://github.com/NitinChauhan22/VaultMorph_SecureGraph_AI/releases/download/v1.0.0/SecureGraph%20AI_1.0.0_x64-setup.exe" class="btn-primary">Download for Windows (v1.0.0)</a>
+      <a href="docs/" class="btn-secondary">Read the Docs</a>
+    </div>
+    <div class="fineprint">Signed with VaultMorph's code-signing certificate. Verify the SHA-256 checksum listed in the release notes before you install.</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-brand-logo">
+        <img src="../assets/icon-128.png" alt="SecureGraph AI logo" width="30" height="30" />
+        <span><b>VaultMorph</b> <span>SecureGraph AI</span></span>
+      </div>
+      <p>A GUI-first application security platform: SAST, SCA, secrets, IaC, container, DAST, API and crypto scanning, correlated onto one Security Graph.</p>
+      <div style="margin-top:0.75rem;font-size:0.82rem;color:var(--text-muted)">contact@vaultmorph.org</div>
+    </div>
+    <div class="footer-col">
+      <h4>SecureGraph AI</h4>
+      <a href="#engines">Engines</a>
+      <a href="#graph">Security Graph</a>
+      <a href="#dashboards">Dashboards</a>
+      <a href="#licensing">Licensing</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="docs/">Documentation</a>
+      <a href="https://vaultmorph.org/verify/">Verify Download</a>
+      <a href="https://vaultmorph.org/attributions/">Attributions</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="https://vaultmorph.org/privacy/">Privacy Policy</a>
+      <a href="https://vaultmorph.org/terms/">Terms of Use</a>
+      <a href="https://vaultmorph.org/security/">Security Policy</a>
+      <a href="mailto:contact@vaultmorph.org">Support</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 VaultMorph. All rights reserved.</span>
+    <span><a href="https://vaultmorph.org" style="color:var(--accent)">vaultmorph.org</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var revealEls = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window && !reduced) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add("visible"); });
+  }
+})();
+</script>
+
+</body>
+</html>
